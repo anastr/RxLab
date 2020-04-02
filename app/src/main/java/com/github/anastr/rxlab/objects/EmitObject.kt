@@ -16,13 +16,10 @@ abstract class EmitObject(leftTopPoint: Point) {
     val rect = RectF(leftTopPoint.x, leftTopPoint.y
         , leftTopPoint.x + Utils.emitSize, leftTopPoint.y + Utils.emitSize)
 
-    abstract fun draw(canvas: Canvas)
+    val position
+        get() = Point(rect.left, rect.top)
 
-    fun resize(newSize: Float) {
-        val def = newSize - rect.width()
-        rect.right += def
-        rect.bottom += def
-    }
+    abstract fun draw(canvas: Canvas)
 
     fun offsetTo(leftTopPoint: Point) = rect.offsetTo(leftTopPoint.x, leftTopPoint.y)
 
