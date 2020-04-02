@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.text.TextPaint
 import android.view.animation.DecelerateInterpolator
+import androidx.core.animation.doOnEnd
 import com.github.anastr.rxlab.objects.EmitObject
 import com.github.anastr.rxlab.util.Point
 import com.github.anastr.rxlab.util.Utils
@@ -44,43 +45,81 @@ abstract class DrawingObject(val name: String) {
     protected open fun onEmitsChanged() { }
     protected open fun onAddEmits(emitObject: EmitObject) { }
 
-    private fun moveEmit(emit: EmitObject, to: Point) {
+    /**
+     *
+     * **must be called on main thread.**
+     */
+    fun moveEmit(emit: EmitObject, to: Point, onEnd: () -> Any = {}) {
         val distanceX = to.x - emit.rect.left
         val distanceY = to.y - emit.rect.top
         var pre = 0f
         ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = 700
+            duration = 500
             interpolator = DecelerateInterpolator()
             addUpdateListener { animation ->
                 emit.rect.offset(distanceX*(animation.animatedFraction - pre)
                     , distanceY*(animation.animatedFraction - pre))
                 pre = animation.animatedFraction
             }
+            doOnEnd { onEnd.invoke() }
         }.start()
     }
 
-    fun addEmit(emitObject: EmitObject) {
-        addEmits(listOf(emitObject))
+    /**
+     * add emit immediately to `insertPoint`.
+     *
+     * **must be called on render thread.**
+     */
+    fun addEmit(emit: EmitObject) {
+        addEmit(emit, getInsertPoint())
+        onEmitsChanged()
     }
 
+    /**
+     * add emit without change its position, then move it
+     * to `insertPoint` with animation.
+     *
+     * **must be called on render thread.**
+     */
     fun addEmitWithAnimation(emit: EmitObject) {
-        addEmit(emit)
+        addEmit(emit, emit.position)
+        onEmitsChanged()
         doOnMainThread {
             moveEmit(emit, getInsertPoint())
         }
     }
 
+    /**
+     * add list of emits immediately to `insertPoint`.
+     *
+     * **must be called on render thread.**
+     */
     fun addEmits(emits: List<EmitObject>) {
-        emitObjects.addAll(emits)
-        emits.forEach { onAddEmits(it) }
+        emits.forEach { addEmit(it, getInsertPoint()) }
         onEmitsChanged()
     }
 
+    private fun addEmit(emit: EmitObject, initial: Point) {
+        emit.offsetTo(initial)
+        emitObjects.add(emit)
+        onAddEmits(emit)
+    }
+
+    /**
+     * remove emit by index.
+     *
+     * **must be called on render thread.**
+     */
     fun removeEmitAt(index: Int) {
         emitObjects.removeAt(index)
         onEmitsChanged()
     }
 
+    /**
+     * remove emit.
+     *
+     * **must be called on render thread.**
+     */
     fun removeEmit(emit: EmitObject) {
         emitObjects.remove(emit)
         onEmitsChanged()
