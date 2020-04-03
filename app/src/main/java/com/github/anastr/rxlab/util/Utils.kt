@@ -20,7 +20,7 @@ class Utils {
         fun prepareData(context: Context) {
             density = context.resources.displayMetrics.density
             drawingPadding = dpToPx(10f)
-            drawingHeight = dpToPx(80f)
+            drawingHeight = dpToPx(60f)
             emitSize = dpToPx(40f)
             emitSpeed = dpToPx(40f) / 1000f
         }
