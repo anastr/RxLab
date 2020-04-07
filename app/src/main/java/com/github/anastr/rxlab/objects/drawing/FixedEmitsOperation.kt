@@ -34,22 +34,31 @@ class FixedEmitsOperation(name: String, emits: List<EmitObject>): OperationObjec
 
     override fun onSizeChanged(width: Int, height: Int) {
         super.onSizeChanged(width, height)
-        updateContent()
+        updateContent(true)
     }
 
-    override fun onEmitsChanged() {
-        updateContent()
+    override fun onAddEmit(emitObject: EmitObject) {
+        updateContent(false)
     }
 
-    private fun updateContent() {
+    override fun onRemoveEmit(emitObject: EmitObject) {
+        updateContent(true)
+    }
+
+    private fun updateContent(manageLastEmit: Boolean) {
         contentWidth = Utils.emitSize * emitObjects.size + padding * emitObjects.size
         var startContentX = rect.centerX() - contentWidth *.5f
         emitObjects.forEachIndexed { index, emitObject ->
+            // it's inserting responsibility to manage last emit position.
+            if (!manageLastEmit && index == emitObjects.size -1)
+                return@forEachIndexed
             val emitLeft = startContentX + index * Utils.emitSize
             emitObject.rect.offsetTo(emitLeft, rect.centerY() - Utils.emitSize*.5f)
             startContentX += padding
         }
     }
 
-    override fun getInsertPoint(): Point = Point(0f, 0f)
+    override fun getInsertPoint(): Point =
+        Point(rect.centerX() + contentWidth *.5f - Utils.emitSize *.5f
+            , rect.centerY() - Utils.emitSize * .5f)
 }

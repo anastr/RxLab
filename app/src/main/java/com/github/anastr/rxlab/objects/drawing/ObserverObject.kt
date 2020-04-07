@@ -51,7 +51,7 @@ class ObserverObject(name:String): DrawingObject(name) {
         updatePath()
     }
 
-    override fun onAddEmits(emitObject: EmitObject) {
+    override fun onAddEmit(emitObject: EmitObject) {
         if (isComplete)
             throw IllegalStateException("you can't add emits after onComplete!")
     }

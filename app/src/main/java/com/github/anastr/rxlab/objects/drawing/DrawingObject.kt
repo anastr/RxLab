@@ -38,8 +38,8 @@ abstract class DrawingObject(val name: String) {
     }
     abstract fun draw(delta: Long, canvas: Canvas)
     abstract fun getInsertPoint(): Point
-    protected open fun onEmitsChanged() { }
-    protected open fun onAddEmits(emitObject: EmitObject) { }
+    protected open fun onRemoveEmit(emitObject: EmitObject) { }
+    protected open fun onAddEmit(emitObject: EmitObject) { }
 
     /**
      * add list of emits immediately to `insertPoint`.
@@ -59,8 +59,7 @@ abstract class DrawingObject(val name: String) {
     fun addEmit(emit: EmitObject, initial: Point = getInsertPoint()) {
         emit.offsetTo(initial)
         emitObjects.add(emit)
-        onAddEmits(emit)
-        onEmitsChanged()
+        onAddEmit(emit)
     }
 
     /**
@@ -69,8 +68,7 @@ abstract class DrawingObject(val name: String) {
      * **must be called on render thread.**
      */
     fun removeEmitAt(index: Int) {
-        emitObjects.removeAt(index)
-        onEmitsChanged()
+        onRemoveEmit(emitObjects.removeAt(index))
     }
 
     /**
@@ -80,7 +78,7 @@ abstract class DrawingObject(val name: String) {
      */
     fun removeEmit(emit: EmitObject) {
         emitObjects.remove(emit)
-        onEmitsChanged()
+        onRemoveEmit(emit)
     }
 
     override fun equals(other: Any?) = other is DrawingObject && uid == other.uid
