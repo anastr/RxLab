@@ -19,6 +19,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import kotlin.math.max
 
 /**
  * Created by Anas Altair on 3/6/2020.
@@ -78,11 +79,11 @@ class RxSurfaceView : SurfaceView {
         compositeDisposable.add(this)
     }
 
-//    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-//        val newHeight = Utils.drawingHeight * (drawingObjects.size - 1)
-//        setMeasuredDimension(measuredWidth, max(suggestedMinimumHeight, newHeight.toInt()))
-//    }
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val exactHeight = Utils.drawingHeight * drawingObjects.size + Utils.drawingPadding * drawingObjects.size
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), max(MeasureSpec.getSize(heightMeasureSpec), exactHeight.toInt()))
+    }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         drawingObjects.forEach { it.onSizeChanged(w, h) }

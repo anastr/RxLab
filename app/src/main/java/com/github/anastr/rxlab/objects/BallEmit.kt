@@ -17,7 +17,6 @@ class BallEmit(leftTopPoint: Point = Point(0f, 0f)) : EmitObject(leftTopPoint) {
     }
 
     var value: String = ""
-        private set
 
     private var valueTextHeight: Float
 
