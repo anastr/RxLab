@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
-import com.github.anastr.rxlab.objects.EmitObject
+import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.util.Point
 import com.github.anastr.rxlab.util.Utils
 import com.github.anastr.rxlab.util.dpToPx
