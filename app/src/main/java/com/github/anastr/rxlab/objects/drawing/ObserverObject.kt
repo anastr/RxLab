@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import com.github.anastr.rxlab.objects.emits.EmitObject
+import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.util.Point
 import com.github.anastr.rxlab.util.Utils
 import com.github.anastr.rxlab.util.dpToPx
@@ -23,6 +24,9 @@ class ObserverObject(name:String): DrawingObject(name) {
 
     private val garbageEmits = ArrayList<Int>()
     private var isComplete = false
+
+    private val timeObjects = java.util.ArrayList<TimeObject>()
+    private val garbageTimes = ArrayList<Int>()
 
     init {
         paint.color = Color.DKGRAY
@@ -56,6 +60,16 @@ class ObserverObject(name:String): DrawingObject(name) {
             throw IllegalStateException("you can't add emits after onComplete!")
     }
 
+    fun startTime(lock: TimeObject.Lock): TimeObject {
+        val timeObject = TimeObject(getInsertPoint(), lock)
+        timeObjects.add(timeObject)
+        return timeObject
+    }
+
+    fun removeTime(timeObject: TimeObject) {
+        timeObjects.remove(timeObject)
+    }
+
     override fun draw(delta: Long, canvas: Canvas) {
 
         canvas.drawPath(arrowPath, paint)
@@ -69,11 +83,22 @@ class ObserverObject(name:String): DrawingObject(name) {
             if (emitObject.rect.right < 0f)
                 garbageEmits.add(0, index)
         }
+        timeObjects.forEachIndexed { index, timeObject ->
+            if (!isComplete) {
+                timeObject.rect.left -= delta * Utils.emitSpeed
+                timeObject.rect.right -= if (timeObject.locked) delta * Utils.emitSpeed else 0f
+            }
+            timeObject.draw(canvas)
+            if (timeObject.rect.right < 0f)
+                garbageTimes.add(0, index)
+        }
         if (isComplete)
             canvas.drawPath(completePath, paint)
 
         garbageEmits.forEach { removeEmitAt(it) }
         garbageEmits.clear()
+        garbageTimes.forEach { timeObjects.removeAt(it) }
+        garbageTimes.clear()
     }
 
     override fun getInsertPoint(): Point

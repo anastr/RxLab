@@ -23,6 +23,9 @@ class ColorUtil {
         const val brown = 0xFF795548.toInt()
         const val gray = 0xFF757575.toInt()
 
+        //// time color:
+        const val yellow = 0xFFFFEB3B.toInt()
+
         //// thread colors:
         const val mainThread = 0xFFFFAB91.toInt()
         const val computationThread = 0xFF18FFFF.toInt()
