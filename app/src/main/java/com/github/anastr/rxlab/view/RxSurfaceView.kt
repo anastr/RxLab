@@ -7,9 +7,9 @@ import android.util.AttributeSet
 import android.view.SurfaceView
 import android.view.animation.DecelerateInterpolator
 import androidx.core.animation.doOnEnd
-import com.github.anastr.rxlab.objects.BallEmit
-import com.github.anastr.rxlab.objects.EmitObject
 import com.github.anastr.rxlab.objects.drawing.DrawingObject
+import com.github.anastr.rxlab.objects.emits.BallEmit
+import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.util.*
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable

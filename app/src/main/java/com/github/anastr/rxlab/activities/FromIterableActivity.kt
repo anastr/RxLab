@@ -1,7 +1,7 @@
 package com.github.anastr.rxlab.activities
 
 import android.os.Bundle
-import com.github.anastr.rxlab.objects.BallEmit
+import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.view.Action
@@ -20,7 +20,12 @@ class FromIterableActivity: OperationActivity() {
                 "        .subscribe();")
 
 
-        val list = listOf(BallEmit("L"), BallEmit("i"), BallEmit("s"), BallEmit("t"))
+        val list = listOf(
+            BallEmit("L"),
+            BallEmit("i"),
+            BallEmit("s"),
+            BallEmit("t")
+        )
 
         val fromIterableOperation = FixedEmitsOperation("fromIterable", list)
         surfaceView.addDrawingObject(fromIterableOperation)
