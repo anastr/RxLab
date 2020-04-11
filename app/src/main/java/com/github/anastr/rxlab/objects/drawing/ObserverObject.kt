@@ -60,12 +60,22 @@ class ObserverObject(name:String): DrawingObject(name) {
             throw IllegalStateException("you can't add emits after onComplete!")
     }
 
+    /**
+     * add [TimeObject] at [getInsertPoint] depending on [lock].
+     *
+     * **must be called on render thread.**
+     */
     fun startTime(lock: TimeObject.Lock): TimeObject {
         val timeObject = TimeObject(getInsertPoint(), lock)
         timeObjects.add(timeObject)
         return timeObject
     }
 
+    /**
+     * remove time object, _drop it_.
+     *
+     * **must be called on render thread.**
+     */
     fun removeTime(timeObject: TimeObject) {
         timeObjects.remove(timeObject)
     }

@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.graphics.RectF
+import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.util.ColorUtil
 import com.github.anastr.rxlab.util.Point
 import com.github.anastr.rxlab.util.Utils
@@ -11,10 +12,13 @@ import com.github.anastr.rxlab.util.dpToPx
 import java.util.*
 
 /**
+ * add time block only on [ObserverObject].
+ *
  * Created by Anas Altair on 4/10/2020.
  */
 class TimeObject(leftTopPoint: Point, lock: Lock) {
 
+    /** if false, time object width will keep increased by time. */
     var locked = false
         private set
 
@@ -38,6 +42,11 @@ class TimeObject(leftTopPoint: Point, lock: Lock) {
         canvas.drawRoundRect(rect, rounded, rounded, paint)
     }
 
+    /**
+     * stop growing.
+     *
+     * **safe thread.**
+     */
     fun lock() {
         locked = true
     }
@@ -49,6 +58,9 @@ class TimeObject(leftTopPoint: Point, lock: Lock) {
     override fun hashCode() = uid.hashCode()
 
     enum class Lock(val initOffset: Float) {
-        AFTER(Utils.emitSize), BEFORE(0f)
+        /** after the emit. */
+        AFTER(Utils.emitSize),
+        /** before the emit. */
+        BEFORE(0f)
     }
 }
