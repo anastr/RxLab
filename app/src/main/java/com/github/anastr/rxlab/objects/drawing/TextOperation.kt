@@ -9,9 +9,19 @@ import com.github.anastr.rxlab.util.dpToPx
 /**
  * Created by Anas Altair on 4/1/2020.
  */
-class TextOperation(name: String, private val text: String): OperationObject(name) {
+class TextOperation(name: String, private var text: String): OperationObject(name) {
 
     override var contentWidth: Float = textPaint.measureText(text)
+
+    /**
+     * change text and recalculate [contentWidth].
+     *
+     * **safe thread.**
+     */
+    fun setText(text: String) {
+        this.text = text
+        contentWidth = textPaint.measureText(text)
+    }
 
     override fun draw(delta: Long, canvas: Canvas) {
         super.draw(delta, canvas)
