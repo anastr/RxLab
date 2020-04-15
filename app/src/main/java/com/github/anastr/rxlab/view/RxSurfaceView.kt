@@ -137,6 +137,9 @@ class RxSurfaceView : SurfaceView {
     /**
      * remove emit from first object and add it to the other,
      * then start animation to make smooth movement between operations.
+     *
+     * you mustn't move more than 1 emit to the same [to] Object,
+     * wait 500 ms at least between them.
      */
     fun moveEmit(emit: EmitObject, from: DrawingObject, to: DrawingObject) {
         doOnRenderThread {
