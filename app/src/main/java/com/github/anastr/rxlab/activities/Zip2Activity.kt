@@ -48,11 +48,7 @@ class Zip2Activity: OperationActivity() {
         val actions = ArrayList<Action>()
 
         val observableLetters = Observable.just(a, b, c, d)
-            .doOnNext {
-            }
         val observableNumbers = Observable.just(e1, e2, e3, e4, e5)
-            .doOnNext {
-            }
 
         Observable.zip(observableLetters, observableNumbers
             , BiFunction<BallEmit, BallEmit, MergedBallEmit> { emit1, emit2 ->
