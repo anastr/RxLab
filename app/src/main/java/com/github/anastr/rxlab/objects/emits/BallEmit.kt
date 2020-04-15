@@ -8,7 +8,7 @@ import com.github.anastr.rxlab.util.Utils
 /**
  * Created by Anas Altair on 3/7/2020.
  */
-class BallEmit(leftTopPoint: Point = Point(0f, 0f)) : EmitObject(leftTopPoint) {
+open class BallEmit(leftTopPoint: Point = Point(0f, 0f)): EmitObject(leftTopPoint) {
 
     constructor(value: String, color: Int = Color.RED, leftTopPoint: Point = Point(0f, 0f)) : this() {
         this.value = value
@@ -18,10 +18,12 @@ class BallEmit(leftTopPoint: Point = Point(0f, 0f)) : EmitObject(leftTopPoint) {
 
     var value: String = ""
 
-    private var valueTextHeight: Float
+    protected var valueTextHeight: Float
 
-    private val circlePaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val valuePaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
+    protected val circlePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    protected val valuePaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
+
+    val color get() = circlePaint.color
 
     init {
         valuePaint.textSize = Utils.emitTextSize
