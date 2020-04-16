@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.anastr.rxlab.adapter.MyAdapter
+import com.github.anastr.rxlab.adapter.OperationData
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_list.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,9 +17,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setHasFixedSize(true)
+
+        val operations = listOf(
+            OperationData("Alphabetical Operators", AlphabeticalOperatorsActivity::class.java)
+            , OperationData("Creating Operations", CreatingOperatorsActivity::class.java)
+            , OperationData("Filtering Operators", FilteringOperatorsActivity::class.java)
+            , OperationData("Transforming Operators", TransformingOperatorsActivity::class.java)
+            , OperationData("Combining Operators", CombiningOperatorsActivity::class.java)
+            , OperationData("Hot Sources", HotSourcesActivity::class.java)
+            , OperationData("Comparing", ComparingActivity::class.java)
+        )
+
+        recyclerView.adapter = MyAdapter(this, operations)
+
+        fab.setOnClickListener {
         }
     }
 
