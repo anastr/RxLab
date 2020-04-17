@@ -33,7 +33,8 @@ class FilteringOperatorsActivity: AppCompatActivity() {
             OperationData("distinct", DistinctActivity::class.java),
             OperationData("distinctUntilChanged", DistinctUntilChangedActivity::class.java),
             OperationData("throttleFirst", ThrottleFirstActivity::class.java),
-            OperationData("throttleLast", ThrottleLastActivity::class.java)
+            OperationData("throttleLast", ThrottleLastActivity::class.java),
+            OperationData("throttleWithTimeout", ThrottleWithTimeoutActivity::class.java)
         )
 
         recyclerView.adapter = MyAdapter(this, operations)
