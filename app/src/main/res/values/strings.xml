@@ -12,4 +12,5 @@
 
     <string name="action_reload">reload</string>
     <string name="search">Search</string>
+    <string name="about">About</string>
 </resources>
