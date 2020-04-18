@@ -1,10 +1,11 @@
 package com.github.anastr.rxlab.activities
 
 import android.os.Bundle
-import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
+import com.github.anastr.rxlab.objects.emits.BallEmit
+import com.github.anastr.rxlab.util.ColorUtil
 import com.github.anastr.rxlab.util.delayEach
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -76,8 +77,8 @@ class FlatMapAndConcatMapActivity: OperationActivity() {
             .disposeOnDestroy()
 
 
-        val abcEmit2 = BallEmit("A,B,C")
-        val defEmit2 = BallEmit("D,E,F")
+        val abcEmit2 = BallEmit("A,B,C", ColorUtil.blue)
+        val defEmit2 = BallEmit("D,E,F", ColorUtil.blue)
 
         val justOperation2 = FixedEmitsOperation("just", listOf(abcEmit2, defEmit2))
         surfaceView.addDrawingObject(justOperation2)
@@ -102,7 +103,7 @@ class FlatMapAndConcatMapActivity: OperationActivity() {
                     .delayEach(Random.nextLong(50))
                     .doOnComplete { actions2.add(Action(0) { doOnRenderThread { concatMapOperation.removeEmit(it) } }) }
             }
-            .map { BallEmit(it.toString()) }
+            .map { BallEmit(it.toString(), ColorUtil.blue) }
             .subscribe ({
                 val thread = Thread.currentThread().name
                 actions2.add(Action(1000) {

@@ -20,7 +20,7 @@ class ThrottleWithTimeoutActivity: OperationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setCode("Observable.<String>create(emitter -> {\n" +
-                "    fab.setOnClickListener(v1 -> {\n" +
+                "    fab.setOnClickListener(v -> {\n" +
                 "        if (!emitter.isDisposed())\n" +
                 "            emitter.onNext(\"emit\");\n" +
                 "    });\n" +
