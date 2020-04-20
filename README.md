@@ -8,7 +8,7 @@ with snippets of code written in [RxJava](https://github.com/ReactiveX/RxJava) `
 for example, just operation:\
 <img src="images/just.gif" width="50%" />
 
-download app on Google Play(very soon):\
+download app on Google Play:\
 <a href='https://play.google.com/store/apps/details?id=com.github.anastr.rxlab'><img  width="25%" alt='SpeedView Demo on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 
 > CPU with 4 cores at least is recommended, and screen with large width.
