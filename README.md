@@ -1,5 +1,5 @@
 # RxLab
-amazing tool to learn [ReactiveX Programming]{http://reactivex.io/} with animation, schedulers and time _[project on GitHub](https://github.com/anastr/RxLab)_.
+amazing tool to learn [ReactiveX Programming](http://reactivex.io/) with animation, schedulers and time _[project on GitHub](https://github.com/anastr/RxLab)_.
 
 this is an open source Android application written in `Kotlin` to let you understand how **ReactiveX Programming** works,
 this app will **show** you the real behavior of Reactive Programming depending on time and threads,
@@ -9,7 +9,7 @@ for example, just operation:\
 <img src="images/just.gif" width="50%" />
 
 download app on Google Play(very soon):\
-<a href='https://play.google.com/store/apps/details?id=com.github.anastr.rxlab&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img  width="25%" alt='SpeedView Demo on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+<a href='https://play.google.com/store/apps/details?id=com.github.anastr.rxlab'><img  width="25%" alt='SpeedView Demo on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 
 > CPU with 4 cores at least is recommended, and screen with large width.
 
