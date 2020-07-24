@@ -25,9 +25,14 @@ this is small description for emit:\
 <img src="images/emitDescription.png" />
 
 1. emit color points to the observable that coming from.
-2. value.
-3. the color points to the **current thread**.
-4. thread index that in use.
+1. value.
+1. the color points to the **current thread**.
+   - <img src="images/threads/main.png" height="15" /> main thread.
+   - <img src="images/threads/computation.png" height="15" /> computation thread.
+   - <img src="images/threads/io.png" height="15" /> io thread.
+   - <img src="images/threads/single.png" height="15" /> single thread.
+   - <img src="images/threads/other.png" height="15" /> other.
+1. thread index that in use.
 
 `takeTime(emit)` you will see this method in code, simply it will take random time to simulate a long operation, then it will return the emit.
 
