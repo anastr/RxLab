@@ -16,7 +16,7 @@ download app on Google Play(very soon):\
 do you want to know how `scan` operation works?\
 <img src="images/scan.gif" width="50%" />
 
-or you may doesn't know the difference between `flatMap` and `concatMap`?\
+or you may don't know the difference between `flatMap` and `concatMap`?\
 <img src="images/flatMapAndConcatMap.gif" width="50%" />
 
 and more...
