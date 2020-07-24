@@ -28,7 +28,7 @@ class RxSurfaceView : SurfaceView {
 
     companion object {
         /** frames per second */
-        const val FBS = 40L
+        const val FBS = 35L
     }
 
     private var lastFrameTime = System.currentTimeMillis()
@@ -53,11 +53,11 @@ class RxSurfaceView : SurfaceView {
     init {
         looper.switchMap { startRender ->
             if (startRender)
-                Observable.interval(1000 / FBS, TimeUnit.MILLISECONDS)
+                Observable.interval(1000 / FBS, TimeUnit.MILLISECONDS, Schedulers.from(renderThread))
             else
                 Observable.empty()
         }
-            .observeOn(Schedulers.from(renderThread))
+//            .observeOn(Schedulers.from(renderThread))
             .subscribe {
                 val now = System.currentTimeMillis()
                 update(now - lastFrameTime)
