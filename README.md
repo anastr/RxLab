@@ -3,7 +3,7 @@ amazing tool to learn [ReactiveX Programming](http://reactivex.io/) with animati
 
 this is an open source Android application written in `Kotlin` to let you understand how **ReactiveX Programming** works,
 this app will **show** you the real behavior of Reactive Programming depending on time and threads,
-with snippets of code written in [RxJava](https://github.com/ReactiveX/RxJava) `3.0.2`.
+with snippets of code written in [RxJava](https://github.com/ReactiveX/RxJava) `3.0.4`.
 
 for example, just operation:\
 <img src="images/just.gif" width="50%" />
