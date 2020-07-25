@@ -38,12 +38,11 @@ class ThrottleLastActivity: OperationActivity() {
         val observerObject = ObserverObject("Observer")
         surfaceView.addDrawingObject(observerObject)
 
-        var timeObject: TimeObject? = null
         Observable.interval(2, TimeUnit.SECONDS)
             .subscribe {
                 surfaceView.action(Action(0) { doOnRenderThread {
-                    timeObject?.lock()
-                    observerObject.startTime(TimeObject.Lock.AFTER).apply { timeObject = this }
+                    observerObject.lockTime()
+                    observerObject.startTime(TimeObject.Lock.AFTER)
                 } })
             }
             .disposeOnDestroy()

@@ -8,8 +8,10 @@ import android.view.SurfaceView
 import android.view.animation.DecelerateInterpolator
 import androidx.core.animation.doOnEnd
 import com.github.anastr.rxlab.objects.drawing.DrawingObject
+import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.EmitObject
+import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.util.*
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -33,7 +35,6 @@ class RxSurfaceView : SurfaceView {
 
     private var lastFrameTime = System.currentTimeMillis()
 
-//    private val renderScheduler = Schedulers.single()
     private val renderThread = Executors.newSingleThreadExecutor()
     private val actionsThread = Executors.newFixedThreadPool(3)
     private val drawingObjects = ArrayList<DrawingObject>()
@@ -156,6 +157,12 @@ class RxSurfaceView : SurfaceView {
     fun dropEmit(emit: EmitObject, from: DrawingObject) {
         doOnMainThread {
             moveEmit(emit, Point(width.toFloat(), emit.rect.top)) { doOnRenderThread { from.removeEmit(emit) } }
+        }
+    }
+
+    fun startTime(observerObject: ObserverObject, lock: TimeObject.Lock) {
+        doOnRenderThread {
+            observerObject.startTime(lock)
         }
     }
 

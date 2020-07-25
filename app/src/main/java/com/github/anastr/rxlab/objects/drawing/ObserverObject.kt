@@ -65,10 +65,30 @@ class ObserverObject(name:String): DrawingObject(name) {
      *
      * **must be called on render thread.**
      */
-    fun startTime(lock: TimeObject.Lock): TimeObject {
+    fun startTime(lock: TimeObject.Lock) {
+        timeObjects.lastOrNull()?.lock()
         val timeObject = TimeObject(getInsertPoint(), lock)
         timeObjects.add(timeObject)
-        return timeObject
+    }
+
+    /**
+     * stop last time object.
+     *
+     * **safe thread.**
+     */
+    fun lockTime() {
+        timeObjects.lastOrNull()?.lock()
+    }
+
+    fun isTimeLocked(): Boolean? = timeObjects.lastOrNull()?.locked
+
+    /**
+     * remove Last time object, _drop it_.
+     *
+     * **must be called on render thread.**
+     */
+    fun removeLastTime() {
+        timeObjects.remove(timeObjects.lastOrNull())
     }
 
     /**

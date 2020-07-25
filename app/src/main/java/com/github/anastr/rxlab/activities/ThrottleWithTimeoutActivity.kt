@@ -38,7 +38,6 @@ class ThrottleWithTimeoutActivity: OperationActivity() {
         val observerObject = ObserverObject("Observer")
         surfaceView.addDrawingObject(observerObject)
 
-        var timeObject: TimeObject? = null
         Observable.create<EmitObject> { emitter ->
             fab.setOnClickListener {
                 if (!emitter.isDisposed)
@@ -47,11 +46,9 @@ class ThrottleWithTimeoutActivity: OperationActivity() {
         }
             .doOnNext {
                 surfaceView.action(Action(0) { doOnRenderThread {
-                    timeObject?.let { time ->
-                        if (!time.locked)
-                            observerObject.removeTime(time)
-                    }
-                    observerObject.startTime(TimeObject.Lock.AFTER).apply { timeObject = this }
+                    if (observerObject.isTimeLocked() != true)
+                        observerObject.removeLastTime()
+                    observerObject.startTime(TimeObject.Lock.AFTER)
                 } })
             }
             .throttleWithTimeout(2, TimeUnit.SECONDS)
@@ -59,7 +56,7 @@ class ThrottleWithTimeoutActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 surfaceView.action(Action(0) {
                     it.checkThread(thread)
-                    timeObject?.lock()
+                    observerObject.lockTime()
                     addEmit(throttleObject, it)
                     moveEmit(it, throttleObject, observerObject)
                 })

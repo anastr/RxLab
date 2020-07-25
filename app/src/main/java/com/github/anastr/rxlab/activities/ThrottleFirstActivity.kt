@@ -49,8 +49,8 @@ class ThrottleFirstActivity: OperationActivity() {
                 surfaceView.action(Action(0) {
                     it.checkThread(thread)
                     doOnRenderThread {
-                        val timeObject = observerObject.startTime(TimeObject.Lock.BEFORE)
-                        action(Action(2000) { timeObject.lock() })
+                        observerObject.startTime(TimeObject.Lock.BEFORE)
+                        action(Action(2000) { observerObject.lockTime() })
                     }
                     addEmit(throttleObject, it)
                     moveEmit(it, throttleObject, observerObject)
