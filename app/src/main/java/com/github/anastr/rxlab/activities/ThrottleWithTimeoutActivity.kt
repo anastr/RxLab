@@ -30,6 +30,7 @@ class ThrottleWithTimeoutActivity: OperationActivity() {
                 "        .subscribe();")
 
         addNote("add 1 emit and wait, then try to add emits rapidly.")
+        addNote("please be aware about emit thread!")
 
         fab.visibility = View.VISIBLE
 
