@@ -35,6 +35,7 @@ class AlphabeticalOperatorsActivity: AppCompatActivity() {
         allOperations.addAll(
             listOf(
                 OperationData("concatMap", ConcatMapActivity::class.java),
+                OperationData("contains", ContainsActivity::class.java),
                 OperationData("create", CreateActivity::class.java),
                 OperationData("distinct", DistinctActivity::class.java),
                 OperationData("distinctUntilChanged", DistinctUntilChangedActivity::class.java),

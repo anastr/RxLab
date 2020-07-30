@@ -24,6 +24,7 @@ class FilteringOperatorsActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = listOf(
+            OperationData("contains", ContainsActivity::class.java),
             OperationData("filter", FilterActivity::class.java),
             OperationData("sorted", SortedActivity::class.java),
             OperationData("take", TakeActivity::class.java),
