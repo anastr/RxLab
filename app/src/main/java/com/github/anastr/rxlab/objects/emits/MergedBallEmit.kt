@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.util.Point
 /**
  * Created by Anas Altair on 4/13/2020.
  */
-class MergedBallEmit(leftTopPoint: Point, vararg ballEmits: BallEmit): BallEmit(leftTopPoint) {
+class MergedBallEmit(leftTopPoint: Point, vararg ballEmits: EmitObject): EmitObject(leftTopPoint) {
 
     private val colors = ballEmits.map { it.color }
 
