@@ -10,7 +10,8 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Scheduler
 import kotlinx.android.synthetic.main.activity_operation.*
 
-open class SchedulerOperationActivity(private val method: String, private val scheduler: Scheduler): OperationActivity() {
+open class SchedulerOperationActivity(private val method: String, private val scheduler: Scheduler
+                                      , private val note: String? = null): OperationActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +19,7 @@ open class SchedulerOperationActivity(private val method: String, private val sc
                 "        .observeOn($method)\n" +
                 "        .subscribe();")
 
+        note?.let { addNote(it) }
 
         val a = BallEmit("A")
 

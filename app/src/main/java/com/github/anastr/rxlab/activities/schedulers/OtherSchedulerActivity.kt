@@ -5,4 +5,4 @@ import java.util.concurrent.Executors
 
 class OtherSchedulerActivity
     : SchedulerOperationActivity("Schedulers.from(Executors.newFixedThreadPool(3)"
-    , Schedulers.from(Executors.newFixedThreadPool(3)))
+    , Schedulers.from(Executors.newFixedThreadPool(3)), "custom thread, fixed number of threads..")
