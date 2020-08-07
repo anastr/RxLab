@@ -60,6 +60,7 @@ class AlphabeticalOperatorsActivity: AppCompatActivity() {
                 OperationData("throttleFirst", ThrottleFirstActivity::class.java),
                 OperationData("throttleLast", ThrottleLastActivity::class.java),
                 OperationData("throttleWithTimeout", ThrottleWithTimeoutActivity::class.java),
+                OperationData("toList", ToListActivity::class.java),
                 OperationData("zip2", Zip2Activity::class.java),
                 OperationData("zip3", Zip3Activity::class.java)
             )

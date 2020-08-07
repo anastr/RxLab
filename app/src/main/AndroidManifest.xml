@@ -50,6 +50,7 @@
         <activity android:name=".activities.Zip2Activity" />
         <activity android:name=".activities.Zip3Activity" />
         <activity android:name=".activities.ContainsActivity" />
+        <activity android:name=".activities.ToListActivity" />
         <activity android:name=".AlphabeticalOperatorsActivity" />
         <activity android:name=".CreatingOperatorsActivity" />
         <activity android:name=".FilteringOperatorsActivity" />
