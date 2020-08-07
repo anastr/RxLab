@@ -13,9 +13,11 @@ import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.util.*
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.processors.PublishProcessor
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
@@ -40,7 +42,9 @@ class RxSurfaceView : SurfaceView {
     private val drawingObjects = ArrayList<DrawingObject>()
 
     private var isRunning = false
-    private val looper: Subject<Boolean> = PublishSubject.create<Boolean>()
+    private var isActionRunning = false
+    private val looper: PublishProcessor<Boolean> = PublishProcessor.create<Boolean>()
+    private val renderPublisher: PublishProcessor<() -> Unit> = PublishProcessor.create<() -> Unit>()
     /** hot observable to deal with actions (add, remove or move emits - complete observer ...) */
     private val actionSubject: Subject<List<Action>> = PublishSubject.create<List<Action>>().toSerialized()
     private val compositeDisposable = CompositeDisposable()
@@ -54,17 +58,30 @@ class RxSurfaceView : SurfaceView {
     init {
         looper.switchMap { startRender ->
             if (startRender)
-                Observable.interval(1000 / FBS, TimeUnit.MILLISECONDS, Schedulers.from(renderThread))
+                Flowable.interval(1000 / FBS, TimeUnit.MILLISECONDS)
+                    .onBackpressureLatest()
+                    .concatMap { Flowable.just(it).skipWhile { isActionRunning } }
+                    .observeOn(Schedulers.from(renderThread))
+                    .doOnNext {
+                        val now = System.currentTimeMillis()
+                        update(now - lastFrameTime)
+                        lastFrameTime = now
+                    }
             else
-                Observable.empty()
+                Flowable.empty()
         }
-//            .observeOn(Schedulers.from(renderThread))
+            .subscribe()
+            .addToDispose()
+
+        renderPublisher
+            .doOnNext { isActionRunning = true }
+            .observeOn(Schedulers.from(renderThread))
             .subscribe {
-                val now = System.currentTimeMillis()
-                update(now - lastFrameTime)
-                lastFrameTime = now
+                it.invoke()
+                isActionRunning = false
             }
             .addToDispose()
+
         actionSubject
             .flatMap { list ->
                 Observable.fromIterable(list)
@@ -186,10 +203,8 @@ class RxSurfaceView : SurfaceView {
         }.start()
     }
 
-    fun doOnRenderThread(action: () -> Any) {
-        Observable.fromAction<Any> {
-            action.invoke()
-        }.subscribeOn(Schedulers.from(renderThread)).subscribe()
+    fun doOnRenderThread(action: () -> Unit) {
+        renderPublisher.onNext(action)
     }
 
     fun pause() {
