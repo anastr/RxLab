@@ -192,7 +192,7 @@ class RxSurfaceView : SurfaceView {
         val distanceY = to.y - emit.rect.top
         var pre = 0f
         ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = 500
+            duration = 400
             interpolator = DecelerateInterpolator()
             addUpdateListener { animation ->
                 emit.rect.offset(distanceX*(animation.animatedFraction - pre)
