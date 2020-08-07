@@ -1,9 +1,6 @@
 package com.github.anastr.rxlab.objects.emits
 
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.text.TextPaint
 import com.github.anastr.rxlab.util.ColorUtil
 import com.github.anastr.rxlab.util.Point
@@ -22,8 +19,10 @@ abstract class EmitObject(leftTopPoint: Point) {
     private val threadTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     var value: String = ""
+    protected var valueTextHeight: Float
 
     protected val emitPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    protected val valuePaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     val rect = RectF(leftTopPoint.x, leftTopPoint.y
         , leftTopPoint.x + Utils.emitSize, leftTopPoint.y + Utils.emitSize)
@@ -36,6 +35,14 @@ abstract class EmitObject(leftTopPoint: Point) {
         threadTextPaint.textSize = Utils.threadTextSize
         threadTextPaint.textAlign = Paint.Align.CENTER
         threadTextPaint.color = Color.BLACK
+
+        valuePaint.textSize = Utils.emitTextSize
+        valuePaint.typeface = Typeface.DEFAULT_BOLD
+        valuePaint.color = Color.WHITE
+        valuePaint.textAlign = Paint.Align.CENTER
+        val valueBounds = Rect()
+        valuePaint.getTextBounds("10", 0, 1, valueBounds)
+        valueTextHeight = valueBounds.height().toFloat()
 
         checkThread(Thread.currentThread().name)
     }
