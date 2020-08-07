@@ -56,6 +56,7 @@
         <activity android:name=".activities.schedulers.ComputationSchedulerActivity" />
         <activity android:name=".activities.schedulers.IoSchedulerActivity" />
         <activity android:name=".activities.schedulers.SingleSchedulerActivity" />
+        <activity android:name=".activities.schedulers.OtherSchedulerActivity" />
 
         <activity android:name=".AlphabeticalOperatorsActivity" />
         <activity android:name=".CreatingOperatorsActivity" />
