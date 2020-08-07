@@ -8,6 +8,7 @@ import android.view.SurfaceView
 import android.view.animation.DecelerateInterpolator
 import androidx.core.animation.doOnEnd
 import com.github.anastr.rxlab.objects.drawing.DrawingObject
+import com.github.anastr.rxlab.objects.drawing.FpsObject
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.EmitObject
@@ -91,6 +92,8 @@ class RxSurfaceView : SurfaceView {
 //            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { it.action.invoke(this) }
             .addToDispose()
+
+        addDrawingObject(FpsObject())
     }
 
     private fun Disposable.addToDispose() {
