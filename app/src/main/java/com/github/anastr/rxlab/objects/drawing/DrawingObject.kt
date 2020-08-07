@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by Anas Altair on 3/20/2020.
  */
-abstract class DrawingObject() {
+abstract class DrawingObject(val height: Float = Utils.defaultDrawingHeight) {
 
     private val uid: UUID = UUID.randomUUID()
 
@@ -30,7 +30,7 @@ abstract class DrawingObject() {
     }
 
     internal fun updatePosition(top: Float, right: Float) {
-        rect.set(0f, top, right, top + Utils.drawingHeight)
+        rect.set(0f, top, right, top + height)
     }
 
     open fun onSizeChanged(width: Int, height: Int) {

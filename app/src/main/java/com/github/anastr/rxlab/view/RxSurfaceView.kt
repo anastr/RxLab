@@ -102,7 +102,7 @@ class RxSurfaceView : SurfaceView {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val exactHeight = Utils.drawingHeight * drawingObjects.size + Utils.drawingPadding * drawingObjects.size
+        val exactHeight = drawingObjects.sumByDouble { it.height.toDouble() } + Utils.drawingPadding * drawingObjects.size
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), max(MeasureSpec.getSize(heightMeasureSpec), exactHeight.toInt()))
     }
 
@@ -141,7 +141,7 @@ class RxSurfaceView : SurfaceView {
     }
 
     fun addDrawingObject(drawingObject: DrawingObject) {
-        var top = drawingObjects.size * Utils.drawingHeight
+        var top = drawingObjects.sumByDouble { it.height.toDouble() }.toFloat()
         if (drawingObjects.size != 0)
             top += drawingObjects.size * Utils.drawingPadding
         drawingObject.updatePosition(top, width.toFloat())

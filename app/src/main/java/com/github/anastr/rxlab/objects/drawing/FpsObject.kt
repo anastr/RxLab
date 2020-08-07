@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.processors.PublishProcessor
 import java.util.concurrent.TimeUnit
 
-class FpsObject: DrawingObject() {
+class FpsObject: DrawingObject(dpToPx(25f)) {
 
     private var lastFPS = 50L
 

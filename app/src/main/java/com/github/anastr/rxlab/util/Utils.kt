@@ -13,7 +13,7 @@ class Utils {
 
         internal var density = 0f
         internal var drawingPadding = 0f
-        internal var drawingHeight = 0f
+        internal var defaultDrawingHeight = 0f
         internal var threadSize = 0f
         internal var threadTextSize = 0f
         internal var emitSize = 0f
@@ -23,7 +23,7 @@ class Utils {
         fun prepareData(context: Context) {
             density = context.resources.displayMetrics.density
             drawingPadding = dpToPx(8f)
-            drawingHeight = dpToPx(60f)
+            defaultDrawingHeight = dpToPx(60f)
             threadSize = dpToPx(10f)
             threadTextSize =  dpToPx(7f)
             emitSize = dpToPx(40f)
