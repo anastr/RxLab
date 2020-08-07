@@ -6,13 +6,12 @@ import com.github.anastr.rxlab.util.Point
 /**
  * Created by Anas Altair on 4/13/2020.
  */
-class MergedBallEmit(leftTopPoint: Point, vararg ballEmits: EmitObject): EmitObject(leftTopPoint) {
+class MergedBallEmit(leftTopPoint: Point, vararg emits: EmitObject): EmitObject(leftTopPoint) {
 
-    private val colors = ballEmits.map { it.color }
+    private val colors = emits.map { it.color }
 
     init {
-        super.value = ballEmits[0].value
-        ballEmits.drop(1).forEach { value += "-${it.value}" }
+        super.value = emits.map { it.value }.reduce { acc, emitValue -> "$acc-$emitValue" }
     }
 
     override fun drawContent(canvas: Canvas) {
