@@ -8,7 +8,7 @@ import com.github.anastr.rxlab.util.dpToPx
 /**
  * Created by Anas Altair on 3/23/2020.
  */
-abstract class OperationObject(name:String): DrawingObject(name) {
+abstract class OperationObject(val name:String): DrawingObject() {
 
     protected var textHeight: Float = 0f
 

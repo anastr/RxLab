@@ -13,7 +13,7 @@ import com.github.anastr.rxlab.util.dpToPx
 /**
  * Created by Anas Altair on 3/20/2020.
  */
-class ObserverObject(name:String): DrawingObject(name) {
+class ObserverObject(val name:String): DrawingObject() {
 
     private val arrowPath = Path()
     private val arrowEndX

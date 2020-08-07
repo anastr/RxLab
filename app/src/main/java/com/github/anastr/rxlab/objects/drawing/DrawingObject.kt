@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by Anas Altair on 3/20/2020.
  */
-abstract class DrawingObject(val name: String) {
+abstract class DrawingObject() {
 
     private val uid: UUID = UUID.randomUUID()
 

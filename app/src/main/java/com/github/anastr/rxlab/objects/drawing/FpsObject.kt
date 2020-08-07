@@ -9,9 +9,9 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.processors.PublishProcessor
 import java.util.concurrent.TimeUnit
 
-class FpsObject: DrawingObject("FPS") {
+class FpsObject: DrawingObject() {
 
-    private var lastFPS = 40L
+    private var lastFPS = 50L
 
     private val fpsPublisher: PublishProcessor<Long> = PublishProcessor.create<Long>()
 
