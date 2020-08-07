@@ -32,7 +32,7 @@ class RxSurfaceView : SurfaceView {
 
     companion object {
         /** frames per second */
-        const val FBS = 35L
+        const val FBS = 50L
     }
 
     private var lastFrameTime = System.currentTimeMillis()
