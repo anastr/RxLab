@@ -1,6 +1,7 @@
-package com.github.anastr.rxlab.activities
+package com.github.anastr.rxlab.activities.schedulers
 
 import android.os.Bundle
+import com.github.anastr.rxlab.activities.OperationActivity
 import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.emits.BallEmit
