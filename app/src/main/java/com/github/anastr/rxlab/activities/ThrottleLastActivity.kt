@@ -8,6 +8,7 @@ import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.view.Action
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.concurrent.TimeUnit
@@ -38,7 +39,17 @@ class ThrottleLastActivity: OperationActivity() {
         val observerObject = ObserverObject("Observer")
         surfaceView.addDrawingObject(observerObject)
 
-        Observable.interval(2, TimeUnit.SECONDS)
+        // delay to make sure that surfaceView has created.
+        Observable.just("")
+            .delay(200, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { start(throttleObject, observerObject) }
+            .disposeOnDestroy()
+    }
+
+    private fun start(throttleObject: TextOperation, observerObject: ObserverObject) {
+
+        Observable.interval(0, 2000, TimeUnit.MILLISECONDS)
             .subscribe {
                 surfaceView.action(Action(0) { doOnRenderThread {
                     observerObject.lockTime()
@@ -57,7 +68,7 @@ class ThrottleLastActivity: OperationActivity() {
                     )
             }
         }
-            .throttleLast(2, TimeUnit.SECONDS)
+            .throttleLast(2000, TimeUnit.MILLISECONDS)
             .subscribe({
                 val thread = Thread.currentThread().name
                 surfaceView.action(Action(0) {
