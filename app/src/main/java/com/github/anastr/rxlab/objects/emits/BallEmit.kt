@@ -12,7 +12,7 @@ open class BallEmit(leftTopPoint: Point = Point(0f, 0f)): EmitObject(leftTopPoin
 
     constructor(value: String, color: Int = Color.RED, leftTopPoint: Point = Point(0f, 0f)) : this() {
         this.value = value
-        circlePaint.color = color
+        super.color = color
         rect.offsetTo(leftTopPoint.x, leftTopPoint.y)
     }
 
@@ -20,10 +20,7 @@ open class BallEmit(leftTopPoint: Point = Point(0f, 0f)): EmitObject(leftTopPoin
 
     protected var valueTextHeight: Float
 
-    protected val circlePaint = Paint(Paint.ANTI_ALIAS_FLAG)
     protected val valuePaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
-
-    val color get() = circlePaint.color
 
     init {
         valuePaint.textSize = Utils.emitTextSize
@@ -36,7 +33,7 @@ open class BallEmit(leftTopPoint: Point = Point(0f, 0f)): EmitObject(leftTopPoin
     }
 
     override fun drawContent(canvas: Canvas) {
-        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width()*.5f, circlePaint)
+        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width()*.5f, emitPaint)
         canvas.drawText(value, rect.centerX(), rect.centerY() + valueTextHeight*.5f, valuePaint)
     }
 

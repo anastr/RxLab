@@ -19,8 +19,8 @@ class MergedBallEmit(leftTopPoint: Point, vararg ballEmits: BallEmit): BallEmit(
         var startAngle = 0f
         val sweep = 360f / colors.size
         colors.forEach {
-            circlePaint.color = it
-            canvas.drawArc(rect, startAngle, sweep, true, circlePaint)
+            super.color = it
+            canvas.drawArc(rect, startAngle, sweep, true, emitPaint)
             startAngle += sweep
         }
         canvas.drawText(value, rect.centerX(), rect.centerY() + valueTextHeight*.5f, valuePaint)

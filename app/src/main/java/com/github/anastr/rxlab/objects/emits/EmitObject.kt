@@ -21,6 +21,8 @@ abstract class EmitObject(leftTopPoint: Point) {
     private val threadPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val threadTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
+    protected val emitPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
     val rect = RectF(leftTopPoint.x, leftTopPoint.y
         , leftTopPoint.x + Utils.emitSize, leftTopPoint.y + Utils.emitSize)
 
@@ -35,6 +37,10 @@ abstract class EmitObject(leftTopPoint: Point) {
 
         checkThread(Thread.currentThread().name)
     }
+
+    var color
+        get() = emitPaint.color
+        set(value) { emitPaint.color = value }
 
     abstract fun drawContent(canvas: Canvas)
 
