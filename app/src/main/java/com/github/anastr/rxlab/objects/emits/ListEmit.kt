@@ -10,7 +10,7 @@ import com.github.anastr.rxlab.util.dpToPx
 class ListEmit(leftTopPoint: Point, vararg ballEmits: BallEmit): BallEmit(leftTopPoint) {
 
     init {
-        value = "{${ballEmits.map { it.value }.reduce { acc, emitValue -> "$acc, $emitValue" }}}"
+        super.value = "{${ballEmits.map { it.value }.reduce { acc, emitValue -> "$acc, $emitValue" }}}"
         ballEmits.firstOrNull()?.let { super.color = it.color }
     }
 

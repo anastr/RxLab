@@ -11,12 +11,10 @@ import com.github.anastr.rxlab.util.Utils
 open class BallEmit(leftTopPoint: Point = Point(0f, 0f)): EmitObject(leftTopPoint) {
 
     constructor(value: String, color: Int = Color.RED, leftTopPoint: Point = Point(0f, 0f)) : this() {
-        this.value = value
+        super.value = value
         super.color = color
         rect.offsetTo(leftTopPoint.x, leftTopPoint.y)
     }
-
-    var value: String = ""
 
     protected var valueTextHeight: Float
 

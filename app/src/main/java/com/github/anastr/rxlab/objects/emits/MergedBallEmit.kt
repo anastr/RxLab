@@ -11,7 +11,7 @@ class MergedBallEmit(leftTopPoint: Point, vararg ballEmits: BallEmit): BallEmit(
     private val colors = ballEmits.map { it.color }
 
     init {
-        value = ballEmits[0].value
+        super.value = ballEmits[0].value
         ballEmits.drop(1).forEach { value += "-${it.value}" }
     }
 
