@@ -34,6 +34,7 @@ class AlphabeticalOperatorsActivity: AppCompatActivity() {
 
         allOperations.addAll(
             listOf(
+                OperationData("buffer", BufferActivity::class.java),
                 OperationData("concatMap", ConcatMapActivity::class.java),
                 OperationData("contains", ContainsActivity::class.java),
                 OperationData("create", CreateActivity::class.java),

@@ -33,6 +33,7 @@ class TransformingOperatorsActivity: AppCompatActivity() {
             OperationData("concatMap", ConcatMapActivity::class.java),
             OperationData("switchMap", SwitchMapActivity::class.java),
             OperationData("toList", ToListActivity::class.java),
+            OperationData("buffer", BufferActivity::class.java),
             OperationData("flatMap and concatMap", FlatMapAndConcatMapActivity::class.java)
         )
 
