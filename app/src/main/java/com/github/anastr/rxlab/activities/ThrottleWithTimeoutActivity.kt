@@ -58,8 +58,7 @@ class ThrottleWithTimeoutActivity: OperationActivity() {
                 surfaceView.action(Action(0) {
                     it.checkThread(thread)
                     observerObject.lockTime()
-                    addEmit(throttleObject, it)
-                    moveEmit(it, throttleObject, observerObject)
+                    addThenMoveOnRender(it, throttleObject, observerObject)
                 })
             }, errorHandler, {
                 surfaceView.action(Action(0) { doOnRenderThread { observerObject.complete() } })

@@ -56,7 +56,7 @@ class FlatMapAndConcatMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions1.add(Action(0) {
                     it.checkThread(thread)
-                    moveEmit(it, justOperation1, flatMapOperation)
+                    moveEmitOnRender(it, justOperation1, flatMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .delayEach(Random.nextLong(50))
@@ -67,8 +67,7 @@ class FlatMapAndConcatMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions1.add(Action(1000) {
                     it.checkThread(thread)
-                    addEmit(flatMapOperation, it)
-                    moveEmit(it, flatMapOperation, observerObject1)
+                    addThenMoveOnRender(it, flatMapOperation, observerObject1)
                 })
             }, errorHandler, {
                 actions1.add(Action(0) { doOnRenderThread { observerObject1.complete() } })
@@ -97,7 +96,7 @@ class FlatMapAndConcatMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions2.add(Action(0) {
                     it.checkThread(thread)
-                    moveEmit(it, justOperation2, concatMapOperation)
+                    moveEmitOnRender(it, justOperation2, concatMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .delayEach(Random.nextLong(50))
@@ -108,8 +107,7 @@ class FlatMapAndConcatMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions2.add(Action(1000) {
                     it.checkThread(thread)
-                    addEmit(concatMapOperation, it)
-                    moveEmit(it, concatMapOperation, observerObject2)
+                    addThenMoveOnRender(it, concatMapOperation, observerObject2)
                 })
             }, errorHandler, {
                 actions2.add(Action(0) { doOnRenderThread { observerObject2.complete() } })

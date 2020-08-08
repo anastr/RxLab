@@ -38,10 +38,10 @@ class TakeLastActivity: OperationActivity() {
         val actions = ArrayList<Action>()
 
         Observable.just(e1, e2, e3, e4, e5)
-            .doOnNext { actions.add(Action(1000) { moveEmit(it, justOperation, takeLastOperation) }) }
+            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, justOperation, takeLastOperation) }) }
             .takeLast(3)
             .subscribe({
-                actions.add(Action(1000) { moveEmit(it, takeLastOperation, observerObject) })
+                actions.add(Action(1000) { moveEmitOnRender(it, takeLastOperation, observerObject) })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)

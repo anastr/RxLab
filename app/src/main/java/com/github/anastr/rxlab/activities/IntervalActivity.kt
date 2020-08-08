@@ -28,16 +28,18 @@ class IntervalActivity: OperationActivity() {
         surfaceView.addDrawingObject(observerObject)
 
         Handler().postDelayed(500) {
-            surfaceView.startTime(observerObject, TimeObject.Lock.AFTER)
+            surfaceView.startTimeOnRender(observerObject, TimeObject.Lock.AFTER)
             Observable.interval(2000, TimeUnit.MILLISECONDS)
                 .subscribe {
                     val thread = Thread.currentThread().name
                     surfaceView.action( Action(0) {
                         val emit = BallEmit("${(it + 1) * 2} sec")
                         emit.checkThread(thread)
-                        addEmit(intervalOperation, emit)
-                        startTime(observerObject, TimeObject.Lock.AFTER)
-                        moveEmit(emit, intervalOperation, observerObject)
+                        doOnRenderThread {
+                            intervalOperation.addEmit(emit)
+                            observerObject.startTime(TimeObject.Lock.AFTER)
+                            moveEmit(emit, intervalOperation, observerObject)
+                        }
                     })
                 }
                 .disposeOnDestroy()

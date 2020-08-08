@@ -1,9 +1,9 @@
 package com.github.anastr.rxlab.activities
 
 import android.os.Bundle
-import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
+import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
@@ -36,7 +36,7 @@ class FromIterableActivity: OperationActivity() {
 
         Observable.fromIterable(list)
             .subscribe({
-                actions.add(Action(1000) { moveEmit(it, fromIterableOperation, observerObject) })
+                actions.add(Action(1000) { moveEmitOnRender(it, fromIterableOperation, observerObject) })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)

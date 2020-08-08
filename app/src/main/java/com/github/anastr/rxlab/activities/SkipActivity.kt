@@ -1,9 +1,9 @@
 package com.github.anastr.rxlab.activities
 
 import android.os.Bundle
-import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
+import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
@@ -33,8 +33,7 @@ class SkipActivity: OperationActivity() {
             .map { BallEmit("$it") }
             .doOnNext {
                 actions.add(Action(1000) {
-                    addEmit(rangeOperation, it)
-                    moveEmit(it, rangeOperation, skipOperation)
+                    addThenMoveOnRender(it, rangeOperation, skipOperation)
                 })
                 if (it.value == "1" || it.value == "2" || it.value == "3") {
                     actions.add(Action(500) {
@@ -47,7 +46,7 @@ class SkipActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions.add(Action(1000) {
                     it.checkThread(thread)
-                    moveEmit(it, skipOperation, observerObject)
+                    moveEmitOnRender(it, skipOperation, observerObject)
                 })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })

@@ -33,7 +33,7 @@ class JustActivity: OperationActivity() {
 
         Observable.just(a, b, c, d)
             .subscribe({
-                actions.add(Action(1000) { moveEmit(it, justOperation, observerObject) })
+                actions.add(Action(1000) { moveEmitOnRender(it, justOperation, observerObject) })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)

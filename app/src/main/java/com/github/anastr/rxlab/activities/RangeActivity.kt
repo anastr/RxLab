@@ -1,9 +1,9 @@
 package com.github.anastr.rxlab.activities
 
 import android.os.Bundle
-import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
+import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
@@ -33,8 +33,7 @@ class RangeActivity: OperationActivity() {
                 actions.add(Action(1000) {
                     val emit = BallEmit("$it")
                     emit.checkThread(thread)
-                    addEmit(rangeOperation, emit)
-                    moveEmit(emit, rangeOperation, observerObject)
+                    addThenMoveOnRender(emit, rangeOperation, observerObject)
                 })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })

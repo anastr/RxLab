@@ -36,7 +36,7 @@ class ToListActivity: OperationActivity() {
 
         Observable.just(a, b, c)
             .doOnNext {
-                actions.add(Action(1000) { moveEmit(it, justOperation, toListOperation) })
+                actions.add(Action(1000) { moveEmitOnRender(it, justOperation, toListOperation) })
             }
             .toList()
             .subscribe( { list ->
@@ -47,8 +47,7 @@ class ToListActivity: OperationActivity() {
                     doOnRenderThread {
                         list.forEach { toListOperation.removeEmit(it) }
                     }
-                    addEmit(toListOperation, listEmit)
-                    moveEmit(listEmit, toListOperation, observerObject)
+                    addThenMoveOnRender(listEmit, toListOperation, observerObject)
                 })
 
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })

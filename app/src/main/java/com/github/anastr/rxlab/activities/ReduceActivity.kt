@@ -45,11 +45,11 @@ class ReduceActivity: OperationActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
                 if (it.value == "1")
-                    actions.add(Action(0) { moveEmit(it, justOperation, reduceOperation) })
+                    actions.add(Action(0) { moveEmitOnRender(it, justOperation, reduceOperation) })
             }
             .reduce { emit1: BallEmit, emit2: BallEmit ->
                 val text = (emit1.value.toInt() + emit2.value.toInt()).toString()
-                actions.add(Action(0) { moveEmit(emit2, justOperation, reduceOperation) })
+                actions.add(Action(0) { moveEmitOnRender(emit2, justOperation, reduceOperation) })
                 actions.add(Action(1000) {
                     reduceOperation.setText(text)
                     if (emit1.value == "1")
@@ -62,8 +62,7 @@ class ReduceActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions.add(Action(0) {
                     it.checkThread(thread)
-                    addEmit(reduceOperation, it)
-                    moveEmit(it, reduceOperation, observerObject)
+                    addThenMoveOnRender(it, reduceOperation, observerObject)
                 })
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)

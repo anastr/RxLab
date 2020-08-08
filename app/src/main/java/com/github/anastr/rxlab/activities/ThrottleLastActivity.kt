@@ -73,8 +73,7 @@ class ThrottleLastActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 surfaceView.action(Action(0) {
                     it.checkThread(thread)
-                    addEmit(throttleObject, it)
-                    moveEmit(it, throttleObject, observerObject)
+                    addThenMoveOnRender(it, throttleObject, observerObject)
                 })
             }, errorHandler, {
                 surfaceView.action(Action(0) { doOnRenderThread { observerObject.complete() } })

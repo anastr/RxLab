@@ -35,8 +35,7 @@ class BufferActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 surfaceView.action( Action(0) {
                     it.checkThread(thread)
-                    addEmit(intervalOperation, it)
-                    moveEmit(it, intervalOperation, bufferOperation)
+                    addThenMoveOnRender(it, intervalOperation, bufferOperation)
                 })
             }
             .buffer(3)
@@ -48,8 +47,7 @@ class BufferActivity: OperationActivity() {
                     doOnRenderThread {
                         list.forEach { bufferOperation.removeEmit(it) }
                     }
-                    addEmit(bufferOperation, listEmit)
-                    moveEmit(listEmit, bufferOperation, observerObject)
+                    addThenMoveOnRender(listEmit, bufferOperation, observerObject)
                 })
             }, errorHandler)
             .disposeOnDestroy()

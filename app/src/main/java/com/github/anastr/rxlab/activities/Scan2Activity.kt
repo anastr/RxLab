@@ -39,7 +39,7 @@ class Scan2Activity: OperationActivity() {
         Observable.just(a, b, c, d)
             .scan(BallEmit("0")) { total: BallEmit, emit: BallEmit ->
                 actions.add(Action(800) {
-                    moveEmit(emit, justOperation, scanOperation)
+                    moveEmitOnRender(emit, justOperation, scanOperation)
                     val text = (emit.value.toInt()+total.value.toInt()).toString()
                     emit.value = text
                     scanOperation.setText(text)
@@ -51,10 +51,10 @@ class Scan2Activity: OperationActivity() {
                 actions.add(Action(800) {
                     it.checkThread(thread)
                     if (it.value == "0") {
-                        addEmit(scanOperation, it)
+                        addEmitOnRender(scanOperation, it)
                         scanOperation.setText(it.value)
                     }
-                    moveEmit(it, scanOperation, observerObject)
+                    moveEmitOnRender(it, scanOperation, observerObject)
                 })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })

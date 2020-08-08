@@ -149,7 +149,7 @@ class RxSurfaceView : SurfaceView {
         requestLayout()
     }
 
-    fun addEmit(drawingObject: DrawingObject, emit: EmitObject = BallEmit("", ColorUtil.randomColor())) {
+    fun addEmitOnRender(drawingObject: DrawingObject, emit: EmitObject = BallEmit("", ColorUtil.randomColor())) {
         doOnRenderThread {
             drawingObject.addEmit(emit)
         }
@@ -162,15 +162,39 @@ class RxSurfaceView : SurfaceView {
      * you mustn't move more than 1 emit to the same [to] Object,
      * wait 500 ms at least between them.
      */
-    fun moveEmit(emit: EmitObject, from: DrawingObject, to: DrawingObject) {
+    fun moveEmitOnRender(emit: EmitObject, from: DrawingObject, to: DrawingObject) {
         doOnRenderThread {
-            from.removeEmit(emit)
-            // get insertPoint before add emit.
-            val toPoint = to.getInsertPoint()
-            to.addEmit(emit, emit.position)
-            // call move must still here to make sure
-            // that the emit has take its place.
-            doOnMainThread { moveEmit(emit, toPoint) }
+            moveEmit(emit, from, to)
+        }
+    }
+
+    /**
+     * remove emit from first object and add it to the other,
+     * then start animation to make smooth movement between operations.
+     *
+     * you mustn't move more than 1 emit to the same [to] Object,
+     * wait 500 ms at least between them.
+     *
+     * **must be called on render thread.**
+     */
+    fun moveEmit(emit: EmitObject, from: DrawingObject, to: DrawingObject) {
+        from.removeEmit(emit)
+        // get insertPoint before add emit.
+        val toPoint = to.getInsertPoint()
+        to.addEmit(emit, emit.position)
+        // call move must still here to make sure
+        // that the emit has take its place.
+        doOnMainThread { moveEmit(emit, toPoint) }
+    }
+
+    /**
+     * add [emit] to [addTo], then move it to [moveTo] on render thread
+     * using [moveEmit].
+     */
+    fun addThenMoveOnRender(emit: EmitObject, addTo: DrawingObject, moveTo: DrawingObject) {
+        doOnRenderThread {
+            addTo.addEmit(emit)
+            moveEmit(emit, addTo, moveTo)
         }
     }
 
@@ -180,7 +204,7 @@ class RxSurfaceView : SurfaceView {
         }
     }
 
-    fun startTime(observerObject: ObserverObject, lock: TimeObject.Lock) {
+    fun startTimeOnRender(observerObject: ObserverObject, lock: TimeObject.Lock) {
         doOnRenderThread {
             observerObject.startTime(lock)
         }

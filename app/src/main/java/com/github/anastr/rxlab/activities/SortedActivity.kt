@@ -1,9 +1,9 @@
 package com.github.anastr.rxlab.activities
 
 import android.os.Bundle
-import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
+import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
@@ -38,10 +38,10 @@ class SortedActivity: OperationActivity() {
         val actions = ArrayList<Action>()
 
         Observable.just(e3, e2, e5, e1, e4)
-            .doOnNext { actions.add(Action(1000) { moveEmit(it, justOperation, sortedOperation) }) }
+            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, justOperation, sortedOperation) }) }
             .sorted { emit1, emit2 -> emit1.value.toInt().compareTo(emit2.value.toInt()) }
             .subscribe({
-                actions.add(Action(1000) { moveEmit(it, sortedOperation, observerObject) })
+                actions.add(Action(1000) { moveEmitOnRender(it, sortedOperation, observerObject) })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)

@@ -1,10 +1,10 @@
 package com.github.anastr.rxlab.activities
 
 import android.os.Bundle
-import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
+import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -48,7 +48,7 @@ class DistinctUntilChangedActivity: OperationActivity() {
             .delay(1000, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                actions.add(Action(500) { moveEmit(it, fromIterableOperation, distinctOperation) })
+                actions.add(Action(500) { moveEmitOnRender(it, fromIterableOperation, distinctOperation) })
             }
             .distinctUntilChanged { e1, e2 ->
                 if (e1.value == e2.value) {
@@ -58,7 +58,7 @@ class DistinctUntilChangedActivity: OperationActivity() {
                 return@distinctUntilChanged false
             }
             .subscribe({
-                actions.add(Action(500) { moveEmit(it, distinctOperation, observerObject) })
+                actions.add(Action(500) { moveEmitOnRender(it, distinctOperation, observerObject) })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)

@@ -52,8 +52,7 @@ class ThrottleFirstActivity: OperationActivity() {
                         observerObject.startTime(TimeObject.Lock.BEFORE)
                         action(Action(2000) { observerObject.lockTime() })
                     }
-                    addEmit(throttleObject, it)
-                    moveEmit(it, throttleObject, observerObject)
+                    addThenMoveOnRender(it, throttleObject, observerObject)
                 })
             }, errorHandler, {
                 surfaceView.action(Action(0) { doOnRenderThread { observerObject.complete() } })

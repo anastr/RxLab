@@ -1,10 +1,10 @@
 package com.github.anastr.rxlab.activities
 
 import android.os.Bundle
-import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
+import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -42,7 +42,7 @@ class ConcatMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions.add(Action(0) {
                     it.checkThread(thread)
-                    moveEmit(it, justOperation, concatMapOperation)
+                    moveEmitOnRender(it, justOperation, concatMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .doOnComplete { actions.add(Action(0) { doOnRenderThread { concatMapOperation.removeEmit(it) } }) }
@@ -52,8 +52,7 @@ class ConcatMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions.add(Action(1000) {
                     it.checkThread(thread)
-                    addEmit(concatMapOperation, it)
-                    moveEmit(it, concatMapOperation, observerObject)
+                    addThenMoveOnRender(it, concatMapOperation, observerObject)
                 })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })

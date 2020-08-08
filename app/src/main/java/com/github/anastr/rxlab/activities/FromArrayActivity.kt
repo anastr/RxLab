@@ -37,7 +37,7 @@ class FromArrayActivity: OperationActivity() {
 
         Observable.fromIterable(array)
             .subscribe({
-                actions.add(Action(1000) { moveEmit(it, fromArrayOperation, observerObject) })
+                actions.add(Action(1000) { moveEmitOnRender(it, fromArrayOperation, observerObject) })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)
