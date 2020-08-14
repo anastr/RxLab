@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.processors.PublishProcessor
 import java.util.concurrent.TimeUnit
 
-class FpsObject: DrawingObject(dpToPx(25f)) {
+class FpsObject: DrawingObject(dpToPx(16f)) {
 
     private var lastFPS = 50L
 
@@ -30,6 +30,6 @@ class FpsObject: DrawingObject(dpToPx(25f)) {
 
     override fun draw(delta: Long, canvas: Canvas) {
         fpsPublisher.onNext(1000/delta)
-        canvas.drawText("$lastFPS FPS", rect.centerX(), rect.centerY(), textPaint)
+        canvas.drawText("$lastFPS FPS", rect.centerX(), rect.bottom, textPaint)
     }
 }
