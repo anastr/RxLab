@@ -63,9 +63,9 @@ class Zip3Activity: OperationActivity() {
             , Function3<BallEmit, BallEmit, BallEmit, MergedBallEmit> { emit1, emit2, emit3 ->
                 val mergedBallEmit = MergedBallEmit(emit2.position, emit1, emit2, emit3)
                 val thread = Thread.currentThread().name
-                actions.add(Action(0) { moveEmitOnRender(emit1, justCapLettersOperation, zipOperation) })
-                actions.add(Action(1000) { moveEmitOnRender(emit2, justSmallLettersOperation, zipOperation) })
-                actions.add(Action(1000) { moveEmitOnRender(emit3, justNumbersOperation, zipOperation) })
+                actions.add(Action(0) { moveEmitOnRender(emit1, zipOperation) })
+                actions.add(Action(1000) { moveEmitOnRender(emit2, zipOperation) })
+                actions.add(Action(1000) { moveEmitOnRender(emit3, zipOperation) })
                 actions.add(Action(500) {
                     mergedBallEmit.checkThread(thread)
                     doOnRenderThread {

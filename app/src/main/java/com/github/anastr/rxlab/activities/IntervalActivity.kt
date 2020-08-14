@@ -38,7 +38,7 @@ class IntervalActivity: OperationActivity() {
                         doOnRenderThread {
                             intervalOperation.addEmit(emit)
                             observerObject.startTime(TimeObject.Lock.AFTER)
-                            moveEmit(emit, intervalOperation, observerObject)
+                            moveEmit(emit, observerObject)
                         }
                     })
                 }

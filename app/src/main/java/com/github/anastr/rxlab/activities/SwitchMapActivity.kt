@@ -49,7 +49,7 @@ class SwitchMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions.add(Action(0) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, justOperation, switchMapOperation)
+                    moveEmitOnRender(it, switchMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .subscribeOn(Schedulers.computation())

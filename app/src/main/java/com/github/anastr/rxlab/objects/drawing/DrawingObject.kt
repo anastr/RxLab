@@ -58,6 +58,7 @@ abstract class DrawingObject(val height: Float = Utils.defaultDrawingHeight) {
      */
     fun addEmit(emit: EmitObject, initial: Point = getInsertPoint()) {
         emit.offsetTo(initial)
+        emit.parentObject = this
         emitObjects.add(emit)
         onAddEmit(emit)
     }
@@ -68,7 +69,7 @@ abstract class DrawingObject(val height: Float = Utils.defaultDrawingHeight) {
      * **must be called on render thread.**
      */
     fun removeEmitAt(index: Int) {
-        onRemoveEmit(emitObjects.removeAt(index))
+        onRemoveEmit(emitObjects.removeAt(index).apply { parentObject = null })
     }
 
     /**
@@ -78,6 +79,7 @@ abstract class DrawingObject(val height: Float = Utils.defaultDrawingHeight) {
      */
     fun removeEmit(emit: EmitObject) {
         emitObjects.remove(emit)
+        emit.parentObject = null
         onRemoveEmit(emit)
     }
 

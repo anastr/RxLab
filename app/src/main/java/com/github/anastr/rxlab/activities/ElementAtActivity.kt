@@ -40,13 +40,13 @@ class ElementAtActivity: OperationActivity() {
 
         Observable.just(e1, e2, e3, e4, e5)
             .doOnNext {
-                actions.add(Action(1000) { moveEmitOnRender(it, justOperation, elementAtOperation) })
+                actions.add(Action(1000) { moveEmitOnRender(it, elementAtOperation) })
                 if (it.value != "3")
                     actions.add(Action(1000) { dropEmit(it, elementAtOperation) })
             }
             .elementAt(2)
             .subscribe({
-                actions.add(Action(1000) { moveEmitOnRender(it, elementAtOperation, observerObject) })
+                actions.add(Action(1000) { moveEmitOnRender(it, observerObject) })
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)
             }, errorHandler, {

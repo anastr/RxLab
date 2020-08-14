@@ -38,10 +38,10 @@ class SortedActivity: OperationActivity() {
         val actions = ArrayList<Action>()
 
         Observable.just(e3, e2, e5, e1, e4)
-            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, justOperation, sortedOperation) }) }
+            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, sortedOperation) }) }
             .sorted { emit1, emit2 -> emit1.value.toInt().compareTo(emit2.value.toInt()) }
             .subscribe({
-                actions.add(Action(1000) { moveEmitOnRender(it, sortedOperation, observerObject) })
+                actions.add(Action(1000) { moveEmitOnRender(it, observerObject) })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)

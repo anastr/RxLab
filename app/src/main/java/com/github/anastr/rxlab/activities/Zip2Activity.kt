@@ -54,8 +54,8 @@ class Zip2Activity: OperationActivity() {
             , BiFunction<BallEmit, BallEmit, MergedBallEmit> { emit1, emit2 ->
                 val mergedBallEmit = MergedBallEmit(emit2.position, emit1, emit2)
                 val thread = Thread.currentThread().name
-                actions.add(Action(0) { moveEmitOnRender(emit1, justLettersOperation, zipOperation) })
-                actions.add(Action(1000) { moveEmitOnRender(emit2, justNumbersOperation, zipOperation) })
+                actions.add(Action(0) { moveEmitOnRender(emit1, zipOperation) })
+                actions.add(Action(1000) { moveEmitOnRender(emit2, zipOperation) })
                 actions.add(Action(500) {
                     mergedBallEmit.checkThread(thread)
                     doOnRenderThread {

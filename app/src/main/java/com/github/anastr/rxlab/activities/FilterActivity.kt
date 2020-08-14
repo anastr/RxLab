@@ -40,7 +40,7 @@ class FilterActivity: OperationActivity() {
         val actions = ArrayList<Action>()
 
         Observable.fromIterable(emits)
-            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, justOperation, filterOperation) }) }
+            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, filterOperation) }) }
             .filter {
                 if (it.value.toInt() % 2 == 0)
                     true
@@ -50,7 +50,7 @@ class FilterActivity: OperationActivity() {
                 }
             }
             .subscribe( {
-                actions.add(Action(1000) { moveEmitOnRender(it, filterOperation, observerObject) })
+                actions.add(Action(1000) { moveEmitOnRender(it, observerObject) })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)

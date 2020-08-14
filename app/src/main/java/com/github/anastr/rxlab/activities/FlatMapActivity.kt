@@ -42,7 +42,7 @@ class FlatMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions.add(Action(0) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, justOperation, flatMapOperation)
+                    moveEmitOnRender(it, flatMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .doOnComplete { actions.add(Action(0) { doOnRenderThread { flatMapOperation.removeEmit(it) } }) }

@@ -56,7 +56,7 @@ class FlatMapAndConcatMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions1.add(Action(0) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, justOperation1, flatMapOperation)
+                    moveEmitOnRender(it, flatMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .delayEach(Random.nextLong(50))
@@ -96,7 +96,7 @@ class FlatMapAndConcatMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions2.add(Action(0) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, justOperation2, concatMapOperation)
+                    moveEmitOnRender(it, concatMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .delayEach(Random.nextLong(50))

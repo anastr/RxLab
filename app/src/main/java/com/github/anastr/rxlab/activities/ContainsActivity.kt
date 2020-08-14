@@ -36,7 +36,7 @@ class ContainsActivity : OperationActivity() {
         val actions = ArrayList<Action>()
 
         Observable.just(a, b, c, d)
-            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, justOperation, containsOperation) }) }
+            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, containsOperation) }) }
             .doOnNext {
                 if (it != c)
                     actions.add(Action(1000) { dropEmit(it, containsOperation) })
@@ -45,7 +45,7 @@ class ContainsActivity : OperationActivity() {
             .subscribe( {
                 actions.add(Action(1000) {
                     c.value = it.toString()
-                    moveEmitOnRender(c, containsOperation, observerObject)
+                    moveEmitOnRender(c, observerObject)
                 })
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
                 surfaceView.actions(actions)

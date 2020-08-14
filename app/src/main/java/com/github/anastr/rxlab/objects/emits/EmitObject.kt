@@ -2,6 +2,7 @@ package com.github.anastr.rxlab.objects.emits
 
 import android.graphics.*
 import android.text.TextPaint
+import com.github.anastr.rxlab.objects.drawing.DrawingObject
 import com.github.anastr.rxlab.util.ColorUtil
 import com.github.anastr.rxlab.util.Point
 import com.github.anastr.rxlab.util.Utils
@@ -19,6 +20,8 @@ abstract class EmitObject(leftTopPoint: Point) {
     private val threadTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     var value: String = ""
+    /** the DrawingObject that holds this emit. */
+    var parentObject: DrawingObject? = null
     protected var valueTextHeight: Float
 
     protected val emitPaint = Paint(Paint.ANTI_ALIAS_FLAG)

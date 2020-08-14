@@ -36,7 +36,7 @@ class ToListActivity: OperationActivity() {
 
         Observable.just(a, b, c)
             .doOnNext {
-                actions.add(Action(1000) { moveEmitOnRender(it, justOperation, toListOperation) })
+                actions.add(Action(1000) { moveEmitOnRender(it, toListOperation) })
             }
             .toList()
             .subscribe( { list ->

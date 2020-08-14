@@ -42,7 +42,7 @@ class ConcatMapActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions.add(Action(0) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, justOperation, concatMapOperation)
+                    moveEmitOnRender(it, concatMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .doOnComplete { actions.add(Action(0) { doOnRenderThread { concatMapOperation.removeEmit(it) } }) }

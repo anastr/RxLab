@@ -49,11 +49,11 @@ class DistinctActivity: OperationActivity() {
             .delay(1000, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                actions.add(Action(500) { moveEmitOnRender(it, fromIterableOperation, distinctOperation) })
+                actions.add(Action(500) { moveEmitOnRender(it, distinctOperation) })
                 if (keys.contains(it.value))
                     actions.add(Action(500) { dropEmit(it, distinctOperation) })
                 else
-                    actions.add(Action(500) { moveEmitOnRender(it, distinctOperation, observerObject) })
+                    actions.add(Action(500) { moveEmitOnRender(it, observerObject) })
             }
             .distinct({ it.value }, { keys })
             .subscribe({}, errorHandler, {

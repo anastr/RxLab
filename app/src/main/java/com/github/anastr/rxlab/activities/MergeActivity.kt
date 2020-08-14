@@ -44,11 +44,11 @@ class MergeActivity: OperationActivity() {
 
         val observableLetters = Observable.just(lA, lB, lC, lD)
             .doOnNext {
-                actions.add(Action(500) { moveEmitOnRender(it, justCapLettersOperation, mergeOperation) })
+                actions.add(Action(500) { moveEmitOnRender(it, mergeOperation) })
             }
         val observableNumbers = Observable.just(a, b, c, d)
             .doOnNext {
-                actions.add(Action(500) { moveEmitOnRender(it, justSmallLettersOperation, mergeOperation) })
+                actions.add(Action(500) { moveEmitOnRender(it, mergeOperation) })
             }
 
         Observable.merge(observableLetters, observableNumbers)
@@ -56,7 +56,7 @@ class MergeActivity: OperationActivity() {
                 val thread = Thread.currentThread().name
                 actions.add(Action(500) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, mergeOperation, observerObject)
+                    moveEmitOnRender(it, observerObject)
                 })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })

@@ -36,7 +36,7 @@ open class SchedulerOperationActivity(private val method: String, private val sc
                 val thread = Thread.currentThread().name
                 actions.add(Action(1000) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, justOperation, observerObject)
+                    moveEmitOnRender(it, observerObject)
                 })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })

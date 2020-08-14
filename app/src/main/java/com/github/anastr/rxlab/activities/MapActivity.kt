@@ -35,11 +35,11 @@ class MapActivity : OperationActivity() {
         val actions = ArrayList<Action>()
 
         Observable.just(a, b, c)
-            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, justOperation, mapOperation) }) }
+            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, mapOperation) }) }
             .subscribe({
                 actions.add(Action(1000) {
                     it.value = it.value.length.toString()
-                    moveEmitOnRender(it, mapOperation, observerObject)
+                    moveEmitOnRender(it, observerObject)
                 })
             }, errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })

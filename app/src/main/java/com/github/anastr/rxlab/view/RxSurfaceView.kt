@@ -162,9 +162,9 @@ class RxSurfaceView : SurfaceView {
      * you mustn't move more than 1 emit to the same [to] Object,
      * wait 500 ms at least between them.
      */
-    fun moveEmitOnRender(emit: EmitObject, from: DrawingObject, to: DrawingObject) {
+    fun moveEmitOnRender(emit: EmitObject, to: DrawingObject) {
         doOnRenderThread {
-            moveEmit(emit, from, to)
+            moveEmit(emit, to)
         }
     }
 
@@ -177,8 +177,8 @@ class RxSurfaceView : SurfaceView {
      *
      * **must be called on render thread.**
      */
-    fun moveEmit(emit: EmitObject, from: DrawingObject, to: DrawingObject) {
-        from.removeEmit(emit)
+    fun moveEmit(emit: EmitObject, to: DrawingObject) {
+        emit.parentObject?.removeEmit(emit)
         // get insertPoint before add emit.
         val toPoint = to.getInsertPoint()
         to.addEmit(emit, emit.position)
@@ -194,7 +194,7 @@ class RxSurfaceView : SurfaceView {
     fun addThenMoveOnRender(emit: EmitObject, addTo: DrawingObject, moveTo: DrawingObject) {
         doOnRenderThread {
             addTo.addEmit(emit)
-            moveEmit(emit, addTo, moveTo)
+            moveEmit(emit, moveTo)
         }
     }
 
