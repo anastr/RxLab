@@ -22,8 +22,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = listOf(
-            OperationData("Schedulers & threads", SchedulersActivity::class.java)
-            , OperationData("Alphabetical Operators", AlphabeticalOperatorsActivity::class.java)
+            OperationData("Alphabetical Operators", AlphabeticalOperatorsActivity::class.java)
+            , OperationData("Schedulers & threads", SchedulersActivity::class.java)
             , OperationData("Creating Operations", CreatingOperatorsActivity::class.java)
             , OperationData("Filtering Operators", FilteringOperatorsActivity::class.java)
             , OperationData("Transforming Operators", TransformingOperatorsActivity::class.java)
