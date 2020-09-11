@@ -3,7 +3,7 @@ package com.github.anastr.rxlab
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.activities.schedulers.*
+import com.github.anastr.rxlab.controllers.schedulers.*
 import com.github.anastr.rxlab.adapter.MyAdapter
 import com.github.anastr.rxlab.adapter.OperationData
 import kotlinx.android.synthetic.main.content_list.*
@@ -24,11 +24,11 @@ class SchedulersActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = listOf(
-            OperationData("mainThread", MainSchedulerActivity::class.java),
-            OperationData("computation", ComputationSchedulerActivity::class.java),
-            OperationData("io", IoSchedulerActivity::class.java),
-            OperationData("single", SingleSchedulerActivity::class.java),
-            OperationData("other", OtherSchedulerActivity::class.java)
+            OperationData("mainThread", operationController = MainSchedulerController()),
+            OperationData("computation", operationController = ComputationSchedulerController()),
+            OperationData("io", operationController = IoSchedulerController()),
+            OperationData("single", operationController = SingleSchedulerController()),
+            OperationData("other", operationController = OtherSchedulerController())
         )
 
         recyclerView.adapter = MyAdapter(this, operations)

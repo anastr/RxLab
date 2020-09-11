@@ -3,10 +3,10 @@ package com.github.anastr.rxlab
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.activities.CombineLatestActivity
-import com.github.anastr.rxlab.activities.MergeActivity
-import com.github.anastr.rxlab.activities.Zip2Activity
-import com.github.anastr.rxlab.activities.Zip3Activity
+import com.github.anastr.rxlab.controllers.CombineLatestController
+import com.github.anastr.rxlab.controllers.MergeController
+import com.github.anastr.rxlab.controllers.Zip2Controller
+import com.github.anastr.rxlab.controllers.Zip3Controller
 import com.github.anastr.rxlab.adapter.MyAdapter
 import com.github.anastr.rxlab.adapter.OperationData
 import kotlinx.android.synthetic.main.content_list.*
@@ -27,10 +27,10 @@ class CombiningOperatorsActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = listOf(
-            OperationData("merge", MergeActivity::class.java),
-            OperationData("zip 2 observables", Zip2Activity::class.java),
-            OperationData("zip 3 observables", Zip3Activity::class.java),
-            OperationData("combineLatest", CombineLatestActivity::class.java)
+            OperationData("merge", operationController = MergeController()),
+            OperationData("zip 2 observables", operationController = Zip2Controller()),
+            OperationData("zip 3 observables", operationController = Zip3Controller()),
+            OperationData("combineLatest", operationController = CombineLatestController())
         )
 
         recyclerView.adapter = MyAdapter(this, operations)

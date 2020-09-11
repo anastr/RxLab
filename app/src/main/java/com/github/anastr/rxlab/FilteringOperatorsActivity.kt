@@ -3,7 +3,7 @@ package com.github.anastr.rxlab
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.activities.*
+import com.github.anastr.rxlab.controllers.*
 import com.github.anastr.rxlab.adapter.MyAdapter
 import com.github.anastr.rxlab.adapter.OperationData
 import kotlinx.android.synthetic.main.content_list.*
@@ -24,18 +24,18 @@ class FilteringOperatorsActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = listOf(
-            OperationData("contains", ContainsActivity::class.java),
-            OperationData("filter", FilterActivity::class.java),
-            OperationData("sorted", SortedActivity::class.java),
-            OperationData("take", TakeActivity::class.java),
-            OperationData("takeLast", TakeLastActivity::class.java),
-            OperationData("skip", SkipActivity::class.java),
-            OperationData("elementAt", ElementAtActivity::class.java),
-            OperationData("distinct", DistinctActivity::class.java),
-            OperationData("distinctUntilChanged", DistinctUntilChangedActivity::class.java),
-            OperationData("throttleFirst", ThrottleFirstActivity::class.java),
-            OperationData("throttleLast", ThrottleLastActivity::class.java),
-            OperationData("throttleWithTimeout", ThrottleWithTimeoutActivity::class.java)
+            OperationData("contains", operationController = ContainsController()),
+            OperationData("filter", operationController = FilterController()),
+            OperationData("sorted", operationController = SortedController()),
+            OperationData("take", operationController = TakeController()),
+            OperationData("takeLast", operationController = TakeLastController()),
+            OperationData("skip", operationController = SkipController()),
+            OperationData("elementAt", operationController = ElementAtController()),
+            OperationData("distinct", operationController = DistinctController()),
+            OperationData("distinctUntilChanged", operationController = DistinctUntilChangedController()),
+            OperationData("throttleFirst", operationController = ThrottleFirstController()),
+            OperationData("throttleLast", operationController = ThrottleLastController()),
+            OperationData("throttleWithTimeout", operationController = ThrottleWithTimeoutController())
         )
 
         recyclerView.adapter = MyAdapter(this, operations)

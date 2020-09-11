@@ -21,44 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.JustActivity" />
-        <activity android:name=".activities.FromArrayActivity" />
-        <activity android:name=".activities.FromIterableActivity" />
-        <activity android:name=".activities.IntervalActivity" />
-        <activity android:name=".activities.RangeActivity" />
-        <activity android:name=".activities.FlatMapActivity" />
-        <activity android:name=".activities.ConcatMapActivity" />
-        <activity android:name=".activities.FilterActivity" />
-        <activity android:name=".activities.FlatMapAndConcatMapActivity" />
-        <activity android:name=".activities.MapActivity" />
-        <activity android:name=".activities.TakeActivity" />
-        <activity android:name=".activities.SortedActivity" />
-        <activity android:name=".activities.SkipActivity" />
-        <activity android:name=".activities.DistinctActivity" />
-        <activity android:name=".activities.DistinctUntilChangedActivity" />
-        <activity android:name=".activities.ElementAtActivity" />
-        <activity android:name=".activities.CreateActivity" />
-        <activity android:name=".activities.ThrottleLastActivity" />
-        <activity android:name=".activities.ThrottleFirstActivity" />
-        <activity android:name=".activities.ThrottleWithTimeoutActivity" />
-        <activity android:name=".activities.SwitchMapActivity" />
-        <activity android:name=".activities.ScanActivity" />
-        <activity android:name=".activities.Scan2Activity" />
-        <activity android:name=".activities.TakeLastActivity" />
-        <activity android:name=".activities.ReduceActivity" />
-        <activity android:name=".activities.MergeActivity" />
-        <activity android:name=".activities.Zip2Activity" />
-        <activity android:name=".activities.Zip3Activity" />
-        <activity android:name=".activities.ContainsActivity" />
-        <activity android:name=".activities.ToListActivity" />
-        <activity android:name=".activities.BufferActivity" />
-        <activity android:name=".activities.CombineLatestActivity" />
 
-        <activity android:name=".activities.schedulers.MainSchedulerActivity" />
-        <activity android:name=".activities.schedulers.ComputationSchedulerActivity" />
-        <activity android:name=".activities.schedulers.IoSchedulerActivity" />
-        <activity android:name=".activities.schedulers.SingleSchedulerActivity" />
-        <activity android:name=".activities.schedulers.OtherSchedulerActivity" />
+        <activity android:name=".preview.OperationActivity" />
 
         <activity android:name=".AlphabeticalOperatorsActivity" />
         <activity android:name=".CreatingOperatorsActivity" />

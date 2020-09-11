@@ -3,7 +3,7 @@ package com.github.anastr.rxlab
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.activities.*
+import com.github.anastr.rxlab.controllers.*
 import com.github.anastr.rxlab.adapter.MyAdapter
 import com.github.anastr.rxlab.adapter.OperationData
 import kotlinx.android.synthetic.main.content_list.*
@@ -20,11 +20,11 @@ class CreatingOperatorsActivity: AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-        val operations = listOf(OperationData("just", JustActivity::class.java),
-            OperationData("fromArray", FromArrayActivity::class.java),
-            OperationData("fromIterable", FromIterableActivity::class.java),
-            OperationData("range", RangeActivity::class.java),
-            OperationData("interval", IntervalActivity::class.java)
+        val operations = listOf(OperationData("just", operationController = JustController()),
+            OperationData("fromArray", operationController = FromArrayController()),
+            OperationData("fromIterable", operationController = FromIterableController()),
+            OperationData("range", operationController = RangeController()),
+            OperationData("interval", operationController = IntervalController())
         )
         
         recyclerView.adapter = MyAdapter(this, operations)

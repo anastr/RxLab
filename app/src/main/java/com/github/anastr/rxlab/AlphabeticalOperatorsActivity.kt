@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.activities.*
+import com.github.anastr.rxlab.controllers.*
 import com.github.anastr.rxlab.adapter.MyAdapter
 import com.github.anastr.rxlab.adapter.OperationData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -34,37 +34,37 @@ class AlphabeticalOperatorsActivity: AppCompatActivity() {
 
         allOperations.addAll(
             listOf(
-                OperationData("buffer", BufferActivity::class.java),
-                OperationData("combineLatest", CombineLatestActivity::class.java),
-                OperationData("concatMap", ConcatMapActivity::class.java),
-                OperationData("contains", ContainsActivity::class.java),
-                OperationData("create", CreateActivity::class.java),
-                OperationData("distinct", DistinctActivity::class.java),
-                OperationData("distinctUntilChanged", DistinctUntilChangedActivity::class.java),
-                OperationData("elementAt", ElementAtActivity::class.java),
-                OperationData("filter", FilterActivity::class.java),
-                OperationData("flatMap", FlatMapActivity::class.java),
-                OperationData("fromArray", FromArrayActivity::class.java),
-                OperationData("fromIterable", FromIterableActivity::class.java),
-                OperationData("interval", IntervalActivity::class.java),
-                OperationData("just", JustActivity::class.java),
-                OperationData("map", MapActivity::class.java),
-                OperationData("merge", MergeActivity::class.java),
-                OperationData("range", RangeActivity::class.java),
-                OperationData("reduce", ReduceActivity::class.java),
-                OperationData("scan", ScanActivity::class.java),
-                OperationData("scan2", Scan2Activity::class.java),
-                OperationData("skip", SkipActivity::class.java),
-                OperationData("sorted", SortedActivity::class.java),
-                OperationData("switchMap", SwitchMapActivity::class.java),
-                OperationData("take", TakeActivity::class.java),
-                OperationData("takeLast", TakeLastActivity::class.java),
-                OperationData("throttleFirst", ThrottleFirstActivity::class.java),
-                OperationData("throttleLast", ThrottleLastActivity::class.java),
-                OperationData("throttleWithTimeout", ThrottleWithTimeoutActivity::class.java),
-                OperationData("toList", ToListActivity::class.java),
-                OperationData("zip2", Zip2Activity::class.java),
-                OperationData("zip3", Zip3Activity::class.java)
+                OperationData("buffer", operationController = BufferController()),
+                OperationData("combineLatest", operationController = CombineLatestController()),
+                OperationData("concatMap", operationController = ConcatMapController()),
+                OperationData("contains", operationController = ContainsController()),
+                OperationData("create", operationController = CreateController()),
+                OperationData("distinct", operationController = DistinctController()),
+                OperationData("distinctUntilChanged", operationController = DistinctUntilChangedController()),
+                OperationData("elementAt", operationController = ElementAtController()),
+                OperationData("filter", operationController = FilterController()),
+                OperationData("flatMap", operationController = FlatMapController()),
+                OperationData("fromArray", operationController = FromArrayController()),
+                OperationData("fromIterable", operationController = FromIterableController()),
+                OperationData("interval", operationController = IntervalController()),
+                OperationData("just", operationController = JustController()),
+                OperationData("map", operationController = MapController()),
+                OperationData("merge", operationController = MergeController()),
+                OperationData("range", operationController = RangeController()),
+                OperationData("reduce", operationController = ReduceController()),
+                OperationData("scan", operationController = ScanController()),
+                OperationData("scan2", operationController = Scan2Controller()),
+                OperationData("skip", operationController = SkipController()),
+                OperationData("sorted", operationController = SortedController()),
+                OperationData("switchMap", operationController = SwitchMapController()),
+                OperationData("take", operationController = TakeController()),
+                OperationData("takeLast", operationController = TakeLastController()),
+                OperationData("throttleFirst", operationController = ThrottleFirstController()),
+                OperationData("throttleLast", operationController = ThrottleLastController()),
+                OperationData("throttleWithTimeout", operationController = ThrottleWithTimeoutController()),
+                OperationData("toList", operationController = ToListController()),
+                OperationData("zip2", operationController = Zip2Controller()),
+                OperationData("zip3", operationController = Zip3Controller())
             )
         )
         operations.addAll(allOperations)

@@ -35,6 +35,7 @@ class MyAdapter(val activity: Activity, val operations: List<OperationData>)
             itemView.setOnClickListener {
                 val intent = Intent(activity, operations[adapterPosition].clazz)
                 intent.putExtra("title", operations[adapterPosition].name)
+                intent.putExtra("OperationController", operations[adapterPosition].operationController)
                 activity.startActivity(intent)
             }
         }
