@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.controllers.*
 import com.github.anastr.rxlab.adapter.MyAdapter
 import com.github.anastr.rxlab.adapter.OperationData
+import com.github.anastr.rxlab.controllers.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.content_list.*
@@ -42,6 +42,7 @@ class AlphabeticalOperatorsActivity: AppCompatActivity() {
                 OperationData("distinct", operationController = DistinctController()),
                 OperationData("distinctUntilChanged", operationController = DistinctUntilChangedController()),
                 OperationData("elementAt", operationController = ElementAtController()),
+                OperationData("error", operationController = ErrorObservableController()),
                 OperationData("filter", operationController = FilterController()),
                 OperationData("flatMap", operationController = FlatMapController()),
                 OperationData("fromArray", operationController = FromArrayController()),
