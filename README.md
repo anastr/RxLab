@@ -38,7 +38,10 @@ this is small description for emit:\
 
 # Operators
 this app covered this operators:
+- buffer
+- combineLatest
 - concatMap
+- contains
 - create
 - distinct
 - distinctUntilChanged
@@ -62,6 +65,7 @@ this app covered this operators:
 - throttleFirst
 - throttleLast
 - throttleWithTimeout
+- toList
 - zip
 
 and more coming soon..
