@@ -7,6 +7,9 @@ import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_operation.*
 import java.io.Serializable
 
+/**
+ * Created by Anas Altair on 11/09/2020.
+ */
 abstract class OperationController: Serializable {
     lateinit var activity: OperationActivity
 

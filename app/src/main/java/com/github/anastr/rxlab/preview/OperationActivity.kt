@@ -14,6 +14,9 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_operation.*
 
+/**
+ * Created by Anas Altair.
+ */
 class OperationActivity : AppCompatActivity() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -66,14 +69,6 @@ class OperationActivity : AppCompatActivity() {
         val textView = TextView(this)
         textView.text = note
         addExtraView(textView)
-    }
-
-    fun showFab() {
-        fab.visibility = View.VISIBLE
-    }
-
-    fun setFabClickListener(listener: (View) -> Unit) {
-        fab.setOnClickListener(listener)
     }
 
     fun addExtraView(view: View) {
