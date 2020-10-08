@@ -4,10 +4,12 @@ import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -15,8 +17,8 @@ import java.util.concurrent.TimeUnit
  */
 class DistinctUntilChangedController: OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable.just(1, 1, 3, 2, 2, 3, 1)\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable.just(1, 1, 3, 2, 2, 3, 1)\n" +
                 "        .distinctUntilChanged()\n" +
                 "        .subscribe();")
 
@@ -33,11 +35,11 @@ class DistinctUntilChangedController: OperationController() {
         )
 
         val fromIterableOperation = FixedEmitsOperation("just", list)
-        surfaceView.addDrawingObject(fromIterableOperation)
+        activity.surfaceView.addDrawingObject(fromIterableOperation)
         val distinctOperation = TextOperation("distinctUntilChanged", "")
-        surfaceView.addDrawingObject(distinctOperation)
+        activity.surfaceView.addDrawingObject(distinctOperation)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         val actions = ArrayList<Action>()
 
@@ -57,11 +59,11 @@ class DistinctUntilChangedController: OperationController() {
             }
             .subscribe({
                 actions.add(Action(500) { moveEmitOnRender(it, observerObject) })
-            }, errorHandler, {
+            }, activity.errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
+                activity.surfaceView.actions(actions)
             })
-            .disposeOnDestroy()
+            .disposeOnDestroy(activity)
     }
 
 }

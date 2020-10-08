@@ -4,21 +4,23 @@ import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.activity_operation.*
 
 /**
  * Created by Anas Altair on 4/8/2020.
  */
 class ElementAtController: OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable.just(1, 2, 3, 4, 5)\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable.just(1, 2, 3, 4, 5)\n" +
                 "        .elementAt(2)\n" +
                 "        .subscribe();")
 
-        addNote("look carefully at the source, this operation will continue emitting and dropping " +
+        activity.addNote("look carefully at the source, this operation will continue emitting and dropping " +
                 "until the desired index is reached, then will call onSuccess and ignoring the rest of emits.")
 
         val e1 = BallEmit("1")
@@ -28,11 +30,11 @@ class ElementAtController: OperationController() {
         val e5 = BallEmit("5")
 
         val justOperation = FixedEmitsOperation("just", listOf(e1, e2, e3, e4, e5))
-        surfaceView.addDrawingObject(justOperation)
+        activity.surfaceView.addDrawingObject(justOperation)
         val elementAtOperation = TextOperation("elementAt", "2")
-        surfaceView.addDrawingObject(elementAtOperation)
+        activity.surfaceView.addDrawingObject(elementAtOperation)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         val actions = ArrayList<Action>()
 
@@ -46,11 +48,11 @@ class ElementAtController: OperationController() {
             .subscribe({
                 actions.add(Action(1000) { moveEmitOnRender(it, observerObject) })
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
-            }, errorHandler, {
+                activity.surfaceView.actions(actions)
+            }, activity.errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
+                activity.surfaceView.actions(actions)
             })
-            .disposeOnDestroy()
+            .disposeOnDestroy(activity)
     }
 }

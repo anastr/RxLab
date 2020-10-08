@@ -3,9 +3,9 @@ package com.github.anastr.rxlab
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.controllers.*
 import com.github.anastr.rxlab.adapter.MyAdapter
 import com.github.anastr.rxlab.adapter.OperationData
+import com.github.anastr.rxlab.controllers.*
 import kotlinx.android.synthetic.main.content_list.*
 
 /**
@@ -34,7 +34,7 @@ class TransformingOperatorsActivity: AppCompatActivity() {
             OperationData("switchMap", operationController = SwitchMapController()),
             OperationData("toList", operationController = ToListController()),
             OperationData("buffer", operationController = BufferController()),
-            OperationData("flatMap and concatMap", operationController = FlatMapAndConcatMapActivity())
+            OperationData("flatMap and concatMap", operationController = FlatMapAndConcatMapController())
         )
 
         recyclerView.adapter = MyAdapter(this, operations)

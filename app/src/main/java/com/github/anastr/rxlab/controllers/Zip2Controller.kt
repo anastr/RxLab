@@ -4,12 +4,14 @@ import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.MergedBallEmit
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.util.ColorUtil
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.BiFunction
+import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -17,8 +19,8 @@ import java.util.concurrent.TimeUnit
  */
 class Zip2Controller: OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable o1 = Observable.just(\"A\", \"B\", \"C\", \"D\");\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable o1 = Observable.just(\"A\", \"B\", \"C\", \"D\");\n" +
                 "Observable o2 = Observable.just(1, 2, 3, 4, 5);\n" +
                 "Observable.zip(o1, o2, (l, n) -> l +\"-\" + n)\n" +
                 "        .subscribe();")
@@ -35,13 +37,13 @@ class Zip2Controller: OperationController() {
         val e5 = BallEmit("5", ColorUtil.blue)
 
         val justLettersOperation = FixedEmitsOperation("just", listOf(a, b, c, d))
-        surfaceView.addDrawingObject(justLettersOperation)
+        activity.surfaceView.addDrawingObject(justLettersOperation)
         val justNumbersOperation = FixedEmitsOperation("just", listOf(e1, e2, e3, e4, e5))
-        surfaceView.addDrawingObject(justNumbersOperation)
+        activity.surfaceView.addDrawingObject(justNumbersOperation)
         val zipOperation = FixedEmitsOperation("zip", ArrayList())
-        surfaceView.addDrawingObject(zipOperation)
+        activity.surfaceView.addDrawingObject(zipOperation)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         val actions = ArrayList<Action>()
 
@@ -66,10 +68,10 @@ class Zip2Controller: OperationController() {
             })
             .delay(1000, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({}, errorHandler, {
+            .subscribe({}, activity.errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
+                activity.surfaceView.actions(actions)
             })
-            .disposeOnDestroy()
+            .disposeOnDestroy(activity)
     }
 }

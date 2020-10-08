@@ -33,8 +33,7 @@ class OperationActivity : AppCompatActivity() {
 
         val operationController: OperationController?
                 = intent.getSerializableExtra("OperationController") as OperationController?
-        operationController?.activity = this
-        operationController?.onCreate()
+        operationController?.onCreate(this)
     }
 
     fun addDisposable(disposable: Disposable) {

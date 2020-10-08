@@ -4,17 +4,19 @@ import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.activity_operation.*
 
 /**
  * Created by Anas Altair on 25/7/2020.
  */
 class ContainsController : OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable.just(\"A\", \"B\", \"C\", \"D\")\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable.just(\"A\", \"B\", \"C\", \"D\")\n" +
                 "        .contains(\"C\")\n" +
                 "        .subscribe();")
 
@@ -25,11 +27,11 @@ class ContainsController : OperationController() {
         val d = BallEmit("D")
 
         val justOperation = FixedEmitsOperation("just", listOf(a, b, c, d))
-        surfaceView.addDrawingObject(justOperation)
+        activity.surfaceView.addDrawingObject(justOperation)
         val containsOperation = TextOperation("contains", "C")
-        surfaceView.addDrawingObject(containsOperation)
+        activity.surfaceView.addDrawingObject(containsOperation)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         val actions = ArrayList<Action>()
 
@@ -46,8 +48,8 @@ class ContainsController : OperationController() {
                     moveEmitOnRender(c, observerObject)
                 })
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
-            }, errorHandler)
-            .disposeOnDestroy()
+                activity.surfaceView.actions(actions)
+            }, activity.errorHandler)
+            .disposeOnDestroy(activity)
     }
 }

@@ -4,10 +4,12 @@ import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -15,12 +17,12 @@ import java.util.concurrent.TimeUnit
  */
 class ReduceController: OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable.just(1, 2, 3, 4, 5)\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable.just(1, 2, 3, 4, 5)\n" +
                 "        .reduce((total, emit) -> total + emit)\n" +
                 "        .subscribe();")
 
-        addNote("first, 'reduce' operation will receive two emits, then " +
+        activity.addNote("first, 'reduce' operation will receive two emits, then " +
                 "it will take the result of them with next emit...")
 
         val a = BallEmit("1")
@@ -30,11 +32,11 @@ class ReduceController: OperationController() {
         val e = BallEmit("5")
 
         val justOperation = FixedEmitsOperation("just", listOf(a, b, c, d, e))
-        surfaceView.addDrawingObject(justOperation)
+        activity.surfaceView.addDrawingObject(justOperation)
         val reduceOperation = TextOperation("reduce", "")
-        surfaceView.addDrawingObject(reduceOperation)
+        activity.surfaceView.addDrawingObject(reduceOperation)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         val actions = ArrayList<Action>()
 
@@ -63,11 +65,11 @@ class ReduceController: OperationController() {
                     addThenMoveOnRender(it, reduceOperation, observerObject)
                 })
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
-            }, errorHandler, {
+                activity.surfaceView.actions(actions)
+            }, activity.errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
+                activity.surfaceView.actions(actions)
             })
-            .disposeOnDestroy()
+            .disposeOnDestroy(activity)
     }
 }

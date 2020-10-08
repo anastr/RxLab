@@ -6,10 +6,12 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.objects.time.TimeObject
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -17,8 +19,8 @@ import java.util.concurrent.TimeUnit
  */
 class ThrottleLastController: OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable.<String>create(emitter -> {\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable.<String>create(emitter -> {\n" +
                 "    fab.setOnClickListener(v -> {\n" +
                 "        if (!emitter.isDisposed())\n" +
                 "            emitter.onNext(\"emit\");\n" +
@@ -28,36 +30,36 @@ class ThrottleLastController: OperationController() {
                 "        .throttleLast(2, TimeUnit.SECONDS)\n" +
                 "        .subscribe();")
 
-        addNote("try to add emits rapidly.")
+        activity.addNote("try to add emits rapidly.")
 
-        fab.visibility = View.VISIBLE
+        activity.fab.visibility = View.VISIBLE
 
         val throttleObject = TextOperation("throttleLast", "2 sec")
-        surfaceView.addDrawingObject(throttleObject)
+        activity.surfaceView.addDrawingObject(throttleObject)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         // delay to make sure that surfaceView has created.
         Observable.just("")
             .delay(200, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { start(throttleObject, observerObject) }
-            .disposeOnDestroy()
+            .subscribe { start(activity, throttleObject, observerObject) }
+            .disposeOnDestroy(activity)
     }
 
-    private fun start(throttleObject: TextOperation, observerObject: ObserverObject) {
+    private fun start(activity: OperationActivity, throttleObject: TextOperation, observerObject: ObserverObject) {
 
         Observable.interval(0, 2000, TimeUnit.MILLISECONDS)
             .subscribe {
-                surfaceView.action(Action(0) { doOnRenderThread {
+                activity.surfaceView.action(Action(0) { doOnRenderThread {
                     observerObject.lockTime()
                     observerObject.startTime(TimeObject.Lock.AFTER)
                 } })
             }
-            .disposeOnDestroy()
+            .disposeOnDestroy(activity)
 
         Observable.create<EmitObject> { emitter ->
-            fab.setOnClickListener {
+            activity.fab.setOnClickListener {
                 if (!emitter.isDisposed)
                     emitter.onNext(
                         BallEmit(
@@ -69,13 +71,13 @@ class ThrottleLastController: OperationController() {
             .throttleLast(2000, TimeUnit.MILLISECONDS)
             .subscribe({
                 val thread = Thread.currentThread().name
-                surfaceView.action(Action(0) {
+                activity.surfaceView.action(Action(0) {
                     it.checkThread(thread)
                     addThenMoveOnRender(it, throttleObject, observerObject)
                 })
-            }, errorHandler, {
-                surfaceView.action(Action(0) { doOnRenderThread { observerObject.complete() } })
+            }, activity.errorHandler, {
+                activity.surfaceView.action(Action(0) { doOnRenderThread { observerObject.complete() } })
             })
-            .disposeOnDestroy()
+            .disposeOnDestroy(activity)
     }
 }

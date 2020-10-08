@@ -3,21 +3,23 @@ package com.github.anastr.rxlab.controllers
 import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.emits.BallEmit
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.activity_operation.*
 
 /**
  * Created by Anas Altair on 4/7/2020.
  */
 class SortedController: OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable.just(3, 2, 5, 1, 4)\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable.just(3, 2, 5, 1, 4)\n" +
                 "        .sorted()\n" +
                 "        .subscribe();")
 
-        addNote("be aware that 'sorted()' method will collect all emits in queue " +
+        activity.addNote("be aware that 'sorted()' method will collect all emits in queue " +
                 "and then will emit them again, you may have OutOfMemoryException.")
 
         val e1 = BallEmit("1")
@@ -27,11 +29,11 @@ class SortedController: OperationController() {
         val e5 = BallEmit("5")
 
         val justOperation = FixedEmitsOperation("just", listOf(e3, e2, e5, e1, e4))
-        surfaceView.addDrawingObject(justOperation)
+        activity.surfaceView.addDrawingObject(justOperation)
         val sortedOperation = FixedEmitsOperation("sorted", ArrayList())
-        surfaceView.addDrawingObject(sortedOperation)
+        activity.surfaceView.addDrawingObject(sortedOperation)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         val actions = ArrayList<Action>()
 
@@ -40,10 +42,10 @@ class SortedController: OperationController() {
             .sorted { emit1, emit2 -> emit1.value.toInt().compareTo(emit2.value.toInt()) }
             .subscribe({
                 actions.add(Action(1000) { moveEmitOnRender(it, observerObject) })
-            }, errorHandler, {
+            }, activity.errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
+                activity.surfaceView.actions(actions)
             })
-            .disposeOnDestroy()
+            .disposeOnDestroy(activity)
     }
 }

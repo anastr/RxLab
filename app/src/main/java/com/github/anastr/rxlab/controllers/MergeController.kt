@@ -3,18 +3,20 @@ package com.github.anastr.rxlab.controllers
 import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.emits.BallEmit
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.util.ColorUtil
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.activity_operation.*
 
 /**
  * Created by Anas Altair on 4/15/2020.
  */
 class MergeController: OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable o1 = Observable.just(\"A\", \"B\", \"C\", \"D\");\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable o1 = Observable.just(\"A\", \"B\", \"C\", \"D\");\n" +
                 "Observable o2 = Observable.just(\"a\", \"b\", \"c\", \"d\");\n" +
                 "Observable.merge(o1, o2)\n" +
                 "        .subscribe();")
@@ -30,13 +32,13 @@ class MergeController: OperationController() {
         val d = BallEmit("d", ColorUtil.green)
 
         val justCapLettersOperation = FixedEmitsOperation("just", listOf(lA, lB, lC, lD))
-        surfaceView.addDrawingObject(justCapLettersOperation)
+        activity.surfaceView.addDrawingObject(justCapLettersOperation)
         val justSmallLettersOperation = FixedEmitsOperation("just", listOf(a, b, c, d))
-        surfaceView.addDrawingObject(justSmallLettersOperation)
+        activity.surfaceView.addDrawingObject(justSmallLettersOperation)
         val mergeOperation = FixedEmitsOperation("merge", ArrayList())
-        surfaceView.addDrawingObject(mergeOperation)
+        activity.surfaceView.addDrawingObject(mergeOperation)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         val actions = ArrayList<Action>()
 
@@ -56,10 +58,10 @@ class MergeController: OperationController() {
                     it.checkThread(thread)
                     moveEmitOnRender(it, observerObject)
                 })
-            }, errorHandler, {
+            }, activity.errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
+                activity.surfaceView.actions(actions)
             })
-            .disposeOnDestroy()
+            .disposeOnDestroy(activity)
     }
 }

@@ -4,17 +4,19 @@ import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.ListEmit
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.activity_operation.*
 
 /**
  * Created by Anas Altair on 7/8/2020.
  */
 class ToListController: OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable.just(1, 2, 3)\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable.just(1, 2, 3)\n" +
                 "        .toList()\n" +
                 "        .subscribe();")
 
@@ -24,11 +26,11 @@ class ToListController: OperationController() {
         val c = BallEmit("3")
 
         val justOperation = FixedEmitsOperation("just", listOf(a, b, c))
-        surfaceView.addDrawingObject(justOperation)
+        activity.surfaceView.addDrawingObject(justOperation)
         val toListOperation = FixedEmitsOperation("toList", ArrayList())
-        surfaceView.addDrawingObject(toListOperation)
+        activity.surfaceView.addDrawingObject(toListOperation)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         val actions = ArrayList<Action>()
 
@@ -49,8 +51,8 @@ class ToListController: OperationController() {
                 })
 
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
-            }, errorHandler)
-            .disposeOnDestroy()
+                activity.surfaceView.actions(actions)
+            }, activity.errorHandler)
+            .disposeOnDestroy(activity)
     }
 }

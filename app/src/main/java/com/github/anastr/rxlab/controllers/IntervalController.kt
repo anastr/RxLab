@@ -6,9 +6,11 @@ import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.time.TimeObject
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -16,22 +18,22 @@ import java.util.concurrent.TimeUnit
  */
 class IntervalController: OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable.interval(2000, TimeUnit.MILLISECONDS)\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable.interval(2000, TimeUnit.MILLISECONDS)\n" +
                 "        .subscribe();")
 
         val intervalOperation = TextOperation("interval", "2000 milliseconds")
-        surfaceView.addDrawingObject(intervalOperation)
+        activity.surfaceView.addDrawingObject(intervalOperation)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         Handler().postDelayed(500) {
-            surfaceView.startTimeOnRender(observerObject, TimeObject.Lock.AFTER)
+            activity.surfaceView.startTimeOnRender(observerObject, TimeObject.Lock.AFTER)
             Observable.interval(2000, TimeUnit.MILLISECONDS)
                 .subscribe {
                     val thread = Thread.currentThread().name
-                    surfaceView.action( Action(0) {
-                        val emit = BallEmit("${(it + 1) * 2} sec")
+                    activity.surfaceView.action( Action(0) {
+                        val emit = BallEmit("$it")
                         emit.checkThread(thread)
                         doOnRenderThread {
                             intervalOperation.addEmit(emit)
@@ -40,7 +42,7 @@ class IntervalController: OperationController() {
                         }
                     })
                 }
-                .disposeOnDestroy()
+                .disposeOnDestroy(activity)
         }
     }
 }

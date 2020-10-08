@@ -4,10 +4,12 @@ import com.github.anastr.rxlab.objects.drawing.FixedEmitsOperation
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
+import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -15,8 +17,8 @@ import java.util.concurrent.TimeUnit
  */
 class FlatMapController: OperationController() {
 
-    override fun onCreate() {
-        setCode("Observable.just(\"A,B,C\", \"D,E,F\")\n" +
+    override fun onCreate(activity: OperationActivity) {
+        activity.setCode("Observable.just(\"A,B,C\", \"D,E,F\")\n" +
                 "        .flatMap(s -> Observable.fromArray(s.split(\",\")))\n" +
                 "        .subscribe();")
 
@@ -24,11 +26,11 @@ class FlatMapController: OperationController() {
         val defEmit = BallEmit("D,E,F")
 
         val justOperation = FixedEmitsOperation("just", listOf(abcEmit, defEmit))
-        surfaceView.addDrawingObject(justOperation)
+        activity.surfaceView.addDrawingObject(justOperation)
         val flatMapOperation = TextOperation("flatMap", "")
-        surfaceView.addDrawingObject(flatMapOperation)
+        activity.surfaceView.addDrawingObject(flatMapOperation)
         val observerObject = ObserverObject("Observer")
-        surfaceView.addDrawingObject(observerObject)
+        activity.surfaceView.addDrawingObject(observerObject)
 
         val actions = ArrayList<Action>()
 
@@ -52,10 +54,10 @@ class FlatMapController: OperationController() {
                     it.checkThread(thread)
                     addThenMoveOnRender(it, flatMapOperation, observerObject)
                 })
-            }, errorHandler, {
+            }, activity.errorHandler, {
                 actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
-                surfaceView.actions(actions)
+                activity.surfaceView.actions(actions)
             })
-            .disposeOnDestroy()
+            .disposeOnDestroy(activity)
     }
 }
