@@ -31,7 +31,7 @@ class FpsObject: DrawingObject(dpToPx(16f)) {
                 textPaint.color = when(lastAverageFPS) {
                     in 0..15 -> ColorUtil.red
                     in 15..25 -> ColorUtil.darkYellow
-                    in 25..35 -> ColorUtil.blue
+                    in 25..35 -> ColorUtil.liteBlue
                     else -> ColorUtil.green
                 }
             }
