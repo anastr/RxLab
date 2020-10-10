@@ -52,7 +52,7 @@ fun <T>T.takeTime(time: Long): T {
 // */
 //fun <T>T.takeRandomTime(time: Long): T = takeTime(Random(time).nextLong())
 
-fun doOnMainThread(action: () -> Any) {
+fun doOnMainThread(action: () -> Unit) {
     Observable.fromAction<Any> {
         action.invoke()
     }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()

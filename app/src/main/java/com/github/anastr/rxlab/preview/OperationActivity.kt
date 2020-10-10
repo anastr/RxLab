@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.anastr.rxlab.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorTheme
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -30,6 +31,19 @@ class OperationActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         setContentView(R.layout.activity_operation)
         title = intent.getStringExtra("title")
+
+        surfaceView.onError = {
+            surfaceView.dispose()
+            MaterialAlertDialogBuilder(this)
+                .setCancelable(false)
+                .setTitle("SurfaceView Error")
+                .setMessage(it.message ?: "SurfaceView throw unknown error!")
+                .setPositiveButton("Ok") { dialog, _ ->
+                    dialog.dismiss()
+                    finish()
+                }
+                .show()
+        }
 
         val operationController: OperationController?
                 = intent.getSerializableExtra("OperationController") as OperationController?

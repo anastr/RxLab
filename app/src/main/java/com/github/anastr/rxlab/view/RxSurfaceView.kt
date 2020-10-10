@@ -50,6 +50,8 @@ class RxSurfaceView : SurfaceView {
     private val actionSubject: Subject<List<Action>> = PublishSubject.create<List<Action>>().toSerialized()
     private val compositeDisposable = CompositeDisposable()
 
+    var onError: ((Throwable) -> Unit)? = null
+
     constructor(context: Context?): this(context, null)
 
     constructor(context: Context?, attrs: AttributeSet?): this(context, attrs, 0)
@@ -71,16 +73,25 @@ class RxSurfaceView : SurfaceView {
             else
                 Flowable.empty()
         }
-            .subscribe()
+            .onBackpressureLatest()
+            .subscribe({}, {
+                doOnMainThread {
+                    onError?.invoke(it)
+                }
+            })
             .addToDispose()
 
         renderPublisher
             .doOnNext { isActionRunning = true }
             .observeOn(Schedulers.from(renderThread))
-            .subscribe {
+            .subscribe({
                 it.invoke()
                 isActionRunning = false
-            }
+            }, {
+                doOnMainThread {
+                    onError?.invoke(it)
+                }
+            })
             .addToDispose()
 
         actionSubject
@@ -90,7 +101,13 @@ class RxSurfaceView : SurfaceView {
                     .map { it.takeTime(it.delay) }
             }
 //            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it.action.invoke(this) }
+            .subscribe({
+                it.action.invoke(this)
+            }, {
+                doOnMainThread {
+                    onError?.invoke(it)
+                }
+            })
             .addToDispose()
 
         addDrawingObject(FpsObject())
@@ -137,7 +154,7 @@ class RxSurfaceView : SurfaceView {
      * **when you need to use this, its better to not add delay.**
      */
     fun action(action: Action) {
-        actionSubject.onNext(listOf(action))
+        actions(listOf(action))
     }
 
     fun addDrawingObject(drawingObject: DrawingObject) {
@@ -214,7 +231,7 @@ class RxSurfaceView : SurfaceView {
      *
      * **must be called on main thread.**
      */
-    private fun moveEmit(emit: EmitObject, to: Point, onEnd: () -> Any = {}) {
+    private fun moveEmit(emit: EmitObject, to: Point, onEnd: () -> Unit = {}) {
         val distanceX = to.x - emit.rect.left
         val distanceY = to.y - emit.rect.top
         var pre = 0f
