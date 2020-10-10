@@ -22,6 +22,7 @@ class ColorUtil {
         const val deepOrange = 0xFFF4511E.toInt()
         const val brown = 0xFF795548.toInt()
         const val gray = 0xFF757575.toInt()
+        const val darkYellow = 0xFFfbc02d.toInt()
 
         //// time color:
         const val yellow = 0xFFFFEB3B.toInt()

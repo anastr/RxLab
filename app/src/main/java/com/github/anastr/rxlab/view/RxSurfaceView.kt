@@ -48,6 +48,7 @@ class RxSurfaceView : SurfaceView {
     private val renderPublisher: PublishProcessor<() -> Unit> = PublishProcessor.create<() -> Unit>()
     /** hot observable to deal with actions (add, remove or move emits - complete observer ...) */
     private val actionSubject: Subject<List<Action>> = PublishSubject.create<List<Action>>().toSerialized()
+    private val fpsObject = FpsObject()
     private val compositeDisposable = CompositeDisposable()
 
     var onError: ((Throwable) -> Unit)? = null
@@ -110,7 +111,7 @@ class RxSurfaceView : SurfaceView {
             })
             .addToDispose()
 
-        addDrawingObject(FpsObject())
+        addDrawingObject(fpsObject)
     }
 
     private fun Disposable.addToDispose() {
@@ -262,6 +263,7 @@ class RxSurfaceView : SurfaceView {
     }
 
     fun dispose() {
+        fpsObject.dispose()
         compositeDisposable.dispose()
     }
 }
