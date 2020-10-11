@@ -63,6 +63,7 @@ class AlphabeticalOperatorsActivity: AppCompatActivity() {
                 OperationData("throttleFirst", operationController = ThrottleFirstController()),
                 OperationData("throttleLast", operationController = ThrottleLastController()),
                 OperationData("throttleWithTimeout", operationController = ThrottleWithTimeoutController()),
+                OperationData("timer", operationController = TimerController()),
                 OperationData("toList", operationController = ToListController()),
                 OperationData("zip2", operationController = Zip2Controller()),
                 OperationData("zip3", operationController = Zip3Controller())
