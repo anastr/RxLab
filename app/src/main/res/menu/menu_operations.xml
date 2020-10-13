@@ -7,7 +7,7 @@
         android:id="@+id/action_reload"
         android:orderInCategory="100"
         android:title="@string/action_reload"
-        android:icon="@android:drawable/ic_menu_revert"
+        android:icon="@drawable/ic_refresh_24"
         android:iconTint="@android:color/white"
         app:showAsAction="always"
         tools:targetApi="o" />
