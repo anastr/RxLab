@@ -1,6 +1,7 @@
 package com.github.anastr.rxlab.preview
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -8,12 +9,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.anastr.rxlab.R
+import com.github.anastr.rxlab.util.dpToPx
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorTheme
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_operation.*
+import kotlin.math.max
+import kotlin.math.min
+
 
 /**
  * Created by Anas Altair.
@@ -70,6 +75,18 @@ class OperationActivity : AppCompatActivity() {
     }
 
     fun setCode(code: String) {
+        // get screen height
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenHeight = displayMetrics.heightPixels
+
+        // dynamic codeView height, between (80dp, screenHeight/3)
+        val params = codeView.layoutParams
+        params.height = min(
+            max(dpToPx(20f * code.lines().size), dpToPx(80f)), screenHeight / 3f
+        ).toInt()
+        codeView.layoutParams = params
+
         codeView.setOptions(
             Options.Default.get(this)
                 .withLanguage("java")
