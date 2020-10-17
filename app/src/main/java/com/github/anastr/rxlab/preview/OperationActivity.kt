@@ -1,5 +1,8 @@
 package com.github.anastr.rxlab.preview
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Menu
@@ -29,6 +32,8 @@ class OperationActivity : AppCompatActivity() {
 
     val errorHandler: (Throwable) -> Unit
         get() = { Toast.makeText(this, it.message, Toast.LENGTH_LONG).show() }
+
+    private var code = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,11 +75,19 @@ class OperationActivity : AppCompatActivity() {
                 recreate()
                 true
             }
+            R.id.action_copy -> {
+                val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip: ClipData = ClipData.newPlainText("RxLab code", code)
+                clipboard.setPrimaryClip(clip)
+                Toast.makeText(this, "Code copied", Toast.LENGTH_SHORT).show()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     fun setCode(code: String) {
+        this.code = code
         // get screen height
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -93,6 +106,9 @@ class OperationActivity : AppCompatActivity() {
                 .withCode(code)
 //                .disableHighlightAnimation()
                 .withTheme(ColorTheme.SOLARIZED_LIGHT))
+        codeView.setOnLongClickListener {
+            false
+        }
     }
 
     fun addNote(note: String) {
