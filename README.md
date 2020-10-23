@@ -13,6 +13,8 @@ download app on Google Play:\
 
 > CPU with 4 cores at least is recommended, and screen with large width.
 
+You can read all instructions in [this story on Medium](https://medium.com/better-programming/understand-rxjava-in-a-new-way-3f43f2696c8c).
+
 do you want to know how `scan` operation works?\
 <img src="images/scan.gif" width="50%" />
 
