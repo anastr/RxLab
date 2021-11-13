@@ -11,8 +11,8 @@ android {
         multiDexEnabled true
         minSdkVersion 18
         targetSdkVersion 31
-        versionCode 4
-        versionName "1.4"
+        versionCode 5
+        versionName "1.4.1"
     }
 
     flavorDimensions "default"
