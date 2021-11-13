@@ -3,9 +3,8 @@ package com.github.anastr.rxlab
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.adapter.MyAdapter
-import com.github.anastr.rxlab.adapter.OperationData
-import com.github.anastr.rxlab.controllers.*
+import com.github.anastr.rxlab.adapter.OperationAdapter
+import com.github.anastr.rxlab.data.allOperations
 import kotlinx.android.synthetic.main.content_list.*
 
 class CreatingOperatorsActivity: AppCompatActivity() {
@@ -20,15 +19,19 @@ class CreatingOperatorsActivity: AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-        val operations = listOf(OperationData("just", operationController = JustController()),
-            OperationData("fromArray", operationController = FromArrayController()),
-            OperationData("fromIterable", operationController = FromIterableController()),
-            OperationData("range", operationController = RangeController()),
-            OperationData("interval", operationController = IntervalController()),
-            OperationData("timer", operationController = TimerController())
-        )
+        val operations = allOperations().filter {
+            when (it.name) {
+                "just",
+                "fromArray",
+                "fromIterable",
+                "range",
+                "interval",
+                "timer" -> true
+                else -> false
+            }
+        }
         
-        recyclerView.adapter = MyAdapter(this, operations)
+        recyclerView.adapter = OperationAdapter(this, operations)
     }
 
     override fun onSupportNavigateUp(): Boolean {

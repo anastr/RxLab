@@ -3,9 +3,11 @@ package com.github.anastr.rxlab
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.adapter.MyAdapter
+import com.github.anastr.rxlab.adapter.OperationAdapter
 import com.github.anastr.rxlab.adapter.OperationData
-import com.github.anastr.rxlab.controllers.*
+import com.github.anastr.rxlab.controllers.FlatMapAndConcatMapController
+import com.github.anastr.rxlab.controllers.Scan2Controller
+import com.github.anastr.rxlab.data.allOperations
 import kotlinx.android.synthetic.main.content_list.*
 
 /**
@@ -24,20 +26,29 @@ class TransformingOperatorsActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = listOf(
-            OperationData("map", operationController = MapController()),
-            OperationData("sorted", operationController = SortedController()),
-            OperationData("scan", operationController = ScanController()),
+            *allOperations().filter {
+                when (it.name) {
+                    "map",
+                    "sorted",
+                    "scan",
+                    "reduce",
+                    "flatMap",
+                    "concatMap",
+                    "switchMap",
+                    "toList",
+                    "buffer" -> true
+                    else -> false
+                }
+            }.toTypedArray(),
             OperationData("scan with initialValue", operationController = Scan2Controller()),
-            OperationData("reduce", operationController = ReduceController()),
-            OperationData("flatMap", operationController = FlatMapController()),
-            OperationData("concatMap", operationController = ConcatMapController()),
-            OperationData("switchMap", operationController = SwitchMapController()),
-            OperationData("toList", operationController = ToListController()),
-            OperationData("buffer", operationController = BufferController()),
-            OperationData("flatMap and concatMap", operationController = FlatMapAndConcatMapController())
+            OperationData(
+                "flatMap and concatMap",
+                operationController = FlatMapAndConcatMapController()
+            ),
         )
+            .sortedBy { it.name }
 
-        recyclerView.adapter = MyAdapter(this, operations)
+        recyclerView.adapter = OperationAdapter(this, operations)
     }
 
     override fun onSupportNavigateUp(): Boolean {

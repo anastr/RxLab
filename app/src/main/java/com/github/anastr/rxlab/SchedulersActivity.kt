@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.controllers.schedulers.*
-import com.github.anastr.rxlab.adapter.MyAdapter
+import com.github.anastr.rxlab.adapter.OperationAdapter
 import com.github.anastr.rxlab.adapter.OperationData
 import kotlinx.android.synthetic.main.content_list.*
 
@@ -31,7 +31,7 @@ class SchedulersActivity: AppCompatActivity() {
             OperationData("other", operationController = OtherSchedulerController())
         )
 
-        recyclerView.adapter = MyAdapter(this, operations)
+        recyclerView.adapter = OperationAdapter(this, operations)
     }
 
     override fun onSupportNavigateUp(): Boolean {

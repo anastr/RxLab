@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.adapter.MyAdapter
+import com.github.anastr.rxlab.adapter.OperationAdapter
 import com.github.anastr.rxlab.adapter.OperationData
-import com.github.anastr.rxlab.controllers.*
+import com.github.anastr.rxlab.data.allOperations
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.content_list.*
@@ -33,45 +33,11 @@ class AlphabeticalOperatorsActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         allOperations.addAll(
-            listOf(
-                OperationData("buffer", operationController = BufferController()),
-                OperationData("combineLatest", operationController = CombineLatestController()),
-                OperationData("concatMap", operationController = ConcatMapController()),
-                OperationData("contains", operationController = ContainsController()),
-                OperationData("create", operationController = CreateController()),
-                OperationData("distinct", operationController = DistinctController()),
-                OperationData("distinctUntilChanged", operationController = DistinctUntilChangedController()),
-                OperationData("elementAt", operationController = ElementAtController()),
-                OperationData("error", operationController = ErrorObservableController()),
-                OperationData("filter", operationController = FilterController()),
-                OperationData("flatMap", operationController = FlatMapController()),
-                OperationData("fromArray", operationController = FromArrayController()),
-                OperationData("fromIterable", operationController = FromIterableController()),
-                OperationData("interval", operationController = IntervalController()),
-                OperationData("just", operationController = JustController()),
-                OperationData("map", operationController = MapController()),
-                OperationData("merge", operationController = MergeController()),
-                OperationData("range", operationController = RangeController()),
-                OperationData("reduce", operationController = ReduceController()),
-                OperationData("scan", operationController = ScanController()),
-                OperationData("scan2", operationController = Scan2Controller()),
-                OperationData("skip", operationController = SkipController()),
-                OperationData("sorted", operationController = SortedController()),
-                OperationData("switchMap", operationController = SwitchMapController()),
-                OperationData("take", operationController = TakeController()),
-                OperationData("takeLast", operationController = TakeLastController()),
-                OperationData("throttleFirst", operationController = ThrottleFirstController()),
-                OperationData("throttleLast", operationController = ThrottleLastController()),
-                OperationData("throttleWithTimeout", operationController = ThrottleWithTimeoutController()),
-                OperationData("timer", operationController = TimerController()),
-                OperationData("toList", operationController = ToListController()),
-                OperationData("zip2", operationController = Zip2Controller()),
-                OperationData("zip3", operationController = Zip3Controller())
-            )
+            allOperations().sortedBy { it.name }
         )
         operations.addAll(allOperations)
 
-        recyclerView.adapter = MyAdapter(this, operations)
+        recyclerView.adapter = OperationAdapter(this, operations)
     }
 
 

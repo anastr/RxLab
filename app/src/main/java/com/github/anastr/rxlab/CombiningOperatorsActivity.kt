@@ -3,12 +3,8 @@ package com.github.anastr.rxlab
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.controllers.CombineLatestController
-import com.github.anastr.rxlab.controllers.MergeController
-import com.github.anastr.rxlab.controllers.Zip2Controller
-import com.github.anastr.rxlab.controllers.Zip3Controller
-import com.github.anastr.rxlab.adapter.MyAdapter
-import com.github.anastr.rxlab.adapter.OperationData
+import com.github.anastr.rxlab.adapter.OperationAdapter
+import com.github.anastr.rxlab.data.allOperations
 import kotlinx.android.synthetic.main.content_list.*
 
 /**
@@ -26,14 +22,17 @@ class CombiningOperatorsActivity: AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-        val operations = listOf(
-            OperationData("merge", operationController = MergeController()),
-            OperationData("zip 2 observables", operationController = Zip2Controller()),
-            OperationData("zip 3 observables", operationController = Zip3Controller()),
-            OperationData("combineLatest", operationController = CombineLatestController())
-        )
+        val operations = allOperations().filter {
+            when (it.name) {
+                "merge",
+                "zip 2 observables",
+                "zip 3 observables",
+                "combineLatest" -> true
+                else -> false
+            }
+        }
 
-        recyclerView.adapter = MyAdapter(this, operations)
+        recyclerView.adapter = OperationAdapter(this, operations)
     }
 
     override fun onSupportNavigateUp(): Boolean {

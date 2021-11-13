@@ -1,0 +1,40 @@
+package com.github.anastr.rxlab.data
+
+import com.github.anastr.rxlab.adapter.OperationData
+import com.github.anastr.rxlab.controllers.*
+
+fun allOperations() = listOf(
+    OperationData("buffer", operationController = BufferController()),
+    OperationData("combineLatest", operationController = CombineLatestController()),
+    OperationData("concatMap", operationController = ConcatMapController()),
+    OperationData("contains", operationController = ContainsController()),
+    OperationData("create", operationController = CreateController()),
+    OperationData("distinct", operationController = DistinctController()),
+    OperationData("distinctUntilChanged", operationController = DistinctUntilChangedController()),
+    OperationData("elementAt", operationController = ElementAtController()),
+    OperationData("error", operationController = ErrorObservableController()),
+    OperationData("filter", operationController = FilterController()),
+    OperationData("flatMap", operationController = FlatMapController()),
+    OperationData("fromArray", operationController = FromArrayController()),
+    OperationData("fromIterable", operationController = FromIterableController()),
+    OperationData("interval", operationController = IntervalController()),
+    OperationData("just", operationController = JustController()),
+    OperationData("map", operationController = MapController()),
+    OperationData("merge", operationController = MergeController()),
+    OperationData("range", operationController = RangeController()),
+    OperationData("reduce", operationController = ReduceController()),
+    OperationData("scan", operationController = ScanController()),
+    OperationData("scan2", operationController = Scan2Controller()),
+    OperationData("skip", operationController = SkipController()),
+    OperationData("sorted", operationController = SortedController()),
+    OperationData("switchMap", operationController = SwitchMapController()),
+    OperationData("take", operationController = TakeController()),
+    OperationData("takeLast", operationController = TakeLastController()),
+    OperationData("throttleFirst", operationController = ThrottleFirstController()),
+    OperationData("throttleLast", operationController = ThrottleLastController()),
+    OperationData("throttleWithTimeout", operationController = ThrottleWithTimeoutController()),
+    OperationData("timer", operationController = TimerController()),
+    OperationData("toList", operationController = ToListController()),
+    OperationData("zip 2 observables", operationController = Zip2Controller()),
+    OperationData("zip 3 observables", operationController = Zip3Controller()),
+)

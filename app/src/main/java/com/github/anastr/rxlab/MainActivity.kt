@@ -6,8 +6,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.adapter.MyAdapter
-import com.github.anastr.rxlab.adapter.OperationData
+import com.github.anastr.rxlab.adapter.CardAdapter
+import com.github.anastr.rxlab.adapter.CardData
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_list.*
 
@@ -22,17 +22,17 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = listOf(
-            OperationData("Alphabetical Operators", AlphabeticalOperatorsActivity::class.java)
-            , OperationData("Schedulers & threads", SchedulersActivity::class.java)
-            , OperationData("Creating Operations", CreatingOperatorsActivity::class.java)
-            , OperationData("Filtering Operators", FilteringOperatorsActivity::class.java)
-            , OperationData("Transforming Operators", TransformingOperatorsActivity::class.java)
-            , OperationData("Combining Operators", CombiningOperatorsActivity::class.java)
-            , OperationData("Hot Sources", HotSourcesActivity::class.java)
-            , OperationData("Comparing", ComparingActivity::class.java)
+            CardData("Alphabetical Operators", AlphabeticalOperatorsActivity::class.java),
+            CardData("Schedulers & threads", SchedulersActivity::class.java),
+            CardData("Creating Operations", CreatingOperatorsActivity::class.java),
+            CardData("Filtering Operators", FilteringOperatorsActivity::class.java),
+            CardData("Transforming Operators", TransformingOperatorsActivity::class.java),
+            CardData("Combining Operators", CombiningOperatorsActivity::class.java),
+            CardData("Hot Sources", HotSourcesActivity::class.java),
+            CardData("Comparing", ComparingActivity::class.java),
         )
 
-        recyclerView.adapter = MyAdapter(this, operations)
+        recyclerView.adapter = CardAdapter(this, operations)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

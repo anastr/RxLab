@@ -3,7 +3,7 @@ package com.github.anastr.rxlab
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.anastr.rxlab.adapter.MyAdapter
+import com.github.anastr.rxlab.adapter.OperationAdapter
 import com.github.anastr.rxlab.adapter.OperationData
 import com.github.anastr.rxlab.controllers.FlatMapAndConcatMapController
 import kotlinx.android.synthetic.main.content_list.*
@@ -24,10 +24,13 @@ class ComparingActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = listOf(
-            OperationData("flatMap and concatMap", operationController = FlatMapAndConcatMapController())
+            OperationData(
+                "flatMap and concatMap",
+                operationController = FlatMapAndConcatMapController()
+            )
         )
 
-        recyclerView.adapter = MyAdapter(this, operations)
+        recyclerView.adapter = OperationAdapter(this, operations)
     }
 
     override fun onSupportNavigateUp(): Boolean {
