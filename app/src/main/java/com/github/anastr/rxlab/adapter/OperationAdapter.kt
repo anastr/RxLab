@@ -8,12 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.anastr.rxlab.R
+import com.github.anastr.rxlab.objects.Operation
 import com.github.anastr.rxlab.preview.OperationActivity
 
 /**
  * Created by Anas Altair on 4/1/2020.
  */
-class OperationAdapter(val activity: Activity, val operations: List<OperationData>)
+class OperationAdapter(val activity: Activity, val operations: List<Operation>)
     : RecyclerView.Adapter<OperationAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -36,7 +37,7 @@ class OperationAdapter(val activity: Activity, val operations: List<OperationDat
             itemView.setOnClickListener {
                 val intent = Intent(activity, OperationActivity::class.java)
                 intent.putExtra("title", operations[bindingAdapterPosition].name)
-                intent.putExtra("OperationController", operations[bindingAdapterPosition].operationController)
+                intent.putExtra("OperationController", operations[bindingAdapterPosition].controller)
                 activity.startActivity(intent)
             }
         }

@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.adapter.OperationAdapter
-import com.github.anastr.rxlab.adapter.OperationData
 import com.github.anastr.rxlab.data.allOperations
+import com.github.anastr.rxlab.objects.Operation
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.content_list.*
@@ -19,8 +19,8 @@ import java.util.concurrent.TimeUnit
  */
 class AlphabeticalOperatorsActivity: AppCompatActivity() {
 
-    private val allOperations = ArrayList<OperationData>()
-    private val operations = ArrayList<OperationData>()
+    private val allOperations = ArrayList<Operation>()
+    private val operations = ArrayList<Operation>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

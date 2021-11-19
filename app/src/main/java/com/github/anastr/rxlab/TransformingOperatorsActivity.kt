@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.adapter.OperationAdapter
-import com.github.anastr.rxlab.adapter.OperationData
 import com.github.anastr.rxlab.controllers.FlatMapAndConcatMapController
 import com.github.anastr.rxlab.controllers.Scan2Controller
 import com.github.anastr.rxlab.data.allOperations
+import com.github.anastr.rxlab.objects.Operation
 import kotlinx.android.synthetic.main.content_list.*
 
 /**
@@ -40,10 +40,10 @@ class TransformingOperatorsActivity: AppCompatActivity() {
                     else -> false
                 }
             }.toTypedArray(),
-            OperationData("scan with initialValue", operationController = Scan2Controller()),
-            OperationData(
+            Operation("scan with initialValue", controller = Scan2Controller()),
+            Operation(
                 "flatMap and concatMap",
-                operationController = FlatMapAndConcatMapController()
+                controller = FlatMapAndConcatMapController()
             ),
         )
             .sortedBy { it.name }
