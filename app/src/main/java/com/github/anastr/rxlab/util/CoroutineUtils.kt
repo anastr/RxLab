@@ -11,7 +11,7 @@ fun tickerFlow(period: Duration, initialDelay: Duration = Duration.ZERO) = flow 
     delay(initialDelay)
     while (true) {
         val timeTaken = measureTime { emit(Unit) }
-        val correctionPeriod = maxOf(Duration.ZERO, period - timeTaken)
-        delay(correctionPeriod)
+        val correctedPeriod = maxOf(Duration.ZERO, period - timeTaken)
+        delay(correctedPeriod)
     }
 }
