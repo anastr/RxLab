@@ -7,6 +7,9 @@ import android.util.AttributeSet
 import android.view.SurfaceView
 import android.view.animation.DecelerateInterpolator
 import androidx.core.animation.doOnEnd
+import androidx.core.view.doOnAttach
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.github.anastr.rxlab.objects.drawing.DrawingObject
 import com.github.anastr.rxlab.objects.drawing.FpsObject
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
@@ -14,21 +17,20 @@ import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.util.*
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.processors.PublishProcessor
-import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.PublishSubject
-import io.reactivex.rxjava3.subjects.Subject
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 import kotlin.math.max
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 /**
  * Created by Anas Altair on 3/6/2020.
  */
+@OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
 class RxSurfaceView : SurfaceView {
 
     companion object {
@@ -38,20 +40,17 @@ class RxSurfaceView : SurfaceView {
 
     private var lastFrameTime = System.currentTimeMillis()
 
-    private val renderThread = Executors.newSingleThreadExecutor()
-    private val actionsThread = Executors.newFixedThreadPool(3)
+    private val renderDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     private val drawingObjects = ArrayList<DrawingObject>()
 
     private var isRunning = false
-    private var isActionRunning = false
-    private val looper: PublishProcessor<Boolean> = PublishProcessor.create<Boolean>()
-    private val renderPublisher: PublishProcessor<() -> Unit> = PublishProcessor.create<() -> Unit>()
-    /** hot observable to deal with actions (add, remove or move emits - complete observer ...) */
-    private val actionSubject: Subject<List<Action>> = PublishSubject.create<List<Action>>().toSerialized()
+    private val looperStateFlow = MutableStateFlow(false)
     private val fpsObject = FpsObject()
-    private val compositeDisposable = CompositeDisposable()
 
     var onError: ((Throwable) -> Unit)? = null
+
+    private val coroutineScope: CoroutineScope?
+        get() = findViewTreeLifecycleOwner()?.lifecycle?.coroutineScope
 
     constructor(context: Context?): this(context, null)
 
@@ -60,67 +59,29 @@ class RxSurfaceView : SurfaceView {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int): super(context, attrs, defStyleAttr)
 
     init {
-        looper.switchMap { startRender ->
-            if (startRender)
-                Flowable.interval(1000 / FBS, TimeUnit.MILLISECONDS)
-                    .onBackpressureLatest()
-                    .concatMap { Flowable.just(it).skipWhile { isActionRunning } }
-                    .observeOn(Schedulers.from(renderThread))
-                    .doOnNext {
-                        val now = System.currentTimeMillis()
-                        update(now - lastFrameTime)
-                        lastFrameTime = now
+        doOnAttach {
+            coroutineScope?.launch {
+                withContext(renderDispatcher) {
+                    looperStateFlow.flatMapLatest { startRender ->
+                        if (startRender)
+                            tickerFlow(Duration.milliseconds(1000 / FBS))
+                        else
+                            emptyFlow()
                     }
-            else
-                Flowable.empty()
-        }
-            .onBackpressureLatest()
-            .subscribe({}, {
-                doOnMainThread {
-                    onError?.invoke(it)
+                        .collect {
+                            val now = System.currentTimeMillis()
+                            update(now - lastFrameTime)
+                            lastFrameTime = now
+                        }
                 }
-            })
-            .addToDispose()
-
-        renderPublisher
-            .doOnNext { isActionRunning = true }
-            .observeOn(Schedulers.from(renderThread))
-            .subscribe({
-                it.invoke()
-                isActionRunning = false
-            }, {
-                doOnMainThread {
-                    onError?.invoke(it)
-                }
-            })
-            .addToDispose()
-
-        actionSubject
-            .flatMap { list ->
-                Observable.fromIterable(list)
-                    .observeOn(Schedulers.from(actionsThread))
-                    .map { it.takeTime(it.delay) }
             }
-//            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                it.action.invoke(this)
-            }, {
-                doOnMainThread {
-                    onError?.invoke(it)
-                }
-            })
-            .addToDispose()
-
+        }
         addDrawingObject(fpsObject)
-    }
-
-    private fun Disposable.addToDispose() {
-        compositeDisposable.add(this)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val exactHeight = drawingObjects.sumByDouble { it.height.toDouble() } + Utils.drawingPadding * drawingObjects.size
+        val exactHeight = drawingObjects.sumOf { it.height.toDouble() } + Utils.drawingPadding * drawingObjects.size
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), max(MeasureSpec.getSize(heightMeasureSpec), exactHeight.toInt()))
     }
 
@@ -145,7 +106,12 @@ class RxSurfaceView : SurfaceView {
      * run actions sequentially depending on their delay.
      */
     fun actions(actions: List<Action>) {
-        actionSubject.onNext(actions)
+        doOnRenderThread {
+            actions.forEach { action ->
+                delay(action.delay)
+                action.action(this@RxSurfaceView)
+            }
+        }
     }
 
 
@@ -159,7 +125,7 @@ class RxSurfaceView : SurfaceView {
     }
 
     fun addDrawingObject(drawingObject: DrawingObject) {
-        var top = drawingObjects.sumByDouble { it.height.toDouble() }.toFloat()
+        var top = drawingObjects.sumOf { it.height.toDouble() }.toFloat()
         if (drawingObjects.size != 0)
             top += drawingObjects.size * Utils.drawingPadding
         drawingObject.updatePosition(top, width.toFloat())
@@ -167,7 +133,10 @@ class RxSurfaceView : SurfaceView {
         requestLayout()
     }
 
-    fun addEmitOnRender(drawingObject: DrawingObject, emit: EmitObject = BallEmit("", ColorUtil.randomColor())) {
+    fun addEmitOnRender(
+        drawingObject: DrawingObject,
+        emit: EmitObject = BallEmit("", ColorUtil.randomColor()),
+    ) {
         doOnRenderThread {
             drawingObject.addEmit(emit)
         }
@@ -248,22 +217,29 @@ class RxSurfaceView : SurfaceView {
         }.start()
     }
 
-    fun doOnRenderThread(action: () -> Unit) {
-        renderPublisher.onNext(action)
+    fun doOnRenderThread(action: suspend () -> Unit) {
+        coroutineScope?.launch(renderDispatcher) {
+            action()
+        }
+    }
+
+    private inline fun doOnMainThread(crossinline action: suspend () -> Unit) {
+        coroutineScope?.launch(Dispatchers.Main) {
+            action()
+        }
     }
 
     fun pause() {
         isRunning = false
-        looper.onNext(false)
+        looperStateFlow.tryEmit(isRunning)
     }
 
     fun resume() {
         isRunning = true
-        looper.onNext(true)
+        looperStateFlow.tryEmit(isRunning)
     }
 
     fun dispose() {
         fpsObject.dispose()
-        compositeDisposable.dispose()
     }
 }

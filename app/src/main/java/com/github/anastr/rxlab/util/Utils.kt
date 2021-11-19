@@ -1,7 +1,6 @@
 package com.github.anastr.rxlab.util
 
 import android.content.Context
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -51,12 +50,6 @@ fun <T>T.takeTime(time: Long): T {
 // * sleep for random time.
 // */
 //fun <T>T.takeRandomTime(time: Long): T = takeTime(Random(time).nextLong())
-
-fun doOnMainThread(action: () -> Unit) {
-    Observable.fromAction<Any> {
-        action.invoke()
-    }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
-}
 
 fun <T>Observable<T>.delayEach(interval: Long): Observable<T>
         = this.subscribeOn(Schedulers.computation()).map { it.takeTime(interval) }

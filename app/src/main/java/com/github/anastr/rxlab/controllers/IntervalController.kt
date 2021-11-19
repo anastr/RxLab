@@ -1,7 +1,6 @@
 package com.github.anastr.rxlab.controllers
 
-import android.os.Handler
-import androidx.core.os.postDelayed
+import androidx.lifecycle.lifecycleScope
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
@@ -11,6 +10,8 @@ import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.Action
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 /**
@@ -27,7 +28,8 @@ class IntervalController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        Handler().postDelayed(500) {
+        activity.lifecycleScope.launch {
+            delay(500)
             activity.surfaceView.startTimeOnRender(observerObject, TimeObject.Lock.AFTER)
             Observable.interval(2000, TimeUnit.MILLISECONDS)
                 .subscribe {
