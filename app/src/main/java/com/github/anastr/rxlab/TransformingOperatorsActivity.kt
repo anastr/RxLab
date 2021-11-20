@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.adapter.OperationAdapter
-import com.github.anastr.rxlab.controllers.FlatMapAndConcatMapController
-import com.github.anastr.rxlab.controllers.Scan2Controller
+import com.github.anastr.rxlab.controllers.rxjava.FlatMapAndConcatMapController
+import com.github.anastr.rxlab.controllers.rxjava.Scan2Controller
 import com.github.anastr.rxlab.data.allOperations
 import com.github.anastr.rxlab.objects.Operation
 import kotlinx.android.synthetic.main.content_list.*
