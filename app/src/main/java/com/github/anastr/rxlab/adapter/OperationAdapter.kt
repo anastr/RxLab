@@ -5,10 +5,12 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.anastr.rxlab.R
 import com.github.anastr.rxlab.objects.Operation
+import com.github.anastr.rxlab.objects.OperationType
 import com.github.anastr.rxlab.preview.OperationActivity
 
 /**
@@ -27,11 +29,18 @@ class OperationAdapter(val activity: Activity, val operations: List<Operation>)
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.titleView.text = operations[position].name
+        holder.iconView.setImageResource(
+            when (operations[position].type) {
+                OperationType.Coroutine -> R.drawable.icon_kotlin
+                OperationType.RxJava -> R.drawable.icon_rxjava
+            }
+        )
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val titleView: TextView = itemView.findViewById(R.id.textView)
+        val iconView: ImageView = itemView.findViewById(R.id.iconView)
 
         init {
             itemView.setOnClickListener {

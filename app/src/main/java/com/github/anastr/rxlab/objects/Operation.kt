@@ -8,4 +8,10 @@ import com.github.anastr.rxlab.preview.OperationController
 data class Operation(
     val name: String,
     val controller: OperationController,
+    val type: OperationType = OperationType.RxJava,
 )
+
+sealed class OperationType {
+    object RxJava: OperationType()
+    object Coroutine: OperationType()
+}

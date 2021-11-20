@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.anastr.rxlab.R
@@ -27,8 +28,10 @@ class CardAdapter(val activity: Activity, val cards: List<CardData>) :
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val titleView: TextView = itemView.findViewById(R.id.textView)
+        private val iconView: ImageView = itemView.findViewById(R.id.iconView)
 
         init {
+            iconView.visibility = View.GONE
             itemView.setOnClickListener {
                 val cardItem = cards[bindingAdapterPosition]
                 val intent = Intent(activity, cardItem.clazz)
