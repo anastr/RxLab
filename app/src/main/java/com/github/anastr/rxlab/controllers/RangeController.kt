@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class RangeController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("// start from 3\n" +
                 "// count 5\n" +
                 "Observable.range(3, 5)\n" +

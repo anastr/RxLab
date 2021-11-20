@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class MapController : OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(\"Dr.\", \"Anas\", \"Altair\")\n" +
                 "        .map(s -> s.length())\n" +
                 "        .subscribe();")

@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
 class ErrorObservableController: OperationController() {
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.error(() -> new RuntimeException(\"just an error\"))\n" +
                 "        .subscribe();")
 

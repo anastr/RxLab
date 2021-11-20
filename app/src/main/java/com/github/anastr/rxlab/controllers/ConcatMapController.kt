@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
  */
 class ConcatMapController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(\"A,B,C\", \"D,E,F\")\n" +
                 "        .concatMap(s -> Observable.fromArray(s.split(\",\")))\n" +
                 "        .subscribe();")

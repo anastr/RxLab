@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class TakeLastController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(1, 2, 3, 4, 5)\n" +
                 "        .takeLast(3)\n" +
                 "        .subscribe();")

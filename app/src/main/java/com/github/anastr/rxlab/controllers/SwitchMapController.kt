@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
  */
 class SwitchMapController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(\"A,B,C\", \"D,E,F\", \"G,H,I\")\n" +
                 "    .switchMap(s -> Observable.fromArray(s.split(\",\"))\n" +
                 "            .subscribeOn(Schedulers.computation())\n" +

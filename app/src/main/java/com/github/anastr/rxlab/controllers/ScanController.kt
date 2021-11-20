@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class ScanController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(1, 2, 3, 4)\n" +
                 "        .scan((accumulator, emit) -> accumulator + emit)\n" +
                 "        .subscribe();")

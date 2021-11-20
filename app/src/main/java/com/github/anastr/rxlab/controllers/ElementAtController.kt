@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class ElementAtController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(1, 2, 3, 4, 5)\n" +
                 "        .elementAt(2)\n" +
                 "        .subscribe();")

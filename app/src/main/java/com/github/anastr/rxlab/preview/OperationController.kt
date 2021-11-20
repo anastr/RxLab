@@ -8,7 +8,7 @@ import java.io.Serializable
  */
 abstract class OperationController: Serializable {
 
-    abstract fun onCreate(activity: OperationActivity)
+    abstract suspend fun onCreate(activity: OperationActivity)
 
     fun Disposable.disposeOnDestroy(activity: OperationActivity) {
         activity.addDisposable(this)

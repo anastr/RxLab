@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
 
 class IoSchedulerController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(\"A\")\n" +
                 "        .observeOn(Schedulers.io())\n" +
                 "        .subscribe();")

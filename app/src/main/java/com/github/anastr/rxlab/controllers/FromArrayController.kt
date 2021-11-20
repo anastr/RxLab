@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class FromArrayController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("String[] array = {\"A\", \"r\", \"r\", \"a\", \"y\"};\n" +
                 "Observable.fromArray(array)\n" +
                 "        .subscribe();")

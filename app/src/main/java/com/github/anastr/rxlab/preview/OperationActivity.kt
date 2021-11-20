@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.github.anastr.rxlab.R
 import com.github.anastr.rxlab.util.dpToPx
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,6 +20,7 @@ import io.github.kbiakov.codeview.highlight.ColorTheme
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_operation.*
+import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.min
 
@@ -55,9 +57,12 @@ class OperationActivity : AppCompatActivity() {
                 .show()
         }
 
-        val operationController: OperationController?
-                = intent.getSerializableExtra("OperationController") as OperationController?
-        operationController?.onCreate(this)
+
+        lifecycleScope.launch {
+            val operationController: OperationController?
+                    = intent.getSerializableExtra("OperationController") as OperationController?
+            operationController?.onCreate(this@OperationActivity)
+        }
     }
 
     fun addDisposable(disposable: Disposable) {

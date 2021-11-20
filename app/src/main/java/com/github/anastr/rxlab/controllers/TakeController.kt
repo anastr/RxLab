@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
  */
 class TakeController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.interval(1000, TimeUnit.MILLISECONDS)\n" +
                 "        .take(3)\n" +
                 "        .subscribe();")

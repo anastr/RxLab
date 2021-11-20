@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class MergeController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable o1 = Observable.just(\"A\", \"B\", \"C\", \"D\");\n" +
                 "Observable o2 = Observable.just(\"a\", \"b\", \"c\", \"d\");\n" +
                 "Observable.merge(o1, o2)\n" +

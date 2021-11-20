@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 class CombineLatestController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable o1 = Observable.interval(1500, 3000, TimeUnit.MILLISECONDS);\n" +
                 "Observable o2 = Observable.interval(3000, TimeUnit.MILLISECONDS);\n" +
                 "Observable.combineLatest(o1, o2, (e1, e2) -> e1 +\"-\" + e2)\n" +

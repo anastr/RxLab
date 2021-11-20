@@ -13,7 +13,7 @@ import java.util.concurrent.Executors
 
 class OtherSchedulerController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(\"A\")\n" +
                 "        .observeOn(Schedulers.from(Executors.newFixedThreadPool(3))\n" +
                 "        .subscribe();")

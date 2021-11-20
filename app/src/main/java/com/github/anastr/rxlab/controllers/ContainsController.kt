@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class ContainsController : OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(\"A\", \"B\", \"C\", \"D\")\n" +
                 "        .contains(\"C\")\n" +
                 "        .subscribe();")

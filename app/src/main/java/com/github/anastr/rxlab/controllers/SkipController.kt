@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class SkipController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("// emits from 1 to 5\n" +
                 "Observable.range(1, 5)\n" +
                 "        .skip(3)\n" +

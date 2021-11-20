@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
  */
 class BufferController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.interval(1000, TimeUnit.MILLISECONDS)\n" +
                 "        .buffer(3)\n" +
                 "        .subscribe();")

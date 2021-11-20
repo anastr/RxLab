@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class SortedController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(3, 2, 5, 1, 4)\n" +
                 "        .sorted()\n" +
                 "        .subscribe();")

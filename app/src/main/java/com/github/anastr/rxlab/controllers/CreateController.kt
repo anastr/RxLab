@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class CreateController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.<String>create(emitter -> {\n" +
                 "    fab.setOnClickListener(v -> {\n" +
                 "        if (!emitter.isDisposed())\n" +

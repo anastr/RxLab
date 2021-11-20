@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  */
 class ThrottleLastController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.<String>create(emitter -> {\n" +
                 "    fab.setOnClickListener(v -> {\n" +
                 "        if (!emitter.isDisposed())\n" +

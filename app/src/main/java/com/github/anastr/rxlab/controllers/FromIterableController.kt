@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_operation.*
  */
 class FromIterableController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("List list = Arrays.asList(\"L\", \"i\", \"s\", \"t\");\n" +
                 "Observable.fromIterable(list)\n" +
                 "        .subscribe();")

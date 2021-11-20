@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
  */
 class DistinctController: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable.just(1, 1, 3, 2, 2, 3, 1)\n" +
                 "        .distinct()\n" +
                 "        .subscribe();")

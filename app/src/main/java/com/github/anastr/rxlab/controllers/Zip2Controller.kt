@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  */
 class Zip2Controller: OperationController() {
 
-    override fun onCreate(activity: OperationActivity) {
+    override suspend fun onCreate(activity: OperationActivity) {
         activity.setCode("Observable o1 = Observable.just(\"A\", \"B\", \"C\", \"D\");\n" +
                 "Observable o2 = Observable.just(1, 2, 3, 4, 5);\n" +
                 "Observable.zip(o1, o2, (l, n) -> l +\"-\" + n)\n" +
