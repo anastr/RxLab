@@ -26,7 +26,8 @@ class CreatingOperatorsActivity: AppCompatActivity() {
                 "fromIterable",
                 "range",
                 "interval",
-                "timer" -> true
+                "timer",
+                "flowOf", -> true
                 else -> false
             }
         }
