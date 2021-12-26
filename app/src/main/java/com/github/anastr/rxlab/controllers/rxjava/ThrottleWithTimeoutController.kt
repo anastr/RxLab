@@ -8,7 +8,7 @@ import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.concurrent.TimeUnit
@@ -46,22 +46,22 @@ class ThrottleWithTimeoutController: OperationController() {
             }
         }
             .doOnNext {
-                activity.surfaceView.action(Action(0) { doOnRenderThread {
+                activity.surfaceView.action(RenderAction(0) {
                     if (observerObject.isTimeLocked() != true)
                         observerObject.removeLastTime()
                     observerObject.startTime(TimeObject.Lock.AFTER)
-                } })
+                })
             }
             .throttleWithTimeout(2, TimeUnit.SECONDS)
             .subscribe({
                 val thread = Thread.currentThread().name
-                activity.surfaceView.action(Action(0) {
+                activity.surfaceView.action(RenderAction(0) {
                     it.checkThread(thread)
                     observerObject.lockTime()
-                    addThenMoveOnRender(it, throttleObject, observerObject)
+                    addThenMove(it, throttleObject, observerObject)
                 })
             }, activity.errorHandler, {
-                activity.surfaceView.action(Action(0) { doOnRenderThread { observerObject.complete() } })
+                activity.surfaceView.action(RenderAction(0) { observerObject.complete() })
             })
             .disposeOnDestroy(activity)
     }

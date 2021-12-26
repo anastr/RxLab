@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 import kotlinx.coroutines.delay
@@ -31,13 +31,13 @@ class TimerController: OperationController() {
         Observable.timer(3, TimeUnit.SECONDS)
             .subscribe({
                 val thread = Thread.currentThread().name
-                activity.surfaceView.action(Action(0) {
+                activity.surfaceView.action(RenderAction(0) {
                     val emit = BallEmit("$it")
                     emit.checkThread(thread)
-                    addThenMoveOnRender(emit, timerOperation, observerObject)
+                    addThenMove(emit, timerOperation, observerObject)
                 })
             }, activity.errorHandler, {
-                activity.surfaceView.action(Action(0) { doOnRenderThread { observerObject.complete() } })
+                activity.surfaceView.action(RenderAction(0) { observerObject.complete() })
             })
             .disposeOnDestroy(activity)
     }

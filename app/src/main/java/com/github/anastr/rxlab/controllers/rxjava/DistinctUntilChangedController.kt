@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
@@ -41,26 +41,26 @@ class DistinctUntilChangedController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
 
         Observable.fromIterable(list)
             .delay(1000, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                actions.add(Action(500) { moveEmitOnRender(it, distinctOperation) })
+                actions.add(RenderAction(500) { moveEmit(it, distinctOperation) })
             }
             .distinctUntilChanged { e1, e2 ->
                 if (e1.value == e2.value) {
-                    actions.add(Action(500) { dropEmit(e2, distinctOperation) })
+                    actions.add(RenderAction(500) { dropEmit(e2, distinctOperation) })
                     return@distinctUntilChanged true
                 }
                 return@distinctUntilChanged false
             }
             .subscribe({
-                actions.add(Action(500) { moveEmitOnRender(it, observerObject) })
+                actions.add(RenderAction(500) { moveEmit(it, observerObject) })
             }, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

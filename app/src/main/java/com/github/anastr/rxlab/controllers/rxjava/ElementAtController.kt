@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
@@ -36,21 +36,21 @@ class ElementAtController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         Observable.just(e1, e2, e3, e4, e5)
             .doOnNext {
-                actions.add(Action(1000) { moveEmitOnRender(it, elementAtOperation) })
+                actions.add(RenderAction(1000) { moveEmit(it, elementAtOperation) })
                 if (it.value != "3")
-                    actions.add(Action(1000) { dropEmit(it, elementAtOperation) })
+                    actions.add(RenderAction(1000) { dropEmit(it, elementAtOperation) })
             }
             .elementAt(2)
             .subscribe({
-                actions.add(Action(1000) { moveEmitOnRender(it, observerObject) })
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(1000) { moveEmit(it, observerObject) })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             }, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

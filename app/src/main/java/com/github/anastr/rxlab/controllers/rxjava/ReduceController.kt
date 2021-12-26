@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
@@ -38,19 +38,19 @@ class ReduceController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         Observable.just(a, b, c, d, e)
             .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
                 if (it.value == "1")
-                    actions.add(Action(0) { moveEmitOnRender(it, reduceOperation) })
+                    actions.add(RenderAction(0) { moveEmit(it, reduceOperation) })
             }
             .reduce { emit1: BallEmit, emit2: BallEmit ->
                 val text = (emit1.value.toInt() + emit2.value.toInt()).toString()
-                actions.add(Action(0) { moveEmitOnRender(emit2, reduceOperation) })
-                actions.add(Action(1000) {
+                actions.add(RenderAction(0) { moveEmit(emit2, reduceOperation) })
+                actions.add(RenderAction(1000) {
                     reduceOperation.setText(text)
                     if (emit1.value == "1")
                         dropEmit(emit1, reduceOperation)
@@ -60,14 +60,14 @@ class ReduceController: OperationController() {
             }
             .subscribe({
                 val thread = Thread.currentThread().name
-                actions.add(Action(0) {
+                actions.add(RenderAction(0) {
                     it.checkThread(thread)
-                    addThenMoveOnRender(it, reduceOperation, observerObject)
+                    addThenMove(it, reduceOperation, observerObject)
                 })
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             }, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

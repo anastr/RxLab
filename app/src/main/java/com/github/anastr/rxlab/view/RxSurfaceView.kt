@@ -8,12 +8,9 @@ import android.view.SurfaceView
 import android.view.animation.DecelerateInterpolator
 import androidx.core.animation.doOnEnd
 import androidx.core.view.doOnAttach
-import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.github.anastr.rxlab.objects.drawing.DrawingObject
 import com.github.anastr.rxlab.objects.drawing.FpsObject
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
-import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.util.*
@@ -49,8 +46,7 @@ class RxSurfaceView : SurfaceView {
 
     var onError: ((Throwable) -> Unit)? = null
 
-    private val coroutineScope: CoroutineScope?
-        get() = findViewTreeLifecycleOwner()?.lifecycle?.coroutineScope
+    private val renderScope = CoroutineScope(renderDispatcher + SupervisorJob())
 
     constructor(context: Context?): this(context, null)
 
@@ -60,20 +56,18 @@ class RxSurfaceView : SurfaceView {
 
     init {
         doOnAttach {
-            coroutineScope?.launch {
-                withContext(renderDispatcher) {
-                    looperStateFlow.flatMapLatest { startRender ->
-                        if (startRender)
-                            tickerFlow(Duration.milliseconds(1000 / FBS))
-                        else
-                            emptyFlow()
-                    }
-                        .collect {
-                            val now = System.currentTimeMillis()
-                            update(now - lastFrameTime)
-                            lastFrameTime = now
-                        }
+            renderScope.launch {
+                looperStateFlow.flatMapLatest { startRender ->
+                    if (startRender)
+                        tickerFlow(Duration.milliseconds(1000 / FBS))
+                    else
+                        emptyFlow()
                 }
+                    .collect {
+                        val now = System.currentTimeMillis()
+                        render(now - lastFrameTime)
+                        lastFrameTime = now
+                    }
             }
         }
         addDrawingObject(fpsObject)
@@ -89,7 +83,7 @@ class RxSurfaceView : SurfaceView {
         drawingObjects.forEach { it.onSizeChanged(w, h) }
     }
 
-    private fun update(delta: Long) {
+    private fun render(delta: Long) {
         if (isRunning && holder.surface.isValid) {
             val canvas = holder.lockCanvas()
             canvas.drawColor(Color.WHITE)
@@ -105,9 +99,9 @@ class RxSurfaceView : SurfaceView {
     /**
      * run actions sequentially depending on their delay.
      */
-    fun actions(actions: List<Action>) {
-        doOnRenderThread {
-            actions.forEach { action ->
+    fun actions(renderActions: List<RenderAction>) {
+        renderScope.launch {
+            renderActions.forEach { action ->
                 delay(action.delay)
                 action.action(this@RxSurfaceView)
             }
@@ -120,8 +114,8 @@ class RxSurfaceView : SurfaceView {
      *
      * **when you need to use this, its better to not add delay.**
      */
-    fun action(action: Action) {
-        actions(listOf(action))
+    fun action(renderAction: RenderAction) {
+        actions(listOf(renderAction))
     }
 
     fun addDrawingObject(drawingObject: DrawingObject) {
@@ -131,28 +125,6 @@ class RxSurfaceView : SurfaceView {
         drawingObject.updatePosition(top, width.toFloat())
         drawingObjects.add(drawingObject)
         requestLayout()
-    }
-
-    fun addEmitOnRender(
-        drawingObject: DrawingObject,
-        emit: EmitObject = BallEmit("", ColorUtil.randomColor()),
-    ) {
-        doOnRenderThread {
-            drawingObject.addEmit(emit)
-        }
-    }
-
-    /**
-     * remove emit from first object and add it to the other,
-     * then start animation to make smooth movement between operations.
-     *
-     * you mustn't move more than 1 emit to the same [to] Object,
-     * wait 500 ms at least between them.
-     */
-    fun moveEmitOnRender(emit: EmitObject, to: DrawingObject) {
-        doOnRenderThread {
-            moveEmit(emit, to)
-        }
     }
 
     /**
@@ -175,24 +147,23 @@ class RxSurfaceView : SurfaceView {
     }
 
     /**
-     * add [emit] to [addTo], then move it to [moveTo] on render thread
-     * using [moveEmit].
+     * add [emit] to [addTo], then move it to [moveTo] using [moveEmit].
+     *
+     * **must be called on render thread.**
      */
-    fun addThenMoveOnRender(emit: EmitObject, addTo: DrawingObject, moveTo: DrawingObject) {
-        doOnRenderThread {
-            addTo.addEmit(emit)
-            moveEmit(emit, moveTo)
-        }
+    fun addThenMove(emit: EmitObject, addTo: DrawingObject, moveTo: DrawingObject) {
+        addTo.addEmit(emit)
+        moveEmit(emit, moveTo)
     }
 
     fun dropEmit(emit: EmitObject, from: DrawingObject) {
         doOnMainThread {
-            moveEmit(emit, Point(width.toFloat(), emit.rect.top)) { doOnRenderThread { from.removeEmit(emit) } }
+            moveEmit(emit, Point(width.toFloat(), emit.rect.top)) { renderScope.launch { from.removeEmit(emit) } }
         }
     }
 
     fun startTimeOnRender(observerObject: ObserverObject, lock: TimeObject.Lock) {
-        doOnRenderThread {
+        renderScope.launch {
             observerObject.startTime(lock)
         }
     }
@@ -217,14 +188,8 @@ class RxSurfaceView : SurfaceView {
         }.start()
     }
 
-    fun doOnRenderThread(action: suspend () -> Unit) {
-        coroutineScope?.launch(renderDispatcher) {
-            action()
-        }
-    }
-
     private inline fun doOnMainThread(crossinline action: suspend () -> Unit) {
-        coroutineScope?.launch(Dispatchers.Main) {
+        renderScope.launch(Dispatchers.Main) {
             action()
         }
     }
@@ -240,6 +205,7 @@ class RxSurfaceView : SurfaceView {
     }
 
     fun dispose() {
+        renderScope.coroutineContext.cancelChildren()
         fpsObject.dispose()
     }
 }

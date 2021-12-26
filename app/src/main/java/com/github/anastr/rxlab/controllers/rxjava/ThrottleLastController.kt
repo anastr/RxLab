@@ -8,7 +8,7 @@ import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
@@ -51,10 +51,10 @@ class ThrottleLastController: OperationController() {
 
         Observable.interval(0, 2000, TimeUnit.MILLISECONDS)
             .subscribe {
-                activity.surfaceView.action(Action(0) { doOnRenderThread {
+                activity.surfaceView.action(RenderAction(0) {
                     observerObject.lockTime()
                     observerObject.startTime(TimeObject.Lock.AFTER)
-                } })
+                })
             }
             .disposeOnDestroy(activity)
 
@@ -71,12 +71,12 @@ class ThrottleLastController: OperationController() {
             .throttleLast(2000, TimeUnit.MILLISECONDS)
             .subscribe({
                 val thread = Thread.currentThread().name
-                activity.surfaceView.action(Action(0) {
+                activity.surfaceView.action(RenderAction(0) {
                     it.checkThread(thread)
-                    addThenMoveOnRender(it, throttleObject, observerObject)
+                    addThenMove(it, throttleObject, observerObject)
                 })
             }, activity.errorHandler, {
-                activity.surfaceView.action(Action(0) { doOnRenderThread { observerObject.complete() } })
+                activity.surfaceView.action(RenderAction(0) { observerObject.complete() })
             })
             .disposeOnDestroy(activity)
     }

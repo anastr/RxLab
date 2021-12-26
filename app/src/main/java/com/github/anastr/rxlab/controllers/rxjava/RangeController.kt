@@ -5,7 +5,7 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
@@ -25,18 +25,18 @@ class RangeController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         Observable.range(3, 5)
             .subscribe({
                 val thread = Thread.currentThread().name
-                actions.add(Action(1000) {
+                actions.add(RenderAction(1000) {
                     val emit = BallEmit("$it")
                     emit.checkThread(thread)
-                    addThenMoveOnRender(emit, rangeOperation, observerObject)
+                    addThenMove(emit, rangeOperation, observerObject)
                 })
             }, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 import kotlinx.coroutines.delay
@@ -31,14 +31,12 @@ class IntervalController: OperationController() {
         Observable.interval(2000, TimeUnit.MILLISECONDS)
             .subscribe {
                 val thread = Thread.currentThread().name
-                activity.surfaceView.action(Action(0) {
+                activity.surfaceView.action(RenderAction(0) {
                     val emit = BallEmit("$it")
                     emit.checkThread(thread)
-                    doOnRenderThread {
-                        intervalOperation.addEmit(emit)
-                        observerObject.startTime(TimeObject.Lock.AFTER)
-                        moveEmit(emit, observerObject)
-                    }
+                    intervalOperation.addEmit(emit)
+                    observerObject.startTime(TimeObject.Lock.AFTER)
+                    moveEmit(emit, observerObject)
                 })
             }
             .disposeOnDestroy(activity)

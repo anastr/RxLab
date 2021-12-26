@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.util.ColorUtil
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
@@ -40,26 +40,26 @@ class MergeController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         val observableLetters = Observable.just(lA, lB, lC, lD)
             .doOnNext {
-                actions.add(Action(500) { moveEmitOnRender(it, mergeOperation) })
+                actions.add(RenderAction(500) { moveEmit(it, mergeOperation) })
             }
         val observableNumbers = Observable.just(a, b, c, d)
             .doOnNext {
-                actions.add(Action(500) { moveEmitOnRender(it, mergeOperation) })
+                actions.add(RenderAction(500) { moveEmit(it, mergeOperation) })
             }
 
         Observable.merge(observableLetters, observableNumbers)
             .subscribe({
                 val thread = Thread.currentThread().name
-                actions.add(Action(500) {
+                actions.add(RenderAction(500) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, observerObject)
+                    moveEmit(it, observerObject)
                 })
             }, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

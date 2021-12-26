@@ -7,7 +7,7 @@ import com.github.anastr.rxlab.objects.emits.MergedBallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.util.ColorUtil
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.Function3
@@ -53,7 +53,7 @@ class Zip3Controller: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         val observableCapLetters = Observable.just(lA, lB, lC, lD)
         val observableSmallLetters = Observable.just(a, b, c, d)
@@ -63,24 +63,22 @@ class Zip3Controller: OperationController() {
             , Function3<BallEmit, BallEmit, BallEmit, MergedBallEmit> { emit1, emit2, emit3 ->
                 val mergedBallEmit = MergedBallEmit(emit2.position, emit1, emit2, emit3)
                 val thread = Thread.currentThread().name
-                actions.add(Action(0) { moveEmitOnRender(emit1, zipOperation) })
-                actions.add(Action(1000) { moveEmitOnRender(emit2, zipOperation) })
-                actions.add(Action(1000) { moveEmitOnRender(emit3, zipOperation) })
-                actions.add(Action(500) {
+                actions.add(RenderAction(0) { moveEmit(emit1, zipOperation) })
+                actions.add(RenderAction(1000) { moveEmit(emit2, zipOperation) })
+                actions.add(RenderAction(1000) { moveEmit(emit3, zipOperation) })
+                actions.add(RenderAction(500) {
                     mergedBallEmit.checkThread(thread)
-                    doOnRenderThread {
-                        zipOperation.removeEmit(emit1)
-                        zipOperation.removeEmit(emit2)
-                        zipOperation.removeEmit(emit3)
-                    }
-                    addThenMoveOnRender(mergedBallEmit, zipOperation, observerObject)
+                    zipOperation.removeEmit(emit1)
+                    zipOperation.removeEmit(emit2)
+                    zipOperation.removeEmit(emit3)
+                    addThenMove(mergedBallEmit, zipOperation, observerObject)
                 })
                 return@Function3 mergedBallEmit
             })
             .delay(1000, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({}, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

@@ -5,7 +5,7 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
@@ -27,16 +27,16 @@ class SkipController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         Observable.range(1, 5)
             .map { BallEmit("$it") }
             .doOnNext {
-                actions.add(Action(1000) {
-                    addThenMoveOnRender(it, rangeOperation, skipOperation)
+                actions.add(RenderAction(1000) {
+                    addThenMove(it, rangeOperation, skipOperation)
                 })
                 if (it.value == "1" || it.value == "2" || it.value == "3") {
-                    actions.add(Action(500) {
+                    actions.add(RenderAction(500) {
                         dropEmit(it, skipOperation)
                     })
                 }
@@ -44,12 +44,12 @@ class SkipController: OperationController() {
             .skip(3)
             .subscribe({
                 val thread = Thread.currentThread().name
-                actions.add(Action(1000) {
+                actions.add(RenderAction(1000) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, observerObject)
+                    moveEmit(it, observerObject)
                 })
             }, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -39,7 +39,7 @@ class SwitchMapController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         Observable.just(abcEmit, defEmit, ghiEmit)
             .delay(1500, TimeUnit.MILLISECONDS)
@@ -47,25 +47,25 @@ class SwitchMapController: OperationController() {
             .observeOn(AndroidSchedulers.mainThread())
             .switchMap {
                 val thread = Thread.currentThread().name
-                actions.add(Action(0) {
+                actions.add(RenderAction(0) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, switchMapOperation)
+                    moveEmit(it, switchMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .subscribeOn(Schedulers.computation())
                     .delay(10, TimeUnit.MILLISECONDS)
-                    .doOnDispose { actions.add(Action(1000) { dropEmit(it, switchMapOperation) }) }
-                    .doOnComplete { actions.add(Action(0) { doOnRenderThread { switchMapOperation.removeEmit(it) } }) }
+                    .doOnDispose { actions.add(RenderAction(1000) { dropEmit(it, switchMapOperation) }) }
+                    .doOnComplete { actions.add(RenderAction(0) { switchMapOperation.removeEmit(it) }) }
             }
             .map { BallEmit(it.toString()) }
             .subscribe({
                 val thread = Thread.currentThread().name
-                actions.add(Action(1000) {
+                actions.add(RenderAction(1000) {
                     it.checkThread(thread)
-                    addThenMoveOnRender(it, switchMapOperation, observerObject)
+                    addThenMove(it, switchMapOperation, observerObject)
                 })
             }, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

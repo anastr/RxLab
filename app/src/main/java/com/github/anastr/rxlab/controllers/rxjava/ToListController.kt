@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.ListEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
@@ -32,25 +32,23 @@ class ToListController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         Observable.just(a, b, c)
             .doOnNext {
-                actions.add(Action(1000) { moveEmitOnRender(it, toListOperation) })
+                actions.add(RenderAction(1000) { moveEmit(it, toListOperation) })
             }
             .toList()
             .subscribe( { list ->
                 val listEmit = ListEmit(list.last().position, *list.toTypedArray())
                 val thread = Thread.currentThread().name
-                actions.add(Action(500) {
+                actions.add(RenderAction(500) {
                     listEmit.checkThread(thread)
-                    doOnRenderThread {
-                        list.forEach { toListOperation.removeEmit(it) }
-                    }
-                    addThenMoveOnRender(listEmit, toListOperation, observerObject)
+                    list.forEach { toListOperation.removeEmit(it) }
+                    addThenMove(listEmit, toListOperation, observerObject)
                 })
 
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             }, activity.errorHandler)
             .disposeOnDestroy(activity)

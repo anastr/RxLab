@@ -4,7 +4,7 @@ import android.widget.Toast
 import com.github.anastr.rxlab.objects.drawing.ObserverObject
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
@@ -19,7 +19,7 @@ class ErrorObservableController: OperationController() {
         Observable.error<Any> { RuntimeException("just an error") }
             .subscribe({ }, {
                 Toast.makeText(activity, "just an error", Toast.LENGTH_LONG).show()
-                activity.surfaceView.action(Action(0) { doOnRenderThread { observerObject.completeWithError() } })
+                activity.surfaceView.action(RenderAction(0) { observerObject.completeWithError() })
             })
     }
 }

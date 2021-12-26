@@ -8,7 +8,7 @@ import com.github.anastr.rxlab.objects.emits.MergedBallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.util.ColorUtil
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.BiFunction
@@ -36,22 +36,22 @@ class CombineLatestController: OperationController() {
             .map { BallEmit("$it", ColorUtil.red) }
             .doOnNext {
                 val thread = Thread.currentThread().name
-                activity.surfaceView.action(Action(0) {
+                activity.surfaceView.action(RenderAction(0) {
                     it.checkThread(thread)
                     if (combineLatestOperation.emitObjects.size > 1)
-                        doOnRenderThread { combineLatestOperation.removeEmitAt(0) }
-                    addThenMoveOnRender(it, observableOperation1, combineLatestOperation)
+                        combineLatestOperation.removeEmitAt(0)
+                    addThenMove(it, observableOperation1, combineLatestOperation)
                 })
             }
         val observableNumbers = Observable.interval(3000, TimeUnit.MILLISECONDS)
             .map { BallEmit("$it", ColorUtil.blue) }
             .doOnNext {
                 val thread = Thread.currentThread().name
-                activity.surfaceView.action(Action(0) {
+                activity.surfaceView.action(RenderAction(0) {
                     it.checkThread(thread)
                     if (combineLatestOperation.emitObjects.size > 1)
-                        doOnRenderThread { combineLatestOperation.removeEmitAt(0) }
-                    addThenMoveOnRender(it, observableOperation2, combineLatestOperation)
+                        combineLatestOperation.removeEmitAt(0)
+                    addThenMove(it, observableOperation2, combineLatestOperation)
                 })
             }
 
@@ -59,9 +59,9 @@ class CombineLatestController: OperationController() {
             , BiFunction<BallEmit, BallEmit, MergedBallEmit> { emit1, emit2 ->
                 val mergedBallEmit = MergedBallEmit(emit2.position, emit1, emit2)
                 val thread = Thread.currentThread().name
-                activity.surfaceView.action(Action(500) {
+                activity.surfaceView.action(RenderAction(500) {
                     mergedBallEmit.checkThread(thread)
-                    addThenMoveOnRender(mergedBallEmit, combineLatestOperation, observerObject)
+                    addThenMove(mergedBallEmit, combineLatestOperation, observerObject)
                 })
                 return@BiFunction mergedBallEmit
             })

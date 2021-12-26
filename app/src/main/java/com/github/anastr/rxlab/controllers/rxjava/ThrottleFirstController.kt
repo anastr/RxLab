@@ -8,7 +8,7 @@ import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.objects.time.TimeObject
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.concurrent.TimeUnit
@@ -46,16 +46,14 @@ class ThrottleFirstController: OperationController() {
             .throttleFirst(2, TimeUnit.SECONDS)
             .subscribe({
                 val thread = Thread.currentThread().name
-                activity.surfaceView.action(Action(0) {
+                activity.surfaceView.action(RenderAction(0) {
                     it.checkThread(thread)
-                    doOnRenderThread {
-                        observerObject.startTime(TimeObject.Lock.BEFORE)
-                        action(Action(2000) { observerObject.lockTime() })
-                    }
-                    addThenMoveOnRender(it, throttleObject, observerObject)
+                    observerObject.startTime(TimeObject.Lock.BEFORE)
+                    action(RenderAction(2000) { observerObject.lockTime() })
+                    addThenMove(it, throttleObject, observerObject)
                 })
             }, activity.errorHandler, {
-                activity.surfaceView.action(Action(0) { doOnRenderThread { observerObject.complete() } })
+                activity.surfaceView.action(RenderAction(0) { observerObject.complete() })
             })
             .disposeOnDestroy(activity)
     }

@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.EmitObject
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
@@ -39,9 +39,9 @@ class CreateController: OperationController() {
             }
         }
             .subscribe({
-                activity.surfaceView.action(Action(0) { addEmitOnRender(observerObject, it) })
+                activity.surfaceView.action(RenderAction(0) { observerObject.addEmit(it) })
             }, activity.errorHandler, {
-                activity.surfaceView.action(Action(0) { doOnRenderThread { observerObject.complete() } })
+                activity.surfaceView.action(RenderAction(0) { observerObject.complete() })
             })
             .disposeOnDestroy(activity)
     }

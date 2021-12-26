@@ -7,7 +7,7 @@ import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.objects.emits.ListEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 import java.util.concurrent.TimeUnit
@@ -33,21 +33,19 @@ class BufferController: OperationController() {
             .map { BallEmit("$it") }
             .doOnNext {
                 val thread = Thread.currentThread().name
-                activity.surfaceView.action( Action(0) {
+                activity.surfaceView.action( RenderAction(0) {
                     it.checkThread(thread)
-                    addThenMoveOnRender(it, intervalOperation, bufferOperation)
+                    addThenMove(it, intervalOperation, bufferOperation)
                 })
             }
             .buffer(3)
             .subscribe( { list ->
                 val listEmit = ListEmit(list.last().position, *list.toTypedArray())
                 val thread = Thread.currentThread().name
-                activity.surfaceView.action(Action(500) {
+                activity.surfaceView.action(RenderAction(500) {
                     listEmit.checkThread(thread)
-                    doOnRenderThread {
-                        list.forEach { bufferOperation.removeEmit(it) }
-                    }
-                    addThenMoveOnRender(listEmit, bufferOperation, observerObject)
+                    list.forEach { bufferOperation.removeEmit(it) }
+                    addThenMove(listEmit, bufferOperation, observerObject)
                 })
             }, activity.errorHandler)
             .disposeOnDestroy(activity)

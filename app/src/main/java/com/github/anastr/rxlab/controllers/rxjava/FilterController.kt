@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
@@ -37,22 +37,22 @@ class FilterController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         Observable.fromIterable(emits)
-            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, filterOperation) }) }
+            .doOnNext { actions.add(RenderAction(1000) { moveEmit(it, filterOperation) }) }
             .filter {
                 if (it.value.toInt() % 2 == 0)
                     true
                 else {
-                    actions.add(Action(1000) { dropEmit(it, filterOperation) })
+                    actions.add(RenderAction(1000) { dropEmit(it, filterOperation) })
                     false
                 }
             }
             .subscribe( {
-                actions.add(Action(1000) { moveEmitOnRender(it, observerObject) })
+                actions.add(RenderAction(1000) { moveEmit(it, observerObject) })
             }, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

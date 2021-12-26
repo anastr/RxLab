@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
@@ -32,7 +32,7 @@ class FlatMapController: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         Observable.just(abcEmit, defEmit)
             .delay(1500, TimeUnit.MILLISECONDS)
@@ -40,22 +40,22 @@ class FlatMapController: OperationController() {
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 val thread = Thread.currentThread().name
-                actions.add(Action(0) {
+                actions.add(RenderAction(0) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, flatMapOperation)
+                    moveEmit(it, flatMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
-                    .doOnComplete { actions.add(Action(0) { doOnRenderThread { flatMapOperation.removeEmit(it) } }) }
+                    .doOnComplete { actions.add(RenderAction(0) { flatMapOperation.removeEmit(it) }) }
             }
             .map { BallEmit(it.toString()) }
             .subscribe({
                 val thread = Thread.currentThread().name
-                actions.add(Action(1000) {
+                actions.add(RenderAction(1000) {
                     it.checkThread(thread)
-                    addThenMoveOnRender(it, flatMapOperation, observerObject)
+                    addThenMove(it, flatMapOperation, observerObject)
                 })
             }, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

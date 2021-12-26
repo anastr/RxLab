@@ -4,6 +4,7 @@ import com.github.anastr.rxlab.controllers.coroutines.FlowOfController
 import com.github.anastr.rxlab.controllers.rxjava.*
 import com.github.anastr.rxlab.objects.Operation
 import com.github.anastr.rxlab.objects.OperationType
+import com.github.anastr.rxlab.preview.OperationController
 
 fun allOperations() = listOf(
     Operation("buffer", BufferController()),
@@ -41,5 +42,10 @@ fun allOperations() = listOf(
     Operation("zip 3 observables", Zip3Controller()),
 
     // Kotlin coroutines
-    Operation("flowOf", FlowOfController(), OperationType.Coroutine),
+    kotlinOperation("flowOf", FlowOfController()),
 )
+
+private fun kotlinOperation(
+    name: String,
+    controller: OperationController,
+) = Operation(name, controller, OperationType.Coroutine)

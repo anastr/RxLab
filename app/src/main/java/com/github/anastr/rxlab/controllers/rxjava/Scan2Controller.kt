@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
@@ -34,12 +34,12 @@ class Scan2Controller: OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         Observable.just(a, b, c, d)
             .scan(BallEmit("0")) { total: BallEmit, emit: BallEmit ->
-                actions.add(Action(800) {
-                    moveEmitOnRender(emit, scanOperation)
+                actions.add(RenderAction(800) {
+                    moveEmit(emit, scanOperation)
                     val text = (emit.value.toInt()+total.value.toInt()).toString()
                     emit.value = text
                     scanOperation.setText(text)
@@ -48,16 +48,16 @@ class Scan2Controller: OperationController() {
             }
             .subscribe({
                 val thread = Thread.currentThread().name
-                actions.add(Action(800) {
+                actions.add(RenderAction(800) {
                     it.checkThread(thread)
                     if (it.value == "0") {
-                        addEmitOnRender(scanOperation, it)
+                        scanOperation.addEmit(it)
                         scanOperation.setText(it.value)
                     }
-                    moveEmitOnRender(it, observerObject)
+                    moveEmit(it, observerObject)
                 })
             }, activity.errorHandler, {
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) { observerObject.complete() })
                 activity.surfaceView.actions(actions)
             })
             .disposeOnDestroy(activity)

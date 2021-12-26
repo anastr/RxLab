@@ -6,7 +6,7 @@ import com.github.anastr.rxlab.objects.drawing.TextOperation
 import com.github.anastr.rxlab.objects.emits.BallEmit
 import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
 
@@ -33,21 +33,21 @@ class ContainsController : OperationController() {
         val observerObject = ObserverObject("Observer")
         activity.surfaceView.addDrawingObject(observerObject)
 
-        val actions = ArrayList<Action>()
+        val actions = ArrayList<RenderAction>()
 
         Observable.just(a, b, c, d)
-            .doOnNext { actions.add(Action(1000) { moveEmitOnRender(it, containsOperation) }) }
+            .doOnNext { actions.add(RenderAction(1000) { moveEmit(it, containsOperation) }) }
             .doOnNext {
                 if (it != c)
-                    actions.add(Action(1000) { dropEmit(it, containsOperation) })
+                    actions.add(RenderAction(1000) { dropEmit(it, containsOperation) })
             }
             .contains(c)
             .subscribe( {
-                actions.add(Action(1000) {
+                actions.add(RenderAction(1000) {
                     c.value = it.toString()
-                    moveEmitOnRender(c, observerObject)
+                    moveEmit(c, observerObject)
                 })
-                actions.add(Action(0) { doOnRenderThread { observerObject.complete() } })
+                actions.add(RenderAction(0) {  observerObject.complete() })
                 activity.surfaceView.actions(actions)
             }, activity.errorHandler)
             .disposeOnDestroy(activity)

@@ -8,7 +8,7 @@ import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.util.ColorUtil
 import com.github.anastr.rxlab.util.delayEach
-import com.github.anastr.rxlab.view.Action
+import com.github.anastr.rxlab.view.RenderAction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_operation.*
@@ -46,7 +46,7 @@ class FlatMapAndConcatMapController: OperationController() {
         val observerObject1 = ObserverObject("Observer 1")
         activity.surfaceView.addDrawingObject(observerObject1)
 
-        val actions1 = ArrayList<Action>()
+        val actions1 = ArrayList<RenderAction>()
 
         Observable.just(abcEmit1, defEmit1)
             .delay(1500, TimeUnit.MILLISECONDS)
@@ -54,23 +54,23 @@ class FlatMapAndConcatMapController: OperationController() {
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 val thread = Thread.currentThread().name
-                actions1.add(Action(0) {
+                actions1.add(RenderAction(0) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, flatMapOperation)
+                    moveEmit(it, flatMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .delayEach(Random.nextLong(50))
-                    .doOnComplete { actions1.add(Action(0) { doOnRenderThread { flatMapOperation.removeEmit(it) } }) }
+                    .doOnComplete { actions1.add(RenderAction(0) { flatMapOperation.removeEmit(it) }) }
             }
             .map { BallEmit(it.toString()) }
             .subscribe ({
                 val thread = Thread.currentThread().name
-                actions1.add(Action(1000) {
+                actions1.add(RenderAction(1000) {
                     it.checkThread(thread)
-                    addThenMoveOnRender(it, flatMapOperation, observerObject1)
+                    addThenMove(it, flatMapOperation, observerObject1)
                 })
             }, activity.errorHandler, {
-                actions1.add(Action(0) { doOnRenderThread { observerObject1.complete() } })
+                actions1.add(RenderAction(0) { observerObject1.complete() })
                 activity.surfaceView.actions(actions1)
             })
             .disposeOnDestroy(activity)
@@ -86,7 +86,7 @@ class FlatMapAndConcatMapController: OperationController() {
         val observerObject2 = ObserverObject("Observer 2")
         activity.surfaceView.addDrawingObject(observerObject2)
 
-        val actions2 = ArrayList<Action>()
+        val actions2 = ArrayList<RenderAction>()
 
         Observable.just(abcEmit2, defEmit2)
             .delay(1500, TimeUnit.MILLISECONDS)
@@ -94,23 +94,23 @@ class FlatMapAndConcatMapController: OperationController() {
             .observeOn(AndroidSchedulers.mainThread())
             .concatMap {
                 val thread = Thread.currentThread().name
-                actions2.add(Action(0) {
+                actions2.add(RenderAction(0) {
                     it.checkThread(thread)
-                    moveEmitOnRender(it, concatMapOperation)
+                    moveEmit(it, concatMapOperation)
                 })
                 Observable.fromIterable(it.value.split(','))
                     .delayEach(Random.nextLong(50))
-                    .doOnComplete { actions2.add(Action(0) { doOnRenderThread { concatMapOperation.removeEmit(it) } }) }
+                    .doOnComplete { actions2.add(RenderAction(0) { concatMapOperation.removeEmit(it) }) }
             }
             .map { BallEmit(it.toString(), ColorUtil.blue) }
             .subscribe ({
                 val thread = Thread.currentThread().name
-                actions2.add(Action(1000) {
+                actions2.add(RenderAction(1000) {
                     it.checkThread(thread)
-                    addThenMoveOnRender(it, concatMapOperation, observerObject2)
+                    addThenMove(it, concatMapOperation, observerObject2)
                 })
             }, activity.errorHandler, {
-                actions2.add(Action(0) { doOnRenderThread { observerObject2.complete() } })
+                actions2.add(RenderAction(0) { observerObject2.complete() })
                 activity.surfaceView.actions(actions2)
             })
             .disposeOnDestroy(activity)
