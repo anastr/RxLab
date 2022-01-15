@@ -33,7 +33,7 @@ class AlphabeticalOperatorsActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         allOperations.addAll(
-            allOperations().sortedBy { it.name }
+            allOperations().sortedBy { it.operationName.text }
         )
         operations.addAll(allOperations)
 
@@ -61,7 +61,7 @@ class AlphabeticalOperatorsActivity: AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ text ->
                 operations.clear()
-                operations.addAll(allOperations.filter { it.name.contains(text, true) })
+                operations.addAll(allOperations.filter { it.operationName.text.contains(text, true) })
                 recyclerView.adapter?.notifyDataSetChanged()
             }, {
                 Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()

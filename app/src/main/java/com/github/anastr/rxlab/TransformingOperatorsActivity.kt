@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.adapter.OperationAdapter
+import com.github.anastr.rxlab.controllers.OperationName
 import com.github.anastr.rxlab.controllers.rxjava.FlatMapAndConcatMapController
 import com.github.anastr.rxlab.controllers.rxjava.Scan2Controller
 import com.github.anastr.rxlab.data.allOperations
@@ -27,26 +28,26 @@ class TransformingOperatorsActivity: AppCompatActivity() {
 
         val operations = listOf(
             *allOperations().filter {
-                when (it.name) {
-                    "map",
-                    "sorted",
-                    "scan",
-                    "reduce",
-                    "flatMap",
-                    "concatMap",
-                    "switchMap",
-                    "toList",
-                    "buffer" -> true
+                when (it.operationName) {
+                    OperationName.map,
+                    OperationName.sorted,
+                    OperationName.scan,
+                    OperationName.scan_2,
+                    OperationName.reduce,
+                    OperationName.flatMap,
+                    OperationName.concatMap,
+                    OperationName.switchMap,
+                    OperationName.toList,
+                    OperationName.buffer -> true
                     else -> false
                 }
             }.toTypedArray(),
-            Operation("scan with initialValue", controller = Scan2Controller()),
             Operation(
-                "flatMap and concatMap",
+                OperationName.compare_flatMap_concatMap,
                 controller = FlatMapAndConcatMapController()
             ),
         )
-            .sortedBy { it.name }
+            .sortedBy { it.operationName.text }
 
         recyclerView.adapter = OperationAdapter(this, operations)
     }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.adapter.OperationAdapter
+import com.github.anastr.rxlab.controllers.OperationName
 import com.github.anastr.rxlab.controllers.rxjava.schedulers.*
 import com.github.anastr.rxlab.objects.Operation
 import kotlinx.android.synthetic.main.content_list.*
@@ -24,11 +25,11 @@ class SchedulersActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = listOf(
-            Operation("mainThread", controller = MainSchedulerController()),
-            Operation("computation", controller = ComputationSchedulerController()),
-            Operation("io", controller = IoSchedulerController()),
-            Operation("single", controller = SingleSchedulerController()),
-            Operation("other", controller = OtherSchedulerController())
+            Operation(OperationName.mainThread, controller = MainSchedulerController()),
+            Operation(OperationName.computation, controller = ComputationSchedulerController()),
+            Operation(OperationName.io, controller = IoSchedulerController()),
+            Operation(OperationName.single, controller = SingleSchedulerController()),
+            Operation(OperationName.other, controller = OtherSchedulerController())
         )
 
         recyclerView.adapter = OperationAdapter(this, operations)

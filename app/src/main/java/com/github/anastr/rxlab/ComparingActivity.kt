@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.adapter.OperationAdapter
+import com.github.anastr.rxlab.controllers.OperationName
 import com.github.anastr.rxlab.controllers.rxjava.FlatMapAndConcatMapController
 import com.github.anastr.rxlab.objects.Operation
 import kotlinx.android.synthetic.main.content_list.*
@@ -25,7 +26,7 @@ class ComparingActivity: AppCompatActivity() {
 
         val operations = listOf(
             Operation(
-                "flatMap and concatMap",
+                OperationName.compare_flatMap_concatMap,
                 controller = FlatMapAndConcatMapController()
             )
         )

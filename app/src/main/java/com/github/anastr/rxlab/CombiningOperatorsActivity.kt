@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.adapter.OperationAdapter
+import com.github.anastr.rxlab.controllers.OperationName
 import com.github.anastr.rxlab.data.allOperations
 import kotlinx.android.synthetic.main.content_list.*
 
@@ -23,11 +24,11 @@ class CombiningOperatorsActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = allOperations().filter {
-            when (it.name) {
-                "merge",
-                "zip 2 observables",
-                "zip 3 observables",
-                "combineLatest" -> true
+            when (it.operationName) {
+                OperationName.merge,
+                OperationName.zip_2_observables,
+                OperationName.zip_3_observables,
+                OperationName.combineLatest -> true
                 else -> false
             }
         }

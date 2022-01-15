@@ -28,7 +28,7 @@ class OperationAdapter(val activity: Activity, val operations: List<Operation>)
     override fun getItemCount() = operations.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.titleView.text = operations[position].name
+        holder.titleView.text = operations[position].operationName.text
         holder.iconView.setImageResource(
             when (operations[position].type) {
                 OperationType.Coroutine -> R.drawable.icon_kotlin
@@ -45,7 +45,7 @@ class OperationAdapter(val activity: Activity, val operations: List<Operation>)
         init {
             itemView.setOnClickListener {
                 val intent = Intent(activity, OperationActivity::class.java)
-                intent.putExtra("title", operations[bindingAdapterPosition].name)
+                intent.putExtra("title", operations[bindingAdapterPosition].operationName.text)
                 intent.putExtra("OperationController", operations[bindingAdapterPosition].controller)
                 activity.startActivity(intent)
             }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.adapter.OperationAdapter
+import com.github.anastr.rxlab.controllers.OperationName
 import com.github.anastr.rxlab.controllers.rxjava.CreateController
 import com.github.anastr.rxlab.objects.Operation
 import kotlinx.android.synthetic.main.content_list.*
@@ -24,7 +25,7 @@ class HotSourcesActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = listOf(
-            Operation("Observable.create", controller = CreateController())
+            Operation(OperationName.hot_create, controller = CreateController())
         )
 
         recyclerView.adapter = OperationAdapter(this, operations)

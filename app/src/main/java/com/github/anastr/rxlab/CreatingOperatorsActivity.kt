@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.adapter.OperationAdapter
+import com.github.anastr.rxlab.controllers.OperationName
 import com.github.anastr.rxlab.data.allOperations
 import kotlinx.android.synthetic.main.content_list.*
 
@@ -20,14 +21,14 @@ class CreatingOperatorsActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = allOperations().filter {
-            when (it.name) {
-                "just",
-                "fromArray",
-                "fromIterable",
-                "range",
-                "interval",
-                "timer",
-                "flowOf", -> true
+            when (it.operationName) {
+                OperationName.just,
+                OperationName.fromArray,
+                OperationName.fromIterable,
+                OperationName.range,
+                OperationName.interval,
+                OperationName.timer,
+                OperationName.kt_flowOf, -> true
                 else -> false
             }
         }

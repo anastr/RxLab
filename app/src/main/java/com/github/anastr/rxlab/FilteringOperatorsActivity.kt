@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.adapter.OperationAdapter
+import com.github.anastr.rxlab.controllers.OperationName
 import com.github.anastr.rxlab.data.allOperations
 import kotlinx.android.synthetic.main.content_list.*
 
@@ -23,19 +24,19 @@ class FilteringOperatorsActivity: AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         val operations = allOperations().filter {
-            when (it.name) {
-                "contains",
-                "filter",
-                "sorted",
-                "take",
-                "takeLast",
-                "skip",
-                "elementAt",
-                "distinct",
-                "distinctUntilChanged",
-                "throttleFirst",
-                "throttleLast",
-                "throttleWithTimeout" -> true
+            when (it.operationName) {
+                OperationName.contains,
+                OperationName.filter,
+                OperationName.sorted,
+                OperationName.take,
+                OperationName.takeLast,
+                OperationName.skip,
+                OperationName.elementAt,
+                OperationName.distinct,
+                OperationName.distinctUntilChanged,
+                OperationName.throttleFirst,
+                OperationName.throttleLast,
+                OperationName.throttleWithTimeout -> true
                 else -> false
             }
         }
