@@ -1,6 +1,7 @@
 package com.github.anastr.rxlab.data
 
 import com.github.anastr.rxlab.controllers.coroutines.FlowOfController
+import com.github.anastr.rxlab.controllers.coroutines.KtDebounceController
 import com.github.anastr.rxlab.controllers.rxjava.*
 import com.github.anastr.rxlab.objects.Operation
 import com.github.anastr.rxlab.objects.OperationType
@@ -43,6 +44,7 @@ fun allOperations() = listOf(
 
     // Kotlin coroutines
     kotlinOperation("flowOf", FlowOfController()),
+    kotlinOperation("debounce", KtDebounceController()),
 )
 
 private fun kotlinOperation(
