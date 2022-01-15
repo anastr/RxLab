@@ -53,3 +53,5 @@ fun <T>T.takeTime(time: Long): T {
 
 fun <T>Observable<T>.delayEach(interval: Long): Observable<T>
         = this.subscribeOn(Schedulers.computation()).map { it.takeTime(interval) }
+
+fun String.isNumber(): Boolean = toIntOrNull() != null

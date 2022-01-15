@@ -6,6 +6,7 @@ import com.github.anastr.rxlab.objects.drawing.DrawingObject
 import com.github.anastr.rxlab.util.ColorUtil
 import com.github.anastr.rxlab.util.Point
 import com.github.anastr.rxlab.util.Utils
+import com.github.anastr.rxlab.util.isNumber
 import java.util.*
 
 /**
@@ -74,7 +75,8 @@ abstract class EmitObject(leftTopPoint: Point) {
             "RxSingleScheduler" -> ColorUtil.singleThread
             else -> ColorUtil.otherThread
         }
-        threadNumber = if (thread.size > 1) thread[1] else ""
+        val num = thread.firstOrNull { it.isNumber() }
+        threadNumber = num ?: ""
     }
 
     override fun equals(other: Any?) = other is EmitObject && uid == other.uid
