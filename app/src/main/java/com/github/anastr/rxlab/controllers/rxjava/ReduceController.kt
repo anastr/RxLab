@@ -44,10 +44,13 @@ class ReduceController: OperationController() {
             .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
+                println("doOnNext RxJava")
                 if (it.value == "1")
                     actions.add(RenderAction(0) { moveEmit(it, reduceOperation) })
             }
             .reduce { emit1: BallEmit, emit2: BallEmit ->
+                println("reduce RxJava")
+
                 val text = (emit1.value.toInt() + emit2.value.toInt()).toString()
                 actions.add(RenderAction(0) { moveEmit(emit2, reduceOperation) })
                 actions.add(RenderAction(1000) {
@@ -59,6 +62,8 @@ class ReduceController: OperationController() {
                 BallEmit(text)
             }
             .subscribe({
+                println("subscribe RxJava")
+
                 val thread = Thread.currentThread().name
                 actions.add(RenderAction(0) {
                     it.checkThread(thread)

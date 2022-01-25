@@ -45,6 +45,7 @@ fun allOperations() = listOf(
 
     // Kotlin coroutines
     kotlinOperation(OperationName.kt_flowOf, FlowOfController()),
+    kotlinOperation(OperationName.kt_reduce, com.github.anastr.rxlab.controllers.coroutines.ReduceController()),
     kotlinOperation(OperationName.kt_debounce, KtDebounceController()),
 )
 

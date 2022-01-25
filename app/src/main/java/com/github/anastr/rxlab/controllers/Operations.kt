@@ -46,6 +46,7 @@ enum class OperationName(val text: String) {
 
     // Kotlin Coroutines
     kt_flowOf("flowOf"),
+    kt_reduce("reduce"),
     kt_debounce("debounce"),
 
     // Compare
