@@ -1,18 +1,18 @@
-package com.github.anastr.rxlab
+package com.github.anastr.rxlab.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.anastr.rxlab.R
 import com.github.anastr.rxlab.adapter.OperationAdapter
 import com.github.anastr.rxlab.controllers.OperationName
-import com.github.anastr.rxlab.controllers.rxjava.schedulers.*
-import com.github.anastr.rxlab.objects.Operation
+import com.github.anastr.rxlab.data.allOperations
 import kotlinx.android.synthetic.main.content_list.*
 
 /**
- * Created by Anas Altair on 7/8/2020.
+ * Created by Anas Altair on 4/16/2020.
  */
-class SchedulersActivity: AppCompatActivity() {
+class CombiningOperatorsActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,13 +24,15 @@ class SchedulersActivity: AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-        val operations = listOf(
-            Operation(OperationName.mainThread, controller = MainSchedulerController()),
-            Operation(OperationName.computation, controller = ComputationSchedulerController()),
-            Operation(OperationName.io, controller = IoSchedulerController()),
-            Operation(OperationName.single, controller = SingleSchedulerController()),
-            Operation(OperationName.other, controller = OtherSchedulerController())
-        )
+        val operations = allOperations().filter {
+            when (it.operationName) {
+                OperationName.merge,
+                OperationName.zip_2_observables,
+                OperationName.zip_3_observables,
+                OperationName.combineLatest -> true
+                else -> false
+            }
+        }
 
         recyclerView.adapter = OperationAdapter(this, operations)
     }

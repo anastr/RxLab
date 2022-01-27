@@ -1,9 +1,10 @@
-package com.github.anastr.rxlab
+package com.github.anastr.rxlab.ui
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.github.anastr.rxlab.R
 import kotlinx.android.synthetic.main.activity_about.*
 
 class AboutActivity : AppCompatActivity() {

@@ -1,8 +1,9 @@
-package com.github.anastr.rxlab
+package com.github.anastr.rxlab.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.anastr.rxlab.R
 import com.github.anastr.rxlab.adapter.OperationAdapter
 import com.github.anastr.rxlab.controllers.OperationName
 import com.github.anastr.rxlab.data.allOperations

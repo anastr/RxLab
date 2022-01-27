@@ -4,6 +4,7 @@ import android.app.Activity
 import com.github.anastr.rxlab.preview.OperationActivity
 
 data class CardData(
+    val id: Int,
     val title: String,
     val clazz: Class<out Activity> = OperationActivity::class.java,
 )

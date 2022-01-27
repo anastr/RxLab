@@ -1,18 +1,18 @@
-package com.github.anastr.rxlab
+package com.github.anastr.rxlab.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.anastr.rxlab.R
 import com.github.anastr.rxlab.adapter.OperationAdapter
 import com.github.anastr.rxlab.controllers.OperationName
-import com.github.anastr.rxlab.controllers.rxjava.CreateController
-import com.github.anastr.rxlab.objects.Operation
+import com.github.anastr.rxlab.data.allOperations
 import kotlinx.android.synthetic.main.content_list.*
 
 /**
- * Created by Anas Altair on 4/10/2020.
+ * Created by Anas Altair on 4/8/2020.
  */
-class HotSourcesActivity: AppCompatActivity() {
+class FilteringOperatorsActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +24,23 @@ class HotSourcesActivity: AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-        val operations = listOf(
-            Operation(OperationName.hot_create, controller = CreateController())
-        )
+        val operations = allOperations().filter {
+            when (it.operationName) {
+                OperationName.contains,
+                OperationName.filter,
+                OperationName.sorted,
+                OperationName.take,
+                OperationName.takeLast,
+                OperationName.skip,
+                OperationName.elementAt,
+                OperationName.distinct,
+                OperationName.distinctUntilChanged,
+                OperationName.throttleFirst,
+                OperationName.throttleLast,
+                OperationName.throttleWithTimeout -> true
+                else -> false
+            }
+        }
 
         recyclerView.adapter = OperationAdapter(this, operations)
     }

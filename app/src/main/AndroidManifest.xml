@@ -10,9 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AboutActivity" />
+        <activity android:name=".ui.AboutActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
@@ -25,14 +25,14 @@
 
         <activity android:name=".preview.OperationActivity" />
 
-        <activity android:name=".AlphabeticalOperatorsActivity" />
-        <activity android:name=".CreatingOperatorsActivity" />
-        <activity android:name=".FilteringOperatorsActivity" />
-        <activity android:name=".TransformingOperatorsActivity" />
-        <activity android:name=".CombiningOperatorsActivity" />
-        <activity android:name=".HotSourcesActivity" />
-        <activity android:name=".ComparingActivity" />
-        <activity android:name=".SchedulersActivity" />
+        <activity android:name=".ui.AlphabeticalOperatorsActivity" />
+        <activity android:name=".ui.CreatingOperatorsActivity" />
+        <activity android:name=".ui.FilteringOperatorsActivity" />
+        <activity android:name=".ui.TransformingOperatorsActivity" />
+        <activity android:name=".ui.CombiningOperatorsActivity" />
+        <activity android:name=".ui.HotSourcesActivity" />
+        <activity android:name=".ui.ComparingActivity" />
+        <activity android:name=".ui.SchedulersActivity" />
     </application>
 
 </manifest>

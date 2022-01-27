@@ -1,4 +1,4 @@
-package com.github.anastr.rxlab
+package com.github.anastr.rxlab.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.anastr.rxlab.R
 import com.github.anastr.rxlab.adapter.OperationAdapter
 import com.github.anastr.rxlab.data.allOperations
 import com.github.anastr.rxlab.objects.Operation

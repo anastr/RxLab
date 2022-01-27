@@ -1,7 +1,6 @@
 package com.github.anastr.rxlab.adapter
 
-import android.app.Activity
-import android.content.Intent
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.anastr.rxlab.R
+import com.github.anastr.rxlab.ui.ClickListener
+import com.github.anastr.rxlab.ui.HomeFragment
 
-class CardAdapter(val activity: Activity, val cards: List<CardData>) :
+class CardAdapter(
+    val context: Context,
+    val cards: List<CardData>,
+    val clickListener: ClickListener
+) :
     RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
@@ -34,9 +39,13 @@ class CardAdapter(val activity: Activity, val cards: List<CardData>) :
             iconView.visibility = View.GONE
             itemView.setOnClickListener {
                 val cardItem = cards[bindingAdapterPosition]
-                val intent = Intent(activity, cardItem.clazz)
-                intent.putExtra("title", cardItem.title)
-                activity.startActivity(intent)
+
+                print("CardViewHolder")
+
+                clickListener.onCardClick(cardItem)
+//                val intent = Intent(context, cardItem.clazz)
+//                intent.putExtra("title", cardItem.title)
+//                context.startActivity(intent)
             }
         }
     }
