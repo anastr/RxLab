@@ -48,6 +48,7 @@ enum class OperationName(val text: String) {
     kt_flowOf("flowOf"),
     kt_reduce("reduce"),
     kt_debounce("debounce"),
+    zip("zip"),
 
     // Compare
     compare_flatMap_concatMap("flatMap and concatMap"),

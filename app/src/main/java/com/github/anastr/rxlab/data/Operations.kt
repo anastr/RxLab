@@ -3,6 +3,7 @@ package com.github.anastr.rxlab.data
 import com.github.anastr.rxlab.controllers.OperationName
 import com.github.anastr.rxlab.controllers.coroutines.FlowOfController
 import com.github.anastr.rxlab.controllers.coroutines.KtDebounceController
+import com.github.anastr.rxlab.controllers.coroutines.Zip2Controller
 import com.github.anastr.rxlab.controllers.rxjava.*
 import com.github.anastr.rxlab.objects.Operation
 import com.github.anastr.rxlab.objects.OperationType
@@ -47,6 +48,9 @@ fun allOperations() = listOf(
     kotlinOperation(OperationName.kt_flowOf, FlowOfController()),
     kotlinOperation(OperationName.kt_reduce, com.github.anastr.rxlab.controllers.coroutines.ReduceController()),
     kotlinOperation(OperationName.kt_debounce, KtDebounceController()),
+    kotlinOperation(OperationName.zip,
+        Zip2Controller()
+    ),
 )
 
 private fun kotlinOperation(

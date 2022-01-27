@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             CardData("Filtering Operators", FilteringOperatorsActivity::class.java),
             CardData("Transforming Operators", TransformingOperatorsActivity::class.java),
             CardData("Combining Operators", CombiningOperatorsActivity::class.java),
-            CardData("Hot Sources", HotSourcesActivity::class.java),
+            CardData("Hot    Sources", HotSourcesActivity::class.java),
             CardData("Comparing", ComparingActivity::class.java),
         )
 
