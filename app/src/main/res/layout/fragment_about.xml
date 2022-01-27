@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText"
+    tools:context=".ui.AboutActivity">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_github_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/user"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="Anas Altair" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_linked_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/linkedin"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="Developer on Linkedin"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_github_project"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/github"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="Project on Github"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_flat_icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="app icon made by Freepik from Flaticon"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

@@ -1,16 +1,19 @@
 package com.github.anastr.rxlab.ui
 
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.R
 import com.github.anastr.rxlab.adapter.OperationAdapter
 import com.github.anastr.rxlab.data.allOperations
 import com.github.anastr.rxlab.objects.Operation
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.content_list.*
+import java.util.concurrent.TimeUnit
 
 
 class AlphabeticalOperatorsFragment : Fragment() {
@@ -35,16 +38,41 @@ class AlphabeticalOperatorsFragment : Fragment() {
         return view;
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_search, menu)
+        val searchItem = menu.findItem(R.id.menu_search)
+        val searchView = searchItem.actionView as SearchView
+        Observable.create<String> {
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean = false
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    it.onNext(newText)
+                    return false
+                }
+            })
+        }
+            .throttleWithTimeout(300, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ text ->
+                operations.clear()
+                operations.addAll(allOperations.filter {
+                    it.operationName.text.contains(
+                        text,
+                        true
+                    )
+                })
+                recyclerView.adapter?.notifyDataSetChanged()
+            }, {
+                Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+            })
+
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-//        requireActivity().actionBar?.setDisplayHomeAsUpEnabled(true)
-//        requireActivity().actionBar?.setDisplayShowHomeEnabled(true)
-
-//        title = intent.getStringExtra("title")
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -55,6 +83,8 @@ class AlphabeticalOperatorsFragment : Fragment() {
         operations.addAll(allOperations)
 
         recyclerView.adapter = OperationAdapter(requireContext(), operations)
+
+        setHasOptionsMenu(true)
     }
 
     companion object {

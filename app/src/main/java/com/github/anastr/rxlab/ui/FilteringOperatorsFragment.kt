@@ -1,7 +1,10 @@
 package com.github.anastr.rxlab.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.anastr.rxlab.R
 import com.github.anastr.rxlab.adapter.OperationAdapter
@@ -9,19 +12,25 @@ import com.github.anastr.rxlab.controllers.OperationName
 import com.github.anastr.rxlab.data.allOperations
 import kotlinx.android.synthetic.main.content_list.*
 
-/**
- * Created by Anas Altair on 4/8/2020.
- */
-class FilteringOperatorsActivity: AppCompatActivity() {
+
+class FilteringOperatorsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        setContentView(R.layout.activity_list)
-        title = intent.getStringExtra("title")
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_filtering_operators, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
         val operations = allOperations().filter {
@@ -42,11 +51,13 @@ class FilteringOperatorsActivity: AppCompatActivity() {
             }
         }
 
-        recyclerView.adapter = OperationAdapter(this, operations)
+        recyclerView.adapter = OperationAdapter(requireContext(), operations)
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
+    companion object {
+
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            FilteringOperatorsFragment()
     }
 }

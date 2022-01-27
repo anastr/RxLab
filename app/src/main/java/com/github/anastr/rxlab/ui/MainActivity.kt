@@ -48,15 +48,12 @@ class MainActivity : AppCompatActivity() {
                 super.onSupportNavigateUp()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_about -> {
-                startActivity(Intent(this, AboutActivity::class.java))
+                findNavController(R.id.nav_host_fragment).navigate(HomeFragmentDirections.actionHomeFragmentToAboutFragment())
                 true
             }
             else -> super.onOptionsItemSelected(item)

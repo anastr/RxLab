@@ -13,10 +13,67 @@
         <action
             android:id="@+id/action_homeFragment_to_alphabeticalOperatorsFragment"
             app:destination="@id/alphabeticalOperatorsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_combiningOperatorsFragment"
+            app:destination="@id/combiningOperatorsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_schedulersFragment"
+            app:destination="@id/schedulersFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_comparingFragment"
+            app:destination="@id/comparingFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_creatingOperatorsFragment"
+            app:destination="@id/creatingOperatorsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_filteringOperatorsFragment"
+            app:destination="@id/filteringOperatorsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_transformingOperatorsFragment"
+            app:destination="@id/transformingOperatorsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_hotSourcesFragment"
+            app:destination="@id/hotSourcesFragment" />
     </fragment>
     <fragment
         android:id="@+id/alphabeticalOperatorsFragment"
 
         android:name="com.github.anastr.rxlab.ui.AlphabeticalOperatorsFragment"
         android:label="Alphabetical Operators" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.github.anastr.rxlab.ui.AboutFragment"
+        android:label="AboutFragment" />
+    <fragment
+        android:id="@+id/combiningOperatorsFragment"
+        android:name="com.github.anastr.rxlab.ui.CombiningOperatorsFragment"
+        android:label="CombiningOperatorsFragment" />
+    <fragment
+        android:id="@+id/comparingFragment"
+        android:name="com.github.anastr.rxlab.ui.ComparingFragment"
+        android:label="ComparingFragment" />
+    <fragment
+        android:id="@+id/creatingOperatorsFragment"
+        android:name="com.github.anastr.rxlab.ui.CreatingOperatorsFragment"
+        android:label="CreatingOperatorsFragment" />
+    <fragment
+        android:id="@+id/filteringOperatorsFragment"
+        android:name="com.github.anastr.rxlab.ui.FilteringOperatorsFragment"
+        android:label="FilteringOperatorsFragment" />
+    <fragment
+        android:id="@+id/hotSourcesFragment"
+        android:name="com.github.anastr.rxlab.ui.HotSourcesFragment"
+        android:label="HotSourcesFragment" />
+    <fragment
+        android:id="@+id/transformingOperatorsFragment"
+        android:name="com.github.anastr.rxlab.ui.TransformingOperatorsFragment"
+        android:label="TransformingOperatorsFragment" />
+    <fragment
+        android:id="@+id/schedulersFragment"
+        android:name="com.github.anastr.rxlab.ui.SchedulersFragment"
+        android:label="fragment_schedulers"
+        tools:layout="@layout/fragment_schedulers" />
 </navigation>
