@@ -16,15 +16,15 @@ android {
     }
 
     flavorDimensions "default"
-    productFlavors {
-        develop {
-            applicationIdSuffix ".develop"
-            resValue "string", "app_name", "Rx Lab Test"
-        }
-        product {
-            resValue "string", "app_name", "Rx Lab"
-        }
-    }
+//    productFlavors {
+//        develop {
+//            applicationIdSuffix ".develop"
+//            resValue "string", "app_name", "Rx Lab Test"
+//        }
+//        product {
+//            resValue "string", "app_name", "Rx Lab"
+//        }
+//    }
 
     buildTypes {
         release {

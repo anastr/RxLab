@@ -8,12 +8,19 @@ import com.github.anastr.rxlab.preview.OperationActivity
 import com.github.anastr.rxlab.preview.OperationController
 import com.github.anastr.rxlab.view.RenderAction
 import kotlinx.android.synthetic.main.activity_operation.*
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
 class ReduceController : OperationController() {
 
     override suspend fun onCreate(activity: OperationActivity) {
+
+        activity.setCode("val total = flowOf(1,2,3,4,5).reduce { " +
+                "\n val1, val2 -> val1 + val2 }")
+
+        activity.addNote("first, 'reduce' operation will receive two emits, then " +
+                "it will take the result of them with next emit...")
 
 
         val a = BallEmit("1")
@@ -33,27 +40,36 @@ class ReduceController : OperationController() {
 
         val actions = ArrayList<RenderAction>()
 
-        list.asFlow().onEach {
-            println("onEach Coroutines")
-            delay(500)
-            if (it.value == "1")
-                actions.add(RenderAction(0) { moveEmit(it, reduceOperation) })
-        }.onCompletion {
-            println("onCompletion Coroutines")
+
+        coroutineScope {
+            val lastBall = list.asFlow().onEach {
+                if (it.value == "1")
+                    actions.add(RenderAction(100) { moveEmit(it, reduceOperation) })
+            }.reduce { emit1: BallEmit, emit2: BallEmit ->
+                println("Reduce Coroutines")
+                val text = (emit1.value.toInt() + emit2.value.toInt()).toString()
+                actions.add(RenderAction(0) { moveEmit(emit2, reduceOperation) })
+                actions.add(RenderAction(1000) {
+                    reduceOperation.setText(text)
+                    if (emit1.value == "1")
+                        dropEmit(emit1, reduceOperation)
+                    dropEmit(emit2, reduceOperation)
+                })
+                BallEmit(text)
+            }
+
+            val thread = Thread.currentThread().name
+            actions.add(RenderAction(0) {
+                lastBall.checkThread(thread)
+                addThenMove(lastBall, reduceOperation, observerObject)
+            })
             actions.add(RenderAction(0) { observerObject.complete() })
             activity.surfaceView.actions(actions)
-        }.reduce { emit1: BallEmit, emit2: BallEmit ->
-            println("Reduce Coroutines")
-            val text = (emit1.value.toInt() + emit2.value.toInt()).toString()
-            actions.add(RenderAction(0) { moveEmit(emit2, reduceOperation) })
-            actions.add(RenderAction(1000) {
-                reduceOperation.setText(text)
-                if (emit1.value == "1")
-                    dropEmit(emit1, reduceOperation)
-                dropEmit(emit2, reduceOperation)
-            })
-            BallEmit(text)
         }
+
+
+
+
 
 
     }
